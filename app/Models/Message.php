@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\DemoContent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -43,16 +44,33 @@ class Message extends Model
         return mb_substr(trim(preg_replace('/\s+/u', ' ', $source)), 0, 200);
     }
 
+    /**
+     * Sample mail of the public demo is shown in the visitor's language.
+     *
+     * @return array{0: string, 1: string}|null
+     */
+    private function demoText(): ?array
+    {
+        $id = (string) $this->message_id;
+        if (! str_starts_with($id, 'demo-') || ! str_ends_with($id, '@demo.'.config('inbound.domain'))) {
+            return null;
+        }
+
+        return DemoContent::get(explode('-', $id)[1] ?? '', app()->getLocale());
+    }
+
     public function summary(): array
     {
+        $demo = $this->demoText();
+
         return [
             'id' => $this->id,
             'folder' => $this->folder,
             'from_name' => $this->from_name,
             'from_email' => $this->from_email,
             'to' => $this->to ?? [],
-            'subject' => $this->subject,
-            'snippet' => $this->snippet,
+            'subject' => $demo[0] ?? $this->subject,
+            'snippet' => $demo ? self::makeSnippet($demo[1], null) : $this->snippet,
             'is_read' => $this->is_read,
             'is_starred' => $this->is_starred,
             'has_attachments' => $this->has_attachments,
@@ -67,7 +85,7 @@ class Message extends Model
             'bcc' => $this->bcc ?? [],
             'reply_to' => $this->reply_to,
             'message_id' => $this->message_id,
-            'text_body' => $this->text_body,
+            'text_body' => $this->demoText()[1] ?? $this->text_body,
             'html_body' => $this->html_body,
             'attachments' => $this->attachments->map(fn (Attachment $a) => [
                 'id' => $a->id,

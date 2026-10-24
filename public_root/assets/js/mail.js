@@ -84,7 +84,8 @@
     let data = null;
     try { data = await res.json(); } catch (e) { data = null; }
     if (res.status === 403 && data && data.message === "demo") {
-      toast(data.detail || "Demo");
+      if (window.demoNotice) window.demoNotice(data.detail);
+      else toast(data.detail || "Demo");
       const err = new Error("demo");
       err.status = 403;
       err.demo = true;
@@ -627,7 +628,8 @@
       closeCompose();
       if (state.folder === "sent" || state.folder === "drafts") loadList();
     } catch (e) {
-      if (e.message !== "auth") errorEl.textContent = composeErrorText(e);
+      if (e.demo) errorEl.textContent = "";
+      else if (e.message !== "auth") errorEl.textContent = composeErrorText(e);
     } finally {
       btn.disabled = false;
       btn.querySelector("span").textContent = t("send");

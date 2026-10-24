@@ -274,10 +274,13 @@
   "legal.t.end": "Puedes eliminar tu cuenta en cualquier momento en Ajustes → Eliminar cuenta. Esto borra el buzón y todo su correo y no se puede deshacer.",
   "legal.t.changesTitle": "Cambios",
   "legal.t.changes": "Podemos actualizar estos términos. La fecha de arriba indica la versión más reciente.",
-  "demoBlocked": "Modo demo: aquí no se envía ni se guarda nada.",
+  "demoBlocked": "Esto es una demo, así que los cambios no se guardan. Instala OpenMeru en tu dominio para usarlo de verdad.",
   "demoBar": "Modo demo: explora con libertad. No se envía ni se guarda nada.",
   "demoTryMailbox": "Abrir el buzón demo",
   "demoTryAdmin": "Abrir el admin demo",
   "demoGetIt": "Instalar OpenMeru",
-  "demoExit": "Salir de la demo"
+  "demoExit": "Salir de la demo",
+  "demoTitle": "Esto es una demo",
+  "demoSendBlocked": "Tu mensaje no se envió. El buzón demo no envía ni recibe correos. Instala OpenMeru en tu dominio para enviar de verdad.",
+  "demoOk": "Entendido"
 }

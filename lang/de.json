@@ -274,10 +274,13 @@
   "legal.t.end": "Du kannst dein Konto jederzeit unter Einstellungen → Konto löschen entfernen. Postfach und alle E-Mails werden gelöscht; das ist endgültig.",
   "legal.t.changesTitle": "Änderungen",
   "legal.t.changes": "Wir können diese Bedingungen aktualisieren. Das Datum oben zeigt die aktuelle Fassung.",
-  "demoBlocked": "Demo-Modus: Hier wird nichts gesendet oder gespeichert.",
+  "demoBlocked": "Das ist eine Demo, Änderungen werden nicht gespeichert. Installiere OpenMeru auf deiner Domain, um es richtig zu nutzen.",
   "demoBar": "Demo-Modus: Schau dich in Ruhe um. Nichts wird gesendet oder gespeichert.",
   "demoTryMailbox": "Demo-Postfach öffnen",
   "demoTryAdmin": "Demo-Admin öffnen",
   "demoGetIt": "OpenMeru installieren",
-  "demoExit": "Demo beenden"
+  "demoExit": "Demo beenden",
+  "demoTitle": "Das ist eine Demo",
+  "demoSendBlocked": "Deine Nachricht wurde nicht gesendet. Das Demo-Postfach kann keine E-Mails senden oder empfangen. Installiere OpenMeru auf deiner Domain, um echte E-Mails zu senden.",
+  "demoOk": "Verstanden"
 }

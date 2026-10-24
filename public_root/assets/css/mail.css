@@ -999,3 +999,15 @@ body[data-page="inbox"] { overflow: hidden; }
 .demo-bar-links { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .demo-bar a, .demo-bar button { color: #fff; text-decoration: underline; text-underline-offset: 3px; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
 .demo-bar form { margin: 0; }
+
+/* Demo notice */
+.demo-modal { position: fixed; inset: 0; z-index: 3000; display: grid; place-items: center; padding: 16px; background: rgba(10, 14, 30, 0.6); }
+.demo-modal[hidden] { display: none; }
+.demo-modal-card { width: 100%; max-width: 400px; background: var(--surface, #fff); color: var(--ink, #111); border-radius: 18px; padding: 28px 24px 22px; text-align: center; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3); }
+.demo-modal-icon { width: 52px; height: 52px; margin: 0 auto 14px; border-radius: 50%; display: grid; place-items: center; font-size: 26px; background: var(--brand-soft, #e8efff); color: var(--brand, #1d57f5); }
+.demo-modal-card h2 { font-size: 20px; font-weight: 700; margin: 0 0 8px; }
+.demo-modal-card p { color: var(--muted, #555); margin: 0 0 22px; line-height: 1.5; }
+.demo-modal-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.demo-modal-actions > * { height: 42px; padding: 0 18px; border-radius: 10px; font-weight: 600; display: inline-flex; align-items: center; text-decoration: none; cursor: pointer; font: inherit; font-weight: 600; }
+.demo-modal-ok { background: var(--brand, #1d57f5); color: #fff; border: 0; }
+.demo-modal-link { border: 1px solid var(--line, #ddd); color: var(--ink, #111); background: transparent; }

@@ -274,10 +274,13 @@
   "legal.t.end": "You can delete your account at any time in Settings → Delete account. This removes the mailbox and all its mail and cannot be undone.",
   "legal.t.changesTitle": "Changes",
   "legal.t.changes": "We may update these terms. The date at the top shows the latest version.",
-  "demoBlocked": "Demo mode: nothing here is sent or saved.",
+  "demoBlocked": "This is a demo, so changes aren't saved. Install OpenMeru on your own domain to use it for real.",
   "demoBar": "Demo mode: look around freely. Nothing is sent or saved.",
   "demoTryMailbox": "Open the demo mailbox",
   "demoTryAdmin": "Open the demo admin",
   "demoGetIt": "Install OpenMeru",
-  "demoExit": "Exit demo"
+  "demoExit": "Exit demo",
+  "demoTitle": "This is a demo",
+  "demoSendBlocked": "Your message was not sent. The demo mailbox can't send or receive email. Install OpenMeru on your own domain to send real mail.",
+  "demoOk": "Got it"
 }

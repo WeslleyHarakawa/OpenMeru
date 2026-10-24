@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Demo users can look at everything and change nothing: any request that
- * would write is answered with "demo" instead of reaching a controller.
+ * would write is answered with "demo" instead of reaching a controller, and
+ * the page shows a notice explaining why.
  */
 class DemoReadOnly
 {
@@ -26,11 +27,11 @@ class DemoReadOnly
             return $next($request);
         }
 
-        $text = __('demoBlocked');
+        $text = $request->is('api/send') ? __('demoSendBlocked') : __('demoBlocked');
         if ($request->expectsJson() || $request->is('api/*')) {
             return response()->json(['message' => 'demo', 'detail' => $text], 403);
         }
 
-        return redirect()->back()->with('error', $text);
+        return redirect()->back()->with('demo_notice', $text);
     }
 }

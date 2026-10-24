@@ -274,10 +274,13 @@
   "legal.t.end": "Podes eliminar a tua conta a qualquer momento em Definições → Eliminar conta. Isto remove a caixa e todo o correio e não pode ser anulado.",
   "legal.t.changesTitle": "Alterações",
   "legal.t.changes": "Podemos atualizar estes termos. A data no topo mostra a versão mais recente.",
-  "demoBlocked": "Modo demo: nada aqui é enviado nem guardado.",
+  "demoBlocked": "Isto é uma demo, por isso as alterações não são guardadas. Instala o OpenMeru no teu domínio para usar a sério.",
   "demoBar": "Modo demo: explora à vontade. Nada é enviado nem guardado.",
   "demoTryMailbox": "Abrir a caixa demo",
   "demoTryAdmin": "Abrir o admin demo",
   "demoGetIt": "Instalar o OpenMeru",
-  "demoExit": "Sair da demo"
+  "demoExit": "Sair da demo",
+  "demoTitle": "Isto é uma demo",
+  "demoSendBlocked": "A tua mensagem não foi enviada. A caixa demo não envia nem recebe e-mails. Instala o OpenMeru no teu domínio para enviar a sério.",
+  "demoOk": "Percebi"
 }
