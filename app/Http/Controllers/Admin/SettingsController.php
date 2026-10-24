@@ -18,6 +18,22 @@ class SettingsController extends Controller
 {
     public function show(): View
     {
+        if (auth()->user()->is_demo) {
+            return view('admin.settings', [
+                'smtp_host' => 'smtp-relay.brevo.com',
+                'smtp_port' => '587',
+                'smtp_username' => 'demo@smtp-brevo.com',
+                'smtp_password' => 'xsmtpsib-demo-demo-demo',
+                'brevo_api_key' => '',
+                'vapid_public' => 'demo-public-key',
+                'vapid_private' => 'demo-private-key',
+                'push_devices' => 3,
+                'system_from' => 'hello@'.config('inbound.domain'),
+                'inbound_url' => route('inbound'),
+                'inbound_secret_set' => true,
+            ]);
+        }
+
         return view('admin.settings', [
             'smtp_host' => Setting::get('smtp_host', 'smtp-relay.brevo.com'),
             'smtp_port' => Setting::get('smtp_port', '587'),

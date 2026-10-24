@@ -99,7 +99,7 @@ class MailboxController extends Controller
     public function show(Request $request, int $id): JsonResponse
     {
         $message = $this->find($request, $id);
-        if (! $message->is_read) {
+        if (! $message->is_read && ! $request->user()->is_demo) {
             $message->forceFill(['is_read' => true])->save();
         }
 

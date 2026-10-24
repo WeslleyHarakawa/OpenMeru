@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\VerifyController;
 use App\Http\Controllers\AccountSettingsController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DemoController;
 use App\Http\Controllers\InboundController;
 use App\Http\Controllers\MailboxController;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,9 @@ Route::middleware('guest')->group(function () {
 // The site root is the project's landing page; the webmail lives under /mail.
 Route::view('/', 'landing')->name('home');
 Route::get('/mail', [MailboxController::class, 'entry'])->name('login');
+// Public read-only demo.
+Route::get('/demo', [DemoController::class, 'mailbox'])->middleware('throttle:30,1')->name('demo');
+Route::get('/demo/admin', [DemoController::class, 'admin'])->middleware('throttle:30,1')->name('demo.admin');
 Route::view('/privacy', 'legal.privacy')->name('privacy');
 Route::view('/terms', 'legal.terms')->name('terms');
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:10,1')->name('login.attempt');

@@ -6,6 +6,7 @@
   <title>{{ __('accountSettings') }} · OpenMeru Mail</title>
 </head>
 <body data-page="settings" data-email="{{ $user->email }}" data-name="{{ $user->name }}">
+  @include('partials.demo-bar')
   @include('partials.impersonating')
   @include('partials.mailbox-bar', ['user' => $user])
   <div class="shell settings-shell">

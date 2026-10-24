@@ -273,5 +273,11 @@
   "legal.t.endTitle": "Fermer votre compte",
   "legal.t.end": "Vous pouvez supprimer votre compte à tout moment dans Paramètres → Supprimer le compte. La boîte et tout son courrier sont alors effacés, sans retour possible.",
   "legal.t.changesTitle": "Modifications",
-  "legal.t.changes": "Nous pouvons mettre à jour ces conditions. La date en haut indique la dernière version."
+  "legal.t.changes": "Nous pouvons mettre à jour ces conditions. La date en haut indique la dernière version.",
+  "demoBlocked": "Mode démo : rien n'est envoyé ni enregistré.",
+  "demoBar": "Mode démo : explorez librement. Rien n'est envoyé ni enregistré.",
+  "demoTryMailbox": "Ouvrir la boîte démo",
+  "demoTryAdmin": "Ouvrir l'admin démo",
+  "demoGetIt": "Installer OpenMeru",
+  "demoExit": "Quitter la démo"
 }

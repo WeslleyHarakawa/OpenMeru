@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: ['hooks/inbound']);
         // The page script writes the language cookie, so it is stored in plain text.
         $middleware->encryptCookies(except: [\App\Support\Locales::COOKIE]);
-        $middleware->web(append: [\App\Http\Middleware\SetLocale::class]);
+        $middleware->web(append: [\App\Http\Middleware\SetLocale::class, \App\Http\Middleware\DemoReadOnly::class]);
         $middleware->trustProxies(at: '*');
         $middleware->redirectGuestsTo('/mail');
         $middleware->redirectUsersTo('/mail');

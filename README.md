@@ -9,7 +9,7 @@ Open-source webmail for your own domain. Create `you@yourdomain.com` mailboxes f
 - 10 languages: English, Português (BR and PT), Español, Français, Deutsch, Italiano, Nederlands, Русский and 中文
 - Light and dark themes, built for mobile
 
-Website: <https://openmeru.com>
+Website: <https://openmeru.com>. Live demo (read-only): [mailbox](https://openmeru.com/demo) and [admin](https://openmeru.com/demo/admin).
 
 ---
 

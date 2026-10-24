@@ -273,5 +273,11 @@
   "legal.t.endTitle": "Chiudere l'account",
   "legal.t.end": "Puoi eliminare l'account in qualsiasi momento da Impostazioni → Elimina account. La casella e tutta la posta vengono rimosse e non si può annullare.",
   "legal.t.changesTitle": "Modifiche",
-  "legal.t.changes": "Possiamo aggiornare questi termini. La data in alto indica la versione più recente."
+  "legal.t.changes": "Possiamo aggiornare questi termini. La data in alto indica la versione più recente.",
+  "demoBlocked": "Modalità demo: qui non viene inviato né salvato nulla.",
+  "demoBar": "Modalità demo: esplora liberamente. Non viene inviato né salvato nulla.",
+  "demoTryMailbox": "Apri la casella demo",
+  "demoTryAdmin": "Apri l'admin demo",
+  "demoGetIt": "Installa OpenMeru",
+  "demoExit": "Esci dalla demo"
 }

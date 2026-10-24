@@ -23,6 +23,8 @@ class AccountController extends Controller
     {
         $q = trim((string) $request->query('q'));
         $accounts = User::query()
+            // The demo admin sees only demo mailboxes; a real admin never sees them.
+            ->where('is_demo', (bool) $request->user()->is_demo)
             ->withCount('messages')
             ->withCount(['messages as unread_count' => fn ($query) => $query->where('folder', 'inbox')->where('is_read', false)])
             ->when($q !== '', function ($query) use ($q) {

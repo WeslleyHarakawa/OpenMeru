@@ -18,6 +18,7 @@ class ImpersonateController extends Controller
     {
         $admin = $request->user();
         abort_if($account->is($admin), 422, __('admin.alreadyYou'));
+        abort_if((bool) $admin->is_demo !== (bool) $account->is_demo, 404);
         abort_unless($account->is_active, 422, __('admin.accountDisabled'));
 
         $request->session()->put('impersonator', $admin->id);

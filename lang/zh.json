@@ -273,5 +273,11 @@
   "legal.t.endTitle": "注销账户",
   "legal.t.end": "你可以随时在“设置 → 删除账户”中删除账户。这会移除邮箱及全部邮件，且无法撤销。",
   "legal.t.changesTitle": "条款变更",
-  "legal.t.changes": "我们可能会更新本条款，顶部日期为最新版本。"
+  "legal.t.changes": "我们可能会更新本条款，顶部日期为最新版本。",
+  "demoBlocked": "演示模式：这里不会发送或保存任何内容。",
+  "demoBar": "演示模式：随意浏览，不会发送或保存任何内容。",
+  "demoTryMailbox": "打开演示邮箱",
+  "demoTryAdmin": "打开演示后台",
+  "demoGetIt": "安装 OpenMeru",
+  "demoExit": "退出演示"
 }

@@ -273,5 +273,11 @@
   "legal.t.endTitle": "Cerrar tu cuenta",
   "legal.t.end": "Puedes eliminar tu cuenta en cualquier momento en Ajustes → Eliminar cuenta. Esto borra el buzón y todo su correo y no se puede deshacer.",
   "legal.t.changesTitle": "Cambios",
-  "legal.t.changes": "Podemos actualizar estos términos. La fecha de arriba indica la versión más reciente."
+  "legal.t.changes": "Podemos actualizar estos términos. La fecha de arriba indica la versión más reciente.",
+  "demoBlocked": "Modo demo: aquí no se envía ni se guarda nada.",
+  "demoBar": "Modo demo: explora con libertad. No se envía ni se guarda nada.",
+  "demoTryMailbox": "Abrir el buzón demo",
+  "demoTryAdmin": "Abrir el admin demo",
+  "demoGetIt": "Instalar OpenMeru",
+  "demoExit": "Salir de la demo"
 }

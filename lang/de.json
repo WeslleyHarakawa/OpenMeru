@@ -273,5 +273,11 @@
   "legal.t.endTitle": "Konto beenden",
   "legal.t.end": "Du kannst dein Konto jederzeit unter Einstellungen → Konto löschen entfernen. Postfach und alle E-Mails werden gelöscht; das ist endgültig.",
   "legal.t.changesTitle": "Änderungen",
-  "legal.t.changes": "Wir können diese Bedingungen aktualisieren. Das Datum oben zeigt die aktuelle Fassung."
+  "legal.t.changes": "Wir können diese Bedingungen aktualisieren. Das Datum oben zeigt die aktuelle Fassung.",
+  "demoBlocked": "Demo-Modus: Hier wird nichts gesendet oder gespeichert.",
+  "demoBar": "Demo-Modus: Schau dich in Ruhe um. Nichts wird gesendet oder gespeichert.",
+  "demoTryMailbox": "Demo-Postfach öffnen",
+  "demoTryAdmin": "Demo-Admin öffnen",
+  "demoGetIt": "OpenMeru installieren",
+  "demoExit": "Demo beenden"
 }

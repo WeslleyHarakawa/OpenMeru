@@ -273,5 +273,11 @@
   "legal.t.endTitle": "Encerrar a conta",
   "legal.t.end": "Você pode excluir sua conta a qualquer momento em Configurações → Excluir conta. Isso remove a caixa e todos os e-mails e não pode ser desfeito.",
   "legal.t.changesTitle": "Alterações",
-  "legal.t.changes": "Podemos atualizar estes termos. A data no topo mostra a versão mais recente."
+  "legal.t.changes": "Podemos atualizar estes termos. A data no topo mostra a versão mais recente.",
+  "demoBlocked": "Modo demo: nada aqui é enviado ou salvo.",
+  "demoBar": "Modo demo: explore à vontade. Nada é enviado ou salvo.",
+  "demoTryMailbox": "Abrir a caixa demo",
+  "demoTryAdmin": "Abrir o admin demo",
+  "demoGetIt": "Instalar o OpenMeru",
+  "demoExit": "Sair da demo"
 }

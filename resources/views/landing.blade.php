@@ -50,7 +50,16 @@
     .tabs button { font: inherit; font-size: 13px; background: none; border: 0; color: var(--muted); padding: 10px 16px; cursor: pointer; border-right: 1px solid var(--line); white-space: nowrap; }
     .tabs button[aria-selected="true"] { color: var(--ink); background: var(--bg); }
     .cmd { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
-    .cmd code { flex: 1; overflow-x: auto; white-space: pre; font-size: 14px; }
+    .cmd code { flex: 1; min-width: 0; overflow-x: auto; white-space: pre; font-size: 14px; scrollbar-width: none; }
+    .cmd code::-webkit-scrollbar { display: none; }
+    .block pre, pre.flow, .vars { scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+    .demos { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .demo-card { display: block; text-decoration: none; border: 1px solid var(--line); border-radius: 10px; padding: 20px; background: var(--code); transition: border-color .15s; }
+    .demo-card:hover { border-color: var(--accent); }
+    .demo-card b { display: block; font-size: 18px; margin: 6px 0 8px; }
+    .demo-card p { font-family: Inter, system-ui, sans-serif; color: var(--muted); margin: 0 0 14px; font-size: 14px; }
+    .demo-kicker { font-size: 12px; color: var(--faint); }
+    .demo-go { color: var(--accent); font-weight: 600; font-size: 14px; }
     .cmd code::before { content: "$ "; color: var(--faint); }
     .copy { font: inherit; font-size: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--muted); border-radius: 6px; padding: 5px 10px; cursor: pointer; flex-shrink: 0; }
     .copy:hover { color: var(--ink); }
@@ -124,6 +133,7 @@
       openmeru
     </a>
     <nav class="links">
+      <a href="#demo">Demo</a>
       <a class="hide-sm" href="#how">How it works</a>
       <a class="hide-sm" href="#install">Install</a>
       <a href="{{ $repo }}" target="_blank" rel="noopener">GitHub</a>
@@ -149,6 +159,7 @@
 
     <div class="actions">
       <a class="btn dark" href="{{ $repo }}" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> View on GitHub</a>
+      <a class="btn" href="#demo">Try the live demo</a>
       <a class="btn" href="{{ $repo }}/archive/refs/heads/main.zip">Download .zip</a>
       <a class="btn" href="#install">Read the install guide</a>
     </div>
@@ -163,6 +174,25 @@
       <div><b>Push notifications</b><p>Get notified of new mail in the browser and on mobile. Inboxes update on their own.</p></div>
       <div><b>10 languages</b><p>English, Português (BR and PT), Español, Français, Deutsch, Italiano, Nederlands, Русский, 中文.</p></div>
       <div><b>No mail server</b><p>No Postfix, no IMAP, no port 25. Just PHP, MySQL and two free services.</p></div>
+    </div>
+  </section>
+
+  <section class="pad" id="demo">
+    <h2>Live demo</h2>
+    <p class="txt">Look around before you install. The demo is read-only: nothing is sent, received or saved, so click anything you like.</p>
+    <div class="demos">
+      <a class="demo-card" href="/demo">
+        <span class="demo-kicker">/demo</span>
+        <b>Demo mailbox</b>
+        <p>Sign in as <code class="i">{{ 'demo@'.config('inbound.domain') }}</code>. Try the inbox, search, the editor, settings, themes and the 10 languages.</p>
+        <span class="demo-go">Open the mailbox →</span>
+      </a>
+      <a class="demo-card" href="/demo/admin">
+        <span class="demo-kicker">/demo/admin</span>
+        <b>Demo admin</b>
+        <p>See the admin panel with sample mailboxes: create, search, edit and open accounts, plus the SMTP settings.</p>
+        <span class="demo-go">Open the admin →</span>
+      </a>
     </div>
   </section>
 

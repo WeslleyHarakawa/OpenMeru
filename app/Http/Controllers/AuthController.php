@@ -29,7 +29,7 @@ class AuthController extends Controller
         ]);
         $credentials['email'] = mb_strtolower(trim($credentials['email']));
 
-        if (! Auth::attempt($credentials + ['is_active' => true], $request->boolean('remember'))) {
+        if (! Auth::attempt($credentials + ['is_active' => true, 'is_demo' => false], $request->boolean('remember'))) {
             return response()->json(['message' => 'invalid'], 422);
         }
 
@@ -49,7 +49,11 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return $request->input('next') === '/admin' ? redirect('/admin') : redirect()->route('login');
+        return match ($request->input('next')) {
+            '/admin' => redirect('/admin'),
+            '/' => redirect('/'),
+            default => redirect()->route('login'),
+        };
     }
 
     public function showForgot(): View

@@ -83,6 +83,13 @@
     }
     let data = null;
     try { data = await res.json(); } catch (e) { data = null; }
+    if (res.status === 403 && data && data.message === "demo") {
+      toast(data.detail || "Demo");
+      const err = new Error("demo");
+      err.status = 403;
+      err.demo = true;
+      throw err;
+    }
     if (!res.ok) {
       const err = new Error((data && (data.detail || data.message)) || res.statusText);
       err.status = res.status;

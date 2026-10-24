@@ -7,6 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 </head>
 <body data-page="inbox" data-email="{{ $user->email }}" data-name="{{ $user->name }}">
+  @include('partials.demo-bar')
   @include('partials.impersonating')
   @include('partials.mailbox-bar', ['user' => $user])
   <div class="shell">

@@ -273,5 +273,11 @@
   "legal.t.endTitle": "Ending your account",
   "legal.t.end": "You can delete your account at any time in Settings → Delete account. This removes the mailbox and all its mail and cannot be undone.",
   "legal.t.changesTitle": "Changes",
-  "legal.t.changes": "We may update these terms. The date at the top shows the latest version."
+  "legal.t.changes": "We may update these terms. The date at the top shows the latest version.",
+  "demoBlocked": "Demo mode: nothing here is sent or saved.",
+  "demoBar": "Demo mode: look around freely. Nothing is sent or saved.",
+  "demoTryMailbox": "Open the demo mailbox",
+  "demoTryAdmin": "Open the demo admin",
+  "demoGetIt": "Install OpenMeru",
+  "demoExit": "Exit demo"
 }

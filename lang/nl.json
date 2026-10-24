@@ -273,5 +273,11 @@
   "legal.t.endTitle": "Je account beëindigen",
   "legal.t.end": "Je kunt je account altijd verwijderen via Instellingen → Account verwijderen. De mailbox en alle e-mail worden gewist; dit kan niet ongedaan worden gemaakt.",
   "legal.t.changesTitle": "Wijzigingen",
-  "legal.t.changes": "We kunnen deze voorwaarden bijwerken. De datum bovenaan toont de nieuwste versie."
+  "legal.t.changes": "We kunnen deze voorwaarden bijwerken. De datum bovenaan toont de nieuwste versie.",
+  "demoBlocked": "Demomodus: hier wordt niets verzonden of opgeslagen.",
+  "demoBar": "Demomodus: kijk gerust rond. Er wordt niets verzonden of opgeslagen.",
+  "demoTryMailbox": "Demo-mailbox openen",
+  "demoTryAdmin": "Demo-admin openen",
+  "demoGetIt": "OpenMeru installeren",
+  "demoExit": "Demo verlaten"
 }

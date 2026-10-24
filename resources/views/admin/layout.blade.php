@@ -28,6 +28,7 @@
   </style>
 </head>
 <body data-page="admin">
+  @include('partials.demo-bar')
   <header class="admin-top">
     <a class="brand-mini" href="/admin">
       <svg class="logo-mark sm" viewBox="0 0 64 64" width="32" height="32" aria-hidden="true">

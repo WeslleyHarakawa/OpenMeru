@@ -29,7 +29,7 @@ class InboundController extends Controller
             return response()->json(['message' => 'missing to or body'], 422);
         }
 
-        $user = User::where('email', $to)->where('is_active', true)->first();
+        $user = User::where('email', $to)->where('is_active', true)->where('is_demo', false)->first();
         if (! $user) {
             // No mailbox for this address: the Worker's Gmail copy is the only one.
             return response()->json(['stored' => false, 'reason' => 'no_mailbox'], 202);
