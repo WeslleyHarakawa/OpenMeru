@@ -315,12 +315,13 @@
       ['inbox', __('landing.shotInbox')], ['compose', __('landing.shotCompose')], ['settings', __('landing.shotSettings')],
       ['login', __('landing.shotLogin')], ['admin', __('landing.shotAdmin')], ['admin-settings', __('landing.shotAdminSettings')],
     ])
+    @php($shotDir = is_dir(public_path('assets/shots/'.$locale)) ? $locale : 'en')
     <div class="shots">
       <button class="shots-nav prev" type="button" aria-label="previous">‹</button>
       <div class="shots-track" id="shotsTrack">
         @foreach ($shots as [$file, $caption])
         <figure class="shot">
-          <a href="/assets/shots/{{ $file }}.jpg" data-shot="{{ $file }}" data-caption="{{ $caption }}"><img src="/assets/shots/{{ $file }}-thumb.jpg" alt="{{ $caption }}" width="640" height="333" loading="lazy"></a>
+          <a href="/assets/shots/{{ $shotDir }}/{{ $file }}.jpg" data-shot="{{ $file }}" data-caption="{{ $caption }}"><img src="/assets/shots/{{ $shotDir }}/{{ $file }}-thumb.jpg" alt="{{ $caption }}" width="640" height="333" loading="lazy"></a>
           <figcaption>{{ $caption }}</figcaption>
         </figure>
         @endforeach
