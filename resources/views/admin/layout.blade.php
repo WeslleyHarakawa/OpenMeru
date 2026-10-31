@@ -7,6 +7,7 @@
     body { background: var(--bg); color: var(--ink); min-height: 100vh; }
     .admin-top { display:flex; align-items:center; gap:16px; padding:14px 24px; background:var(--surface); border-bottom:1px solid var(--line); flex-wrap:wrap; }
     .admin-top .brand-mini { display:flex; align-items:center; gap:10px; font-weight:700; font-size:18px; color:var(--ink); text-decoration:none; }
+    .admin-top .brand-mini .ver { font-weight:500; font-size:12px; color:var(--muted); background:var(--bg); border:1px solid var(--line); border-radius:999px; padding:2px 8px; margin-left:2px; }
     .admin-top nav { display:flex; gap:6px; flex-wrap:wrap; }
     .admin-top nav a { padding:8px 14px; border-radius:10px; color:var(--muted); text-decoration:none; font-weight:500; }
     .admin-top nav a.active, .admin-top nav a:hover { background:var(--brand-soft); color:var(--brand); }
@@ -37,7 +38,7 @@
         <path fill="#fff" d="M15 24h34a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H15a2 2 0 0 1-2-2V26a2 2 0 0 1 2-2z"/>
         <path d="M14 25.2 32 37.2 50 25.2" fill="none" stroke="#2f6bff" stroke-width="2.2" stroke-linejoin="round"/>
       </svg>
-      OpenMeru Admin
+      OpenMeru Admin <span class="ver" title="OpenMeru Mail {{ \App\Support\Version::current() }}">v{{ \App\Support\Version::current() }}</span>
     </a>
     <nav>
       <a href="{{ route('admin.accounts') }}" class="{{ request()->routeIs('admin.accounts') ? 'active' : '' }}"><i class="bi bi-people"></i> {{ __('admin.accounts') }}</a>
@@ -45,7 +46,7 @@
       <a href="{{ route('login') }}"><i class="bi bi-envelope"></i> {{ __('admin.myMailbox') }}</a>
     </nav>
     <span class="spacer"></span>
-    <span class="hint" style="color:var(--muted)" title="OpenMeru Mail {{ \App\Support\Version::current() }}">{{ auth()->user()->email }} · v{{ \App\Support\Version::current() }}</span>
+    <span class="hint" style="color:var(--muted)">{{ auth()->user()->email }}</span>
     @include('partials.lang-menu')
     <button class="icon-btn" type="button" data-action="theme" aria-label="{{ __('admin.theme') }}"><i class="bi bi-moon"></i></button>
     <form method="POST" action="/logout">@csrf<input type="hidden" name="next" value="/admin"><button class="btn btn-sm btn-outline-secondary" type="submit">{{ __('signOut') }}</button></form>

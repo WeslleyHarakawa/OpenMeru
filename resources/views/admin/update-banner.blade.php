@@ -3,8 +3,16 @@
   $status = \App\Support\Updates::status();
   $canSelf = \App\Support\Updates::canSelfUpdate();
   $command = \App\Support\Updates::installCommand();
-  $show = $check['available'] || in_array($status['state'], ['running', 'done', 'failed'], true);
+  if ($status['state'] === 'done') {
+      // A finished update is told once, as a plain notice, then forgotten.
+      \App\Support\Updates::clearStatus();
+      \Illuminate\Support\Facades\Cache::forget(\App\Support\Updates::CACHE_KEY);
+  }
+  $show = $status['state'] !== 'done' && ($check['available'] || in_array($status['state'], ['running', 'failed'], true));
 @endphp
+@if ($status['state'] === 'done')
+  <div class="alert alert-success d-flex align-items-center gap-2"><i class="bi bi-check-circle"></i> {{ __('admin.updateDone', ['version' => $status['to'] ?? \App\Support\Version::current()]) }}</div>
+@endif
 @if ($show)
 <div class="panel update-banner" id="updateBanner" data-status-url="{{ route('admin.update.status') }}" data-start-url="{{ route('admin.update.start') }}" data-state="{{ $status['state'] }}">
   <div class="d-flex flex-wrap align-items-center gap-3">
@@ -12,8 +20,6 @@
       @if ($status['state'] === 'running')
         <h2 class="mb-1"><i class="bi bi-arrow-repeat"></i> {{ __('admin.updating') }}</h2>
         <p class="hint mb-0">{{ __('admin.updatingHint') }}</p>
-      @elseif ($status['state'] === 'done')
-        <h2 class="mb-1"><i class="bi bi-check-circle"></i> {{ __('admin.updated', ['version' => $status['to'] ?? \App\Support\Version::current()]) }}</h2>
       @elseif ($status['state'] === 'failed')
         <h2 class="mb-1"><i class="bi bi-x-circle"></i> {{ __('admin.updateFailed') }}</h2>
         <p class="hint mb-0">{{ __('admin.updateFailedHint') }}</p>
@@ -30,7 +36,7 @@
           <button type="button" class="btn btn-primary" data-update-start><i class="bi bi-download"></i> {{ __('admin.updateNow') }}</button>
         @endif
       @endif
-      @if (in_array($status['state'], ['done', 'failed'], true))
+      @if ($status['state'] === 'failed')
         <form method="POST" action="{{ route('admin.update.dismiss') }}">@csrf<button class="btn btn-outline-secondary" type="submit">{{ __('admin.close') }}</button></form>
       @endif
     </div>
@@ -39,7 +45,8 @@
     <p class="hint mt-3 mb-1">{{ $canSelf ? __('admin.updateOrTerminal') : __('admin.updateTerminalOnly') }}</p>
     <code class="copy">{{ $command }}</code>
   @endif
-  <pre id="updateLog" class="mt-3 mb-0 small" style="white-space:pre-wrap;background:var(--bg);border-radius:10px;padding:12px;max-height:260px;overflow:auto;{{ $status['log'] ? '' : 'display:none' }}">{{ $status['log'] }}</pre>
+  {{-- The log is only for a run in progress or a failure; a success needs no reading. --}}
+  <pre id="updateLog" class="mt-3 mb-0 small" style="white-space:pre-wrap;background:var(--bg);border-radius:10px;padding:12px;max-height:260px;overflow:auto;{{ $status['log'] && $status['state'] !== 'idle' ? '' : 'display:none' }}">{{ $status['state'] !== 'idle' ? $status['log'] : '' }}</pre>
 </div>
 <script>
   (function () {

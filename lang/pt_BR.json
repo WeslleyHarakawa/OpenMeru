@@ -316,5 +316,7 @@
   "admin.upToDate": "Você está na versão mais recente (:version).",
   "admin.checkUpdates": "Verificar atualizações",
   "admin.close": "Fechar",
-  "admin.fromMustBeDomain": "O remetente precisa ser um endereço em :domain (o Brevo só envia a partir do seu domínio autenticado)."
+  "admin.fromMustBeDomain": "O remetente precisa ser um endereço em :domain (o Brevo só envia a partir do seu domínio autenticado).",
+  "admin.updateDone": "Atualizado para :version.",
+  "admin.updateDetails": "Ver detalhes"
 }

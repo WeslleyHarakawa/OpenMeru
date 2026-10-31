@@ -156,4 +156,21 @@ class UpdatesTest extends TestCase
 
         $this->actingAs($demo)->withSession(['admin_verified' => $demo->id])->postJson('/admin/update')->assertForbidden();
     }
+
+    public function test_a_finished_update_is_told_once_without_the_log(): void
+    {
+        $admin = $this->admin();
+        Http::fake(['updates.test/*' => Http::response(['version' => Version::current()])]);
+        Updates::writeStatus(['state' => 'done', 'log' => "▶ Fetching the latest code
+Saved to /home/x/backup.sql.gz
+", 'to' => '9.9.9']);
+
+        $this->actingAs($admin)->withSession(['admin_verified' => $admin->id])->get('/admin')->assertOk()
+            ->assertSee('Updated to 9.9.9.')
+            ->assertDontSee('Fetching the latest code')
+            ->assertDontSee('backup.sql.gz');
+
+        $this->assertSame('idle', Updates::status()['state']);
+        $this->actingAs($admin)->withSession(['admin_verified' => $admin->id])->get('/admin')->assertOk()->assertDontSee('Updated to 9.9.9.');
+    }
 }
