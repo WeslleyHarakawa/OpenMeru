@@ -52,8 +52,7 @@ Artisan::command('openmeru:smtp {host} {port} {username} {password} {from} {apiK
     $this->info('SMTP salvo.');
 })->purpose('Save the SMTP relay settings');
 
-// Switches the install to your own domain: sets MAIL_DOMAIN in .env and
-// rewrites the domain shown in the translation files.
+// Switches the install to your own domain (MAIL_DOMAIN in .env).
 Artisan::command('openmeru:domain {domain}', function (string $domain) {
     $domain = mb_strtolower(trim($domain));
     if (! MailDomain::valid($domain)) {
@@ -61,8 +60,8 @@ Artisan::command('openmeru:domain {domain}', function (string $domain) {
 
         return 1;
     }
+    // Only .env changes: the texts swap openmeru.com for MAIL_DOMAIN when they load.
     (new EnvFile(base_path('.env')))->set(['MAIL_DOMAIN' => $domain]);
-    MailDomain::rewriteTexts($domain);
     $this->call('config:clear');
     $this->info('Domain set to '.$domain.'. Mailboxes are now user@'.$domain.'.');
 })->purpose('Use your own mail domain');

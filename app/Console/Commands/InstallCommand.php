@@ -213,10 +213,6 @@ class InstallCommand extends Command
     {
         $this->callSilently('migrate', ['--force' => true]);
         $this->components->task('Database tables', fn () => true);
-        // MAIL_DOMAIN is already in .env; the texts must show it too (not while testing: they are source files).
-        if (! $this->laravel->environment('testing')) {
-            MailDomain::rewriteTexts((string) $this->env->get('MAIL_DOMAIN'));
-        }
     }
 
     private function pushKeys(): void
