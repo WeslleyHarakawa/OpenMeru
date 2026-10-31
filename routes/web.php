@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\InboundController;
 use App\Http\Controllers\MailboxController;
+use App\Http\Controllers\TranslateController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/hooks/inbound', [InboundController::class, 'store'])->name('inbound');
@@ -56,6 +57,7 @@ Route::middleware(['auth', 'mailbox.active'])->group(function () {
     Route::put('/api/account/profile', [AccountSettingsController::class, 'profile']);
     Route::put('/api/account/password', [AccountSettingsController::class, 'password'])->middleware('throttle:5,1');
     Route::put('/api/account/forwarding', [AccountSettingsController::class, 'forwarding']);
+    Route::post('/api/translate', [TranslateController::class, 'translate'])->middleware('throttle:60,1')->name('translate');
     Route::get('/api/notifications', [AccountSettingsController::class, 'notifications']);
     Route::post('/api/push/subscribe', [AccountSettingsController::class, 'subscribe']);
     Route::post('/api/push/unsubscribe', [AccountSettingsController::class, 'unsubscribe']);
@@ -75,6 +77,7 @@ Route::prefix('admin')->middleware('admin.area')->name('admin.')->group(function
     Route::post('/accounts/{account}/impersonate', [ImpersonateController::class, 'start'])->name('accounts.impersonate');
     Route::get('/settings', [SettingsController::class, 'show'])->name('settings');
     Route::put('/settings', [SettingsController::class, 'update'])->name('settings.update');
+    Route::put('/settings/translate', [SettingsController::class, 'translate'])->name('settings.translate');
     Route::post('/settings/test', [SettingsController::class, 'test'])->name('settings.test');
     Route::post('/settings/vapid', [SettingsController::class, 'generateVapid'])->name('settings.vapid');
 });

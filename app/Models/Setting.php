@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Crypt;
 class Setting extends Model
 {
     /** Keys stored encrypted at rest. */
-    public const SECRETS = ['smtp_password', 'brevo_api_key', 'vapid_private'];
+    public const SECRETS = ['smtp_password', 'brevo_api_key', 'vapid_private', 'cf_ai_token'];
 
     protected $primaryKey = 'key';
 

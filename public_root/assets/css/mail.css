@@ -1011,3 +1011,16 @@ body[data-page="inbox"] { overflow: hidden; }
 .demo-modal-actions > * { height: 42px; padding: 0 18px; border-radius: 10px; font-weight: 600; display: inline-flex; align-items: center; text-decoration: none; cursor: pointer; font: inherit; font-weight: 600; }
 .demo-modal-ok { background: var(--brand, #1d57f5); color: #fff; border: 0; }
 .demo-modal-link { border: 1px solid var(--line, #ddd); color: var(--ink, #111); background: transparent; }
+
+/* Email translation */
+.translate-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0 0 16px; padding: 10px 14px; border-radius: 12px; background: var(--brand-soft, #e8efff); color: var(--ink, #111); font-size: 14px; }
+.translate-bar[hidden] { display: none; }
+.translate-bar .bi { color: var(--brand, #1d57f5); font-size: 16px; }
+.translate-bar span { flex: 1 1 auto; }
+.translate-bar button { border: 0; border-radius: 999px; padding: 6px 14px; font: inherit; font-weight: 600; background: var(--brand, #1d57f5); color: #fff; cursor: pointer; }
+.translate-bar button[data-tr-original] { background: transparent; color: var(--brand, #1d57f5); border: 1px solid currentColor; }
+.tr-menu { position: relative; display: inline-flex; }
+.tr-pop { position: absolute; top: calc(100% + 6px); right: 0; z-index: 40; min-width: 170px; padding: 6px; border-radius: 12px; background: var(--surface, #fff); border: 1px solid var(--line, #ddd); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15); display: flex; flex-direction: column; }
+.tr-pop[hidden] { display: none; }
+.tr-pop button { text-align: left; border: 0; background: none; color: var(--ink, #111); padding: 8px 12px; border-radius: 8px; font: inherit; cursor: pointer; }
+.tr-pop button:hover { background: var(--brand-soft, #e8efff); color: var(--brand, #1d57f5); }

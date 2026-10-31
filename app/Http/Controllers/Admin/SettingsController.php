@@ -31,6 +31,8 @@ class SettingsController extends Controller
                 'system_from' => 'hello@'.config('inbound.domain'),
                 'inbound_url' => route('inbound'),
                 'inbound_secret_set' => true,
+                'cf_account_id' => '0123456789abcdef0123456789abcdef',
+                'cf_ai_token_set' => true,
             ]);
         }
 
@@ -46,7 +48,24 @@ class SettingsController extends Controller
             'system_from' => Setting::get('system_from', 'hello@'.config('inbound.domain')),
             'inbound_url' => route('inbound'),
             'inbound_secret_set' => (string) config('inbound.secret') !== '',
+            'cf_account_id' => Setting::get('cf_account_id'),
+            'cf_ai_token_set' => (bool) Setting::get('cf_ai_token'),
         ]);
+    }
+
+    /** Cloudflare Workers AI credentials for translating mail in browsers without a built-in translator. */
+    public function translate(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'cf_account_id' => ['nullable', 'string', 'regex:/^[a-f0-9]{32}$/i'],
+            'cf_ai_token' => ['nullable', 'string', 'max:200'],
+        ]);
+        Setting::put('cf_account_id', trim((string) ($data['cf_account_id'] ?? '')));
+        if (filled($data['cf_ai_token'] ?? null)) {
+            Setting::put('cf_ai_token', trim($data['cf_ai_token']));
+        }
+
+        return redirect()->route('admin.settings')->with('status', __('admin.trSaved'));
     }
 
     public function update(Request $request): RedirectResponse

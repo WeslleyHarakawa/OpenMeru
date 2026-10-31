@@ -81,6 +81,27 @@
   </section>
 
   <section class="panel">
+<h2><i class="bi bi-translate"></i> {{ __('admin.trTitle') }}</h2>
+<p class="hint">{{ __('admin.trHint') }}</p>
+<form method="POST" action="{{ route('admin.settings.translate') }}" class="row g-3" autocomplete="off">
+  @csrf
+  @method('PUT')
+  <div class="col-md-6">
+    <label class="form-label" for="cf_account_id">{{ __('admin.trAccount') }}</label>
+    <input class="form-control" id="cf_account_id" name="cf_account_id" value="{{ old('cf_account_id', $cf_account_id) }}" placeholder="0123456789abcdef0123456789abcdef">
+  </div>
+  <div class="col-md-6">
+    <label class="form-label" for="cf_ai_token">{{ __('admin.trToken') }}</label>
+    <input class="form-control" id="cf_ai_token" name="cf_ai_token" type="password" autocomplete="new-password" placeholder="{{ $cf_ai_token_set ? __('admin.trTokenKeep') : '' }}">
+  </div>
+  <div class="col-12 d-flex align-items-center gap-3">
+    <button class="btn btn-primary" type="submit">{{ __('admin.trSave') }}</button>
+    <span class="pill {{ $cf_account_id && $cf_ai_token_set ? 'on' : 'off' }}">{{ $cf_account_id && $cf_ai_token_set ? __('admin.trOn') : __('admin.trOff') }}</span>
+  </div>
+</form>
+</section>
+
+  <section class="panel">
     <h2><i class="bi bi-cloud-arrow-down"></i> {{ __('admin.inboundTitle') }}</h2>
     <p class="hint">{{ __('admin.inboundLead', ['header' => 'X-OpenMeru-Secret']) }}</p>
     <p class="mb-1">URL: <code class="copy">{{ $inbound_url }}?to=&lt;{{ __('admin.recipient') }}&gt;</code></p>

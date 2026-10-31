@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 class DemoReadOnly
 {
     /** Routes a demo visitor may still post to. */
-    private const ALLOWED = ['logout', 'impersonate.stop', 'admin.accounts.impersonate'];
+    private const ALLOWED = ['logout', 'impersonate.stop', 'admin.accounts.impersonate', 'translate'];
 
     public function handle(Request $request, Closure $next): Response
     {

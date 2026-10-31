@@ -293,6 +293,178 @@
     }).join("");
   }
 
+
+  // ---- Translation: the browser's own translator first (Chrome), the server (Cloudflare) otherwise.
+  const UI_LANG = String(window.LANG || "en").split(/[_-]/)[0];
+  const TR_TARGETS = [...new Set([UI_LANG, "en", "pt", "es"])];
+  const STOPWORDS = {
+    en: "the and you your for with this that are have from will not our can more what about all just they their",
+    pt: "que não uma para com você seu sua mais como dos das pelo isso está são também por nos foi ser tem",
+    es: "que los las una para con por está usted más como del pero sus este esta también muy hay ser",
+    fr: "les des une pour avec vous est pas que dans sur votre plus nous mais cette sont aux ont été",
+    de: "der die und das ist nicht mit sie ich für auf ein eine den von dem sich auch wir sind",
+    it: "che non una per con della sono questo anche più gli del alla nel come suo questa ogni",
+    nl: "het een van en dat je niet voor met zijn op ook wij jouw meer deze naar bij wordt"
+  };
+  const STOPSETS = Object.fromEntries(Object.entries(STOPWORDS).map(([k, v]) => [k, new Set(v.split(" "))]));
+  let langDetector = null;
+
+  function withTimeout(promise, ms) {
+    return Promise.race([promise, new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), ms))]);
+  }
+
+  function guessLang(text) {
+    const sample = text.slice(0, 4000);
+    const letters = (sample.match(/\p{L}/gu) || []).length;
+    if (!letters) return null;
+    if ((sample.match(/[Ѐ-ӿ]/g) || []).length > letters * 0.3) return "ru";
+    if ((sample.match(/[一-鿿]/g) || []).length > letters * 0.2) return "zh";
+    const words = sample.toLowerCase().match(/\p{L}+/gu) || [];
+    if (words.length < 6) return null;
+    let best = null, top = 0, second = 0;
+    for (const code in STOPSETS) {
+      let score = 0;
+      for (const w of words) if (STOPSETS[code].has(w)) score++;
+      if (score > top) { second = top; top = score; best = code; } else if (score > second) second = score;
+    }
+    return top >= 3 && top > second * 1.3 ? best : null;
+  }
+
+  async function detectLang(text) {
+    try {
+      if ("LanguageDetector" in self) {
+        if (!langDetector && (await withTimeout(LanguageDetector.availability(), 2500)) === "available") langDetector = await withTimeout(LanguageDetector.create(), 5000);
+        if (langDetector) {
+          const [first] = await withTimeout(langDetector.detect(text.slice(0, 3000)), 4000);
+          if (first && first.confidence > 0.6 && first.detectedLanguage !== "und") return first.detectedLanguage.split("-")[0];
+        }
+      }
+    } catch (e) {}
+    return guessLang(text);
+  }
+
+  function langName(code) {
+    try {
+      const name = new Intl.DisplayNames([locale()], { type: "language" }).of(code);
+      return name.charAt(0).toUpperCase() + name.slice(1);
+    } catch (e) { return code; }
+  }
+
+  function messageText(m) {
+    return (m.subject || "") + "\n" + (m.text_body || (m.html_body ? new DOMParser().parseFromString(m.html_body, "text/html").body.innerText : ""));
+  }
+
+  async function translateWith(segments, from, to) {
+    if ("Translator" in self) {
+      try {
+        if ((await withTimeout(Translator.availability({ sourceLanguage: from, targetLanguage: to }), 3000)) !== "unavailable") {
+          // The first use may download the language model, so creating can take a while.
+          const tr = await withTimeout(Translator.create({ sourceLanguage: from, targetLanguage: to }), 90000);
+          const out = [];
+          for (const s of segments) out.push(/\p{L}/u.test(s) ? await withTimeout(tr.translate(s), 20000) : s);
+          return out;
+        }
+      } catch (e) {}
+    }
+    const data = await api("POST", "/api/translate", { source: from, target: to, segments });
+    return data.translations;
+  }
+
+  function trBar(mode, info) {
+    const bar = document.getElementById("translateBar");
+    if (!bar) return;
+    const from = info && info.from ? langName(info.from) : "";
+    const to = info && info.to ? langName(info.to) : "";
+    let html = '<i class="bi bi-translate"></i> ';
+    if (mode === "offer") {
+      html += "<span>" + esc(t("trDetected").replace(":lang", from)) + '</span><button type="button" data-tr="' + esc(info.to) + '">' + esc(t("trTo").replace(":lang", to)) + "</button>";
+    } else if (mode === "working") {
+      html += "<span>" + esc(t("trWorking")) + "</span>";
+    } else if (mode === "done") {
+      html += "<span>" + esc(t("trDone").replace(":from", from).replace(":to", to)) + '</span><button type="button" data-tr-original>' + esc(t("trOriginal")) + "</button>";
+    } else if (mode === "same") {
+      html += "<span>" + esc(t("trSame").replace(":lang", to)) + "</span>";
+    } else {
+      html += "<span>" + esc(info && info.unavailable ? t("trUnavailable") : t("trFailed")) + "</span>";
+    }
+    bar.innerHTML = html;
+    bar.hidden = false;
+  }
+
+  async function offerTranslation(m) {
+    const from = await detectLang(messageText(m));
+    if (state.detail !== m) return;
+    m._lang = from;
+    if (from && from !== UI_LANG) trBar("offer", { from, to: UI_LANG });
+  }
+
+  function keepSpace(original, translated) {
+    const lead = (original.match(/^\s*/) || [""])[0];
+    const trail = (original.match(/\s*$/) || [""])[0];
+    return lead + String(translated).trim() + trail;
+  }
+
+  async function runTranslation(to) {
+    const m = state.detail;
+    if (!m) return;
+    const from = m._lang || (await detectLang(messageText(m))) || "en";
+    if (from === to) return trBar("same", { to });
+    trBar("working", { from, to });
+    try {
+      const subjectEl = readerEl.querySelector(".subject-row h2");
+      const body = document.getElementById("letterBody");
+      const frame = body && body.querySelector("iframe");
+      const doc = frame && frame.contentDocument;
+      let nodes = [];
+      let segments;
+      if (doc && doc.body) {
+        const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT, {
+          acceptNode: (n) => /\p{L}/u.test(n.nodeValue) && !/^(SCRIPT|STYLE|NOSCRIPT|TITLE)$/.test(n.parentNode.nodeName) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
+        });
+        while (walker.nextNode() && nodes.length < 299) nodes.push(walker.currentNode);
+        segments = nodes.map((n) => n.nodeValue);
+      } else {
+        segments = String(m.text_body || "").split("\n").slice(0, 299);
+      }
+      const out = await translateWith([m.subject || ""].concat(segments), from, to);
+      if (state.detail !== m) return;
+      if (subjectEl && m.subject) subjectEl.textContent = out[0];
+      if (nodes.length) {
+        nodes.forEach((n, i) => { n.nodeValue = keepSpace(n.nodeValue, out[i + 1]); });
+        try { frame.style.height = doc.documentElement.scrollHeight + 8 + "px"; } catch (e) {}
+      } else if (body) {
+        const rest = String(m.text_body || "").split("\n").slice(299);
+        body.innerHTML = '<div style="white-space:pre-wrap;line-height:1.6;font-size:15px">' + textToHtml(out.slice(1).concat(rest).join("\n")) + "</div>";
+      }
+      trBar("done", { from, to });
+    } catch (e) {
+      if (state.detail === m) trBar("error", { unavailable: e.data && e.data.message === "translate_unconfigured" });
+    }
+  }
+
+  readerEl.addEventListener("click", (event) => {
+    const pick = event.target.closest("[data-tr]");
+    if (pick) {
+      event.preventDefault();
+      readerEl.querySelectorAll(".tr-pop").forEach((p) => (p.hidden = true));
+      return runTranslation(pick.dataset.tr);
+    }
+    if (event.target.closest("[data-tr-original]")) {
+      const m = state.detail;
+      renderReader();
+      if (m && m._lang && m._lang !== UI_LANG) trBar("offer", { from: m._lang, to: UI_LANG });
+      return;
+    }
+    const menu = event.target.closest("[data-tr-menu]");
+    if (menu) {
+      const pop = menu.parentElement.querySelector(".tr-pop");
+      pop.hidden = !pop.hidden;
+      return;
+    }
+    readerEl.querySelectorAll(".tr-pop").forEach((p) => (p.hidden = true));
+  });
+
+
   function letterFrame(html) {
     const dark = theme === "dark";
     const doc =
@@ -347,6 +519,8 @@
       (m.folder === "inbox" ? '<button class="tool-btn" data-action="move" data-folder="spam" title="' + esc(t("markSpam")) + '"><i class="bi bi-exclamation-octagon"></i></button>' : "") +
       '<button class="tool-btn" data-action="delete-one" title="' + esc(inTrash || m.folder === "drafts" ? t("deleteForever") : t("del")) + '"><i class="bi bi-trash"></i></button>' +
       (!outgoing ? '<button class="tool-btn" data-action="unread-one" title="' + esc(t("markUnread")) + '"><i class="bi bi-envelope"></i></button>' : "") +
+      '<span class="tr-menu"><button class="tool-btn" type="button" data-tr-menu title="' + esc(t("translate")) + '"><i class="bi bi-translate"></i></button><span class="tr-pop" hidden>' +
+      TR_TARGETS.map((c) => '<button type="button" data-tr="' + c + '">' + esc(langName(c)) + "</button>").join("") + "</span></span>" +
       '<span class="range"></span>' +
       '<button class="tool-btn" data-action="prev" aria-label="prev"><i class="bi bi-chevron-left"></i></button>' +
       '<button class="tool-btn" data-action="next" aria-label="next"><i class="bi bi-chevron-right"></i></button>';
@@ -358,7 +532,7 @@
       '<div class="sender"><span class="mono" style="background:' + av.bg + '">' + esc(av.text) + "</span>" +
       '<div><div class="who-name">' + esc(m.from_name || m.from_email) + (m.from_name ? " &lt;" + esc(m.from_email) + "&gt;" : "") + '</div><div class="who-mail">' + toLine + "</div></div>" +
       "<time>" + esc(formatWhen(m.date, true)) + "</time></div>" +
-      '<div class="letter">' + banner + '<div id="letterBody"></div>' + (files ? '<div style="margin-top:16px">' + files + "</div>" : "") + "</div></div>" +
+      '<div class="letter"><div class="translate-bar" id="translateBar" hidden></div>' + banner + '<div id="letterBody"></div>' + (files ? '<div style="margin-top:16px">' + files + "</div>" : "") + "</div></div>" +
       '<div class="replies">' +
       (m.folder === "drafts" ? '<button type="button" data-action="edit-draft"><i class="bi bi-pencil"></i> ' + esc(t("continueDraft")) + "</button>" :
         '<button type="button" data-action="reply"><i class="bi bi-reply"></i> ' + esc(t("reply")) + "</button>" +
@@ -372,6 +546,7 @@
     } else {
       body.innerHTML = '<div style="white-space:pre-wrap;line-height:1.6;font-size:15px">' + textToHtml(m.text_body) + "</div>";
     }
+    offerTranslation(m);
     if (window.matchMedia("(max-width: 1100px)").matches) {
       const back = readerEl.querySelector(".back-read");
       if (back) back.style.display = "grid";
