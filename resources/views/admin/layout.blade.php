@@ -15,7 +15,8 @@
     .admin-top .spacer { flex:1; }
     .admin-main { max-width:1100px; margin:0 auto; padding:28px 16px 60px; }
     .app-footer { display:flex; flex-wrap:wrap; justify-content:center; gap:8px 18px; padding:18px 16px 28px; color:var(--muted); font-size:13px; }
-    .app-footer a { color:var(--muted); }
+    .app-footer a { color:var(--muted); text-decoration:underline; text-underline-offset:3px; }
+    .app-footer a:hover { color:var(--ink); }
     .panel { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px; margin-bottom:22px; }
     .panel h2 { font-size:18px; font-weight:600; margin:0 0 16px; }
     .panel .hint { color:var(--muted); font-size:13px; }
