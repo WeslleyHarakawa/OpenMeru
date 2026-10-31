@@ -137,7 +137,6 @@
       <a class="hide-sm" href="#how">How it works</a>
       <a class="hide-sm" href="#install">Install</a>
       <a href="{{ $repo }}" target="_blank" rel="noopener">GitHub</a>
-      <a class="cta" href="/mail">Sign in →</a>
     </nav>
   </div>
 </header>
