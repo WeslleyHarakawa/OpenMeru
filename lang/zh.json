@@ -548,5 +548,20 @@
   "landing.shotAdmin": "管理后台：邮箱",
   "landing.shotAdminSettings": "管理后台：品牌与设置",
   "landing.close": "关闭",
-  "buyCoffee": "请我喝杯咖啡"
+  "buyCoffee": "请我喝杯咖啡",
+  "landing.q7": "可以请你们帮我安装吗？",
+  "landing.a7": "可以。在你的服务器、域名和 Brevo/Cloudflare 账户上完成完整安装，费用为 <b>US$ :price</b>。<a href=\"#hire\">在此下单</a>，我们会在一个工作日内联系你。",
+  "landing.hireTitle": "由我们为你安装",
+  "landing.hireLead": "US$ :price，一次性费用：我们在你的服务器上部署 OpenMeru，配置域名 DNS、Brevo 和 Cloudflare，与你一起测试并移交管理后台。填写表单，一个工作日内回复。",
+  "landing.hireName": "你的姓名",
+  "landing.hireEmail": "你的邮箱",
+  "landing.hireDomain": "邮件域名（例如 yourdomain.com）",
+  "landing.hirePanel": "服务器",
+  "landing.hirePanelCloud": "CloudPanel",
+  "landing.hirePanelOther": "其他 / 尚未确定",
+  "landing.hirePanelNone": "我还没有服务器",
+  "landing.hireNotes": "需要我们了解的信息（可选）",
+  "landing.hireButton": "下单安装",
+  "landing.hireDone": "已收到订单，我们将在一个工作日内给你发邮件。",
+  "landing.hireError": "请检查姓名和邮箱。"
 }

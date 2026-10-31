@@ -548,5 +548,20 @@
   "landing.shotAdmin": "Админка: почтовые ящики",
   "landing.shotAdminSettings": "Админка: бренд и настройки",
   "landing.close": "Закрыть",
-  "buyCoffee": "Угостить кофе"
+  "buyCoffee": "Угостить кофе",
+  "landing.q7": "Можно нанять вас, чтобы вы всё установили?",
+  "landing.a7": "Да. Полная установка на вашем сервере, домене и аккаунтах Brevo/Cloudflare стоит <b>US$ :price</b>. <a href=\"#hire\">Закажите здесь</a>, и мы свяжемся с вами в течение рабочего дня.",
+  "landing.hireTitle": "Установим за вас",
+  "landing.hireLead": "US$ :price, разово: настраиваем OpenMeru на вашем сервере, DNS домена, Brevo и Cloudflare, всё проверяем вместе с вами и передаём админку. Заполните форму — ответим в течение рабочего дня.",
+  "landing.hireName": "Ваше имя",
+  "landing.hireEmail": "Ваш e-mail",
+  "landing.hireDomain": "Почтовый домен (например, vashdomen.ru)",
+  "landing.hirePanel": "Сервер",
+  "landing.hirePanelCloud": "CloudPanel",
+  "landing.hirePanelOther": "Другой / пока не знаю",
+  "landing.hirePanelNone": "Сервера пока нет",
+  "landing.hireNotes": "Что нам стоит знать (необязательно)",
+  "landing.hireButton": "Заказать установку",
+  "landing.hireDone": "Заказ получен. Напишем вам в течение рабочего дня.",
+  "landing.hireError": "Проверьте имя и e-mail."
 }

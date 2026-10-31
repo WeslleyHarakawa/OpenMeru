@@ -548,5 +548,20 @@
   "landing.shotAdmin": "Admin: caixas de correio",
   "landing.shotAdminSettings": "Admin: marca e definições",
   "landing.close": "Fechar",
-  "buyCoffee": "Pague-me um café"
+  "buyCoffee": "Pague-me um café",
+  "landing.q7": "Posso contratar-vos para instalar por mim?",
+  "landing.a7": "Sim. A instalação completa no seu servidor, domínio e contas Brevo/Cloudflare custa <b>US$ :price</b>. <a href=\"#hire\">Encomende aqui</a> e entramos em contacto em um dia útil.",
+  "landing.hireTitle": "Instalamos por si",
+  "landing.hireLead": "US$ :price, pagamento único: configuramos o OpenMeru no seu servidor, o DNS do domínio, o Brevo e a Cloudflare, testamos tudo consigo e entregamos o admin. Preencha o formulário e respondemos em um dia útil.",
+  "landing.hireName": "O seu nome",
+  "landing.hireEmail": "O seu e-mail",
+  "landing.hireDomain": "Domínio de e-mail (ex.: seudominio.com)",
+  "landing.hirePanel": "Servidor",
+  "landing.hirePanelCloud": "CloudPanel",
+  "landing.hirePanelOther": "Outro / ainda não sei",
+  "landing.hirePanelNone": "Ainda não tenho servidor",
+  "landing.hireNotes": "Algo que devamos saber (opcional)",
+  "landing.hireButton": "Encomendar a instalação",
+  "landing.hireDone": "Pedido recebido. Escrevemos-lhe em um dia útil.",
+  "landing.hireError": "Confira o nome e o e-mail."
 }

@@ -548,5 +548,20 @@
   "landing.shotAdmin": "Admin: mailboxes",
   "landing.shotAdminSettings": "Admin: branding and settings",
   "landing.close": "Close",
-  "buyCoffee": "Buy me a coffee"
+  "buyCoffee": "Buy me a coffee",
+  "landing.q7": "Can I hire you to install it for me?",
+  "landing.a7": "Yes. A full installation on your server, domain and Brevo/Cloudflare accounts costs <b>US$ :price</b>. <a href=\"#hire\">Order it here</a> and we get in touch within one business day.",
+  "landing.hireTitle": "Have it installed for you",
+  "landing.hireLead": "US$ :price, one-off: we set up OpenMeru on your server, your domain's DNS, Brevo and Cloudflare, test everything with you and hand over the admin. Fill in the form and we reply within one business day.",
+  "landing.hireName": "Your name",
+  "landing.hireEmail": "Your email",
+  "landing.hireDomain": "Mail domain (e.g. yourdomain.com)",
+  "landing.hirePanel": "Server",
+  "landing.hirePanelCloud": "CloudPanel",
+  "landing.hirePanelOther": "Other / not sure yet",
+  "landing.hirePanelNone": "I don't have a server yet",
+  "landing.hireNotes": "Anything we should know (optional)",
+  "landing.hireButton": "Order the installation",
+  "landing.hireDone": "Order received. We'll email you within one business day.",
+  "landing.hireError": "Please check the name and email."
 }

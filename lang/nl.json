@@ -548,5 +548,20 @@
   "landing.shotAdmin": "Beheer: mailboxen",
   "landing.shotAdminSettings": "Beheer: huisstijl en instellingen",
   "landing.close": "Sluiten",
-  "buyCoffee": "Trakteer me op koffie"
+  "buyCoffee": "Trakteer me op koffie",
+  "landing.q7": "Kan ik jullie inhuren om het voor mij te installeren?",
+  "landing.a7": "Ja. Een volledige installatie op je server, domein en Brevo/Cloudflare-accounts kost <b>US$ :price</b>. <a href=\"#hire\">Bestel hier</a> en we nemen binnen één werkdag contact op.",
+  "landing.hireTitle": "Wij installeren het voor je",
+  "landing.hireLead": "US$ :price, eenmalig: we zetten OpenMeru op je server, de DNS van je domein, Brevo en Cloudflare, testen alles met je en dragen de admin over. Vul het formulier in; antwoord binnen één werkdag.",
+  "landing.hireName": "Je naam",
+  "landing.hireEmail": "Je e-mail",
+  "landing.hireDomain": "Maildomein (bijv. jouwdomein.nl)",
+  "landing.hirePanel": "Server",
+  "landing.hirePanelCloud": "CloudPanel",
+  "landing.hirePanelOther": "Anders / weet ik nog niet",
+  "landing.hirePanelNone": "Ik heb nog geen server",
+  "landing.hireNotes": "Iets wat we moeten weten (optioneel)",
+  "landing.hireButton": "Installatie bestellen",
+  "landing.hireDone": "Bestelling ontvangen. We mailen je binnen één werkdag.",
+  "landing.hireError": "Controleer naam en e-mail."
 }

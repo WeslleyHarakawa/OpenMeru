@@ -187,7 +187,17 @@
     details[open] summary::before { content: "− "; }
     details p { font-family: Inter, system-ui, sans-serif; color: var(--muted); margin: 10px 0 0; }
 
-    .waitlist { text-align: center; border-bottom: 0; }
+    #faq { padding-bottom: 40px; }
+    .hire { padding-top: 48px; padding-bottom: 40px; }
+    .hire p.txt { max-width: 760px; }
+    .hire-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 760px; }
+    .hire-form input, .hire-form select, .hire-form textarea { font: inherit; font-family: Inter, system-ui, sans-serif; font-size: 15px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--code); color: var(--ink); min-width: 0; }
+    .hire-form input:focus, .hire-form select:focus, .hire-form textarea:focus { outline: none; border-color: var(--accent); }
+    .hire-form textarea, .hire-form button, .hire-form .wide { grid-column: 1 / -1; }
+    .hire-form button { font: inherit; font-weight: 600; font-size: 15px; border: 0; background: var(--accent); color: #fff; padding: 14px 20px; border-radius: 10px; cursor: pointer; }
+    .hire-form button:disabled { opacity: .6; }
+    .hire .hire-msg { min-height: 1.5em; margin: 12px 0 0; font-size: 14px; }
+    .waitlist { text-align: center; border-bottom: 0; padding-top: 40px; }
     .waitlist h3 { font-size: 24px; }
     .waitlist p.txt { margin: 0 auto 18px; }
     .waitlist form { display: flex; max-width: 520px; margin: 0 auto; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--code); }
@@ -222,6 +232,7 @@
       .foot-nav a:nth-child(2) { border-right: 0; }
       .foot-nav a:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
       .waitlist form { flex-direction: column; }
+      .hire-form { grid-template-columns: minmax(0, 1fr); }
       .shots-nav { display: none; }
       .lb-nav { display: none; }
       .waitlist button { padding: 12px; }
@@ -459,9 +470,28 @@ php artisan openmeru:install</pre></div>
 
   <section class="pad" id="faq">
     <h2>{{ __('landing.faqTitle') }}</h2>
-    @foreach ([1, 2, 3, 4, 5, 6] as $n)
-    <details><summary>{{ __('landing.q'.$n) }}</summary><p>{!! __('landing.a'.$n) !!}</p></details>
+    @foreach ([1, 2, 3, 4, 5, 6, 7] as $n)
+    <details><summary>{{ __('landing.q'.$n) }}</summary><p>{!! __('landing.a'.$n, ['price' => \App\Http\Controllers\HireController::PRICE_USD]) !!}</p></details>
     @endforeach
+  </section>
+
+  <section class="pad hire" id="hire">
+    <h2>{{ __('landing.hireTitle') }}</h2>
+    <p class="txt">{{ __('landing.hireLead', ['price' => \App\Http\Controllers\HireController::PRICE_USD]) }}</p>
+    <form id="hireForm" action="{{ route('hire') }}" method="post" class="hire-form">
+      @csrf
+      <input type="text" name="name" required maxlength="120" placeholder="{{ __('landing.hireName') }}" autocomplete="name">
+      <input type="email" name="email" required maxlength="255" placeholder="{{ __('landing.hireEmail') }}" autocomplete="email">
+      <input type="text" name="domain" maxlength="255" placeholder="{{ __('landing.hireDomain') }}" autocomplete="off">
+      <select name="panel" aria-label="{{ __('landing.hirePanel') }}">
+        <option value="cloudpanel">{{ __('landing.hirePanel') }}: {{ __('landing.hirePanelCloud') }}</option>
+        <option value="other">{{ __('landing.hirePanel') }}: {{ __('landing.hirePanelOther') }}</option>
+        <option value="none">{{ __('landing.hirePanelNone') }}</option>
+      </select>
+      <textarea name="notes" rows="3" maxlength="2000" placeholder="{{ __('landing.hireNotes') }}"></textarea>
+      <button type="submit"><i class="bi bi-bag-check"></i> {{ __('landing.hireButton') }} · US$ {{ \App\Http\Controllers\HireController::PRICE_USD }}</button>
+    </form>
+    <p class="txt hire-msg" aria-live="polite"></p>
   </section>
 
   <section class="pad waitlist">
@@ -533,6 +563,18 @@ php artisan openmeru:install</pre></div>
       document.querySelectorAll(".tabs button").forEach(function (x) { x.setAttribute("aria-selected", x === b ? "true" : "false"); });
       document.getElementById("cmd").textContent = b.dataset.cmd;
     });
+  });
+  var hf = document.getElementById("hireForm");
+  if (hf) hf.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var msg = hf.parentElement.querySelector(".hire-msg"), btn = hf.querySelector("button");
+    var data = {}; new FormData(hf).forEach(function (v, k) { if (k !== "_token") data[k] = v; });
+    btn.disabled = true;
+    fetch(hf.action, { method: "POST", headers: { Accept: "application/json", "X-CSRF-TOKEN": hf.querySelector("[name=_token]").value, "Content-Type": "application/json" }, body: JSON.stringify(data) })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) { msg.textContent = res.ok ? res.d.message : @json(__('landing.hireError')); if (res.ok) hf.reset(); })
+      .catch(function () { msg.textContent = @json(__('landing.hireError')); })
+      .then(function () { btn.disabled = false; });
   });
   var wl = document.getElementById("waitlist");
   if (wl) wl.addEventListener("submit", function (e) {

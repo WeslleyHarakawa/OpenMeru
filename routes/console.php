@@ -64,6 +64,16 @@ Artisan::command('openmeru:waitlist', function () {
     $this->info($rows->count().' on the list.');
 })->purpose('List the cloud-hosting waitlist');
 
+// "Install it for me" orders from the landing page, newest first (openmeru.com only).
+Artisan::command('openmeru:requests', function () {
+    $rows = \Illuminate\Support\Facades\DB::table('install_requests')->orderByDesc('created_at')->get();
+    $this->table(['#', 'Name', 'Email', 'Domain', 'Panel', 'Status', 'When'], $rows->map(fn ($r) => [$r->id, $r->name, $r->email, $r->domain, $r->panel, $r->status, $r->created_at])->all());
+    foreach ($rows->whereNotNull('notes') as $r) {
+        $this->line("#{$r->id}: {$r->notes}");
+    }
+    $this->info($rows->count().' orders.');
+})->purpose('List the install orders from the landing page');
+
 // Switches the install to your own domain (MAIL_DOMAIN in .env).
 Artisan::command('openmeru:domain {domain}', function (string $domain) {
     $domain = mb_strtolower(trim($domain));

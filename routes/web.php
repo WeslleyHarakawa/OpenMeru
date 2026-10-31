@@ -57,6 +57,7 @@ Route::middleware('source.only')->group(function () {
     Route::get('/llms.txt', [\App\Http\Controllers\SeoController::class, 'llms'])->name('llms');
     Route::post('/waitlist', [\App\Http\Controllers\WaitlistController::class, 'store'])->middleware('throttle:5,1')->name('waitlist');
     Route::get('/docs', [\App\Http\Controllers\DocsController::class, 'show'])->name('docs');
+    Route::post('/hire', [\App\Http\Controllers\HireController::class, 'store'])->middleware('throttle:5,1')->name('hire');
 });
 Route::get('/robots.txt', [\App\Http\Controllers\SeoController::class, 'robots'])->name('robots');
 Route::get('/brand/{asset}', [SettingsController::class, 'asset'])->where('asset', 'logo|icon|favicon|background')->name('brand.asset');
