@@ -237,6 +237,7 @@
       <img class="dark" src="/assets/brand/logo-dark.png" alt="OpenMeru" width="650" height="174">
     </a>
     <nav class="links">
+      <a href="#demo">{{ __('landing.navDemo') }}</a>
       <a class="hide-sm" href="{{ $repo }}" target="_blank" rel="noopener">GitHub</a>
       <a class="hide-sm" href="#screenshots">{{ __('landing.navShots') }}</a>
       <a class="hide-sm" href="#faq">{{ __('landing.footerFaq') }}</a>
