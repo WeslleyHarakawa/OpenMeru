@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use App\Http\Controllers\Admin\VerifyController;
+use App\Support\Locales;
+use Illuminate\Support\Facades\App;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +17,9 @@ class AdminArea
 {
     public function handle(Request $request, Closure $next): Response
     {
+        // This runs before SetLocale (it must come before route binding): the sign-in and
+        // verification pages it renders itself need the chosen language too.
+        App::setLocale(Locales::detect($request));
         $user = $request->user();
 
         if (! $user || ! $user->is_active) {

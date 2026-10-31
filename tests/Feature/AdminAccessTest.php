@@ -282,4 +282,13 @@ class AdminAccessTest extends TestCase
             ->assertSessionHasNoErrors();
         $this->assertSame('info@example.test', \App\Models\Setting::get('system_from'));
     }
+
+    public function test_the_admin_sign_in_page_follows_the_language_cookie(): void
+    {
+        $this->withUnencryptedCookie('openmeru_lang', 'pt')->get('/admin')->assertOk()->assertSee('lang="pt-PT"', false)->assertSee('Entrar');
+        $this->withUnencryptedCookie('openmeru_lang', 'de')->get('/admin')->assertOk()->assertSee('lang="de-DE"', false);
+
+        $admin = $this->admin();
+        $this->actingAs($admin)->withUnencryptedCookie('openmeru_lang', 'pt')->get('/admin')->assertOk()->assertSee('lang="pt-PT"', false);
+    }
 }
