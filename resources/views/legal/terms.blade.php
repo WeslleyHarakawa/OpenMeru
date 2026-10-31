@@ -31,5 +31,6 @@
   <p>{{ __('legal.t.changes') }}</p>
 
   <h2>{{ __('legal.contactTitle') }}</h2>
-  <p><a href="mailto:hello@{{ config('inbound.domain') }}">hello@{{ config('inbound.domain') }}</a></p>
+  @php($contact = \App\Models\Setting::get('system_from') ?: 'hello@'.config('inbound.domain'))
+  <p><a href="mailto:{{ $contact }}">{{ $contact }}</a></p>
 @endsection
