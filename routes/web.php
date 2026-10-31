@@ -52,7 +52,11 @@ Route::middleware('source.only')->group(function () {
     ])->header('Cache-Control', 'public, max-age=300'))->name('version');
     Route::get('/demo', [DemoController::class, 'mailbox'])->middleware('throttle:30,1')->name('demo');
     Route::get('/demo/admin', [DemoController::class, 'admin'])->middleware('throttle:30,1')->name('demo.admin');
+    // Search engines and AI crawlers: the landing in every language, nothing private.
+    Route::get('/sitemap.xml', [\App\Http\Controllers\SeoController::class, 'sitemap'])->name('sitemap');
+    Route::get('/llms.txt', [\App\Http\Controllers\SeoController::class, 'llms'])->name('llms');
 });
+Route::get('/robots.txt', [\App\Http\Controllers\SeoController::class, 'robots'])->name('robots');
 Route::get('/brand/{asset}', [SettingsController::class, 'asset'])->where('asset', 'logo|icon|favicon|background')->name('brand.asset');
 Route::view('/privacy', 'legal.privacy')->name('privacy');
 Route::view('/terms', 'legal.terms')->name('terms');

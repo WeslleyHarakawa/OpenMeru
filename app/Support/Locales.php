@@ -31,9 +31,13 @@ class Locales
         return $code !== null && isset(self::ALL[$code]);
     }
 
-    /** Cookie first, then the browser's Accept-Language, then English. */
+    /** ?lang= first (links from search engines), then the cookie, then the browser's Accept-Language, then English. */
     public static function detect(Request $request): string
     {
+        $query = $request->query('lang');
+        if (is_string($query) && self::supported($query)) {
+            return $query;
+        }
         $cookie = $request->cookie(self::COOKIE);
         if (self::supported($cookie)) {
             return $cookie;
@@ -58,13 +62,14 @@ class Locales
         return self::ALL[$code][1] ?? 'en-GB';
     }
 
-    /** Full dictionary for the page script, English filling any gap. */
+    /** Dictionary for the page script, English filling any gap. The landing page's texts stay out: only Blade renders those. */
     public static function dictionary(string $code): array
     {
         static $cache = [];
         if (! isset($cache[$code])) {
             $load = fn (string $c) => json_decode((string) @file_get_contents(lang_path($c.'.json')), true) ?: [];
-            $cache[$code] = array_merge($load('en'), $code === 'en' ? [] : $load($code));
+            $all = array_merge($load('en'), $code === 'en' ? [] : $load($code));
+            $cache[$code] = array_filter($all, fn ($key) => ! str_starts_with($key, 'landing.'), ARRAY_FILTER_USE_KEY);
         }
 
         return $cache[$code];
