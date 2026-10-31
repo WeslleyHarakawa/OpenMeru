@@ -80,7 +80,17 @@ class UpdateCommand extends Command
 
             $this->step('Installing PHP dependencies');
             $composer = $this->composer();
-            $this->sh(escapeshellarg(PHP_BINARY).' '.escapeshellarg($composer).' install --no-dev --optimize-autoloader --no-interaction --no-progress 2>&1');
+            // The web server's PHP has no HOME; composer refuses to run without one.
+            $home = storage_path('app/private/composer');
+            if (! is_dir($home)) {
+                mkdir($home, 0750, true);
+            }
+            $this->sh(escapeshellarg(PHP_BINARY).' '.escapeshellarg($composer).' install --no-dev --optimize-autoloader --no-interaction --no-progress 2>&1', [
+                'COMPOSER_HOME' => $home,
+                'HOME' => getenv('HOME') ?: $home,
+                'COMPOSER_ALLOW_SUPERUSER' => '1',
+                'COMPOSER_NO_INTERACTION' => '1',
+            ]);
 
             $this->step('Migrating the database');
             $this->callSilently('migrate', ['--force' => true]);
@@ -238,9 +248,9 @@ class UpdateCommand extends Command
         throw new \RuntimeException('composer not found.');
     }
 
-    private function sh(string $command): string
+    private function sh(string $command, array $env = []): string
     {
-        $process = Process::fromShellCommandline($command, base_path(), null, null, 900);
+        $process = Process::fromShellCommandline($command, base_path(), $env ?: null, null, 900);
         $process->run();
         if (! $process->isSuccessful()) {
             throw new \RuntimeException(trim($process->getErrorOutput() ?: $process->getOutput()) ?: 'command failed: '.$command);
