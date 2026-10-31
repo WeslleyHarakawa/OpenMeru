@@ -323,7 +323,7 @@
   "admin.generalTitle": "Название и логотип",
   "admin.generalLead": "Как называется эта веб-почта и логотип на странице входа, в боковой панели и в админке. Оставьте название пустым, чтобы показывать OpenMeru Mail.",
   "admin.brandName": "Название",
-  "admin.brandNamePh": "напр. W8 Atlantic Mail",
+  "admin.brandNamePh": "напр. Почта Acme",
   "admin.brandLogo": "Логотип",
   "admin.brandLogoHint": "PNG, JPG, WebP или SVG, лучше квадратный, до 1 МБ.",
   "admin.brandSave": "Сохранить",

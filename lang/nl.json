@@ -323,7 +323,7 @@
   "admin.generalTitle": "Naam en logo",
   "admin.generalLead": "Hoe deze webmail heet en het logo op de inlogpagina, de zijbalk en de admin. Laat de naam leeg om OpenMeru Mail te tonen.",
   "admin.brandName": "Naam",
-  "admin.brandNamePh": "bijv. W8 Atlantic Mail",
+  "admin.brandNamePh": "bijv. Acme Mail",
   "admin.brandLogo": "Logo",
   "admin.brandLogoHint": "PNG, JPG, WebP of SVG, bij voorkeur vierkant, max. 1 MB.",
   "admin.brandSave": "Opslaan",

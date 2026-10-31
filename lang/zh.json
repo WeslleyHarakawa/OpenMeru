@@ -323,7 +323,7 @@
   "admin.generalTitle": "名称和徽标",
   "admin.generalLead": "此邮箱的名称，以及登录页、侧栏和管理后台显示的徽标。名称留空则显示 OpenMeru Mail。",
   "admin.brandName": "名称",
-  "admin.brandNamePh": "例如 W8 Atlantic Mail",
+  "admin.brandNamePh": "例如 Acme 邮箱",
   "admin.brandLogo": "徽标",
   "admin.brandLogoHint": "PNG、JPG、WebP 或 SVG，最好是正方形，不超过 1 MB。",
   "admin.brandSave": "保存",

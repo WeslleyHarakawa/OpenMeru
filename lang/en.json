@@ -323,7 +323,7 @@
   "admin.generalTitle": "Name and logo",
   "admin.generalLead": "What this webmail is called and the logo on the sign-in page, the sidebar and the admin. Leave the name empty to show OpenMeru Mail.",
   "admin.brandName": "Name",
-  "admin.brandNamePh": "e.g. W8 Atlantic Mail",
+  "admin.brandNamePh": "e.g. Acme Mail",
   "admin.brandLogo": "Logo",
   "admin.brandLogoHint": "PNG, JPG, WebP or SVG, square works best, up to 1 MB.",
   "admin.brandSave": "Save",
