@@ -350,14 +350,14 @@ a { color: var(--brand); }
 .done p { margin: 0 0 22px; color: var(--muted); line-height: 1.5; }
 .done a { font-weight: 700; text-decoration: none; }
 
-body[data-page="inbox"] { overflow: hidden; }
+body[data-page="inbox"] { overflow: hidden; height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
 
 .shell {
-  height: 100vh;
-  height: 100dvh;
+  flex: 1 1 auto;
+  min-height: 0;
   display: grid;
   grid-template-columns: var(--sidebar-w) var(--list-w) minmax(0, 1fr);
-  grid-template-rows: 64px minmax(0, 1fr);
+  grid-template-rows: 64px minmax(0, 1fr) auto;
   overflow: hidden;
   max-width: 100%;
 }
@@ -872,7 +872,7 @@ body[data-page="inbox"] { overflow: hidden; }
   /* One column that can shrink below its content: nothing may push the page wider than the phone. */
   .shell {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 60px minmax(0, 1fr);
+    grid-template-rows: 60px minmax(0, 1fr) auto;
     width: 100%;
   }
   .topbar, .list, .reader, .compose-screen, .settings-main, .app-footer { min-width: 0; max-width: 100%; }
