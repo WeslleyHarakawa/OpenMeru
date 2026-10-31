@@ -236,12 +236,11 @@
       <img class="dark" src="/assets/brand/logo-dark.png" alt="OpenMeru" width="650" height="174">
     </a>
     <nav class="links">
-      <a class="hide-sm" href="{{ $repo }}" target="_blank" rel="noopener"><i class="bi bi-github"></i> GitHub</a>
-      <a class="hide-sm" href="/docs"><i class="bi bi-book"></i> {{ __('landing.footerDocs') }}</a>
+      <a class="hide-sm" href="{{ $repo }}" target="_blank" rel="noopener">GitHub</a>
       <a class="hide-sm" href="#screenshots">{{ __('landing.navShots') }}</a>
       <a class="hide-sm" href="#faq">{{ __('landing.footerFaq') }}</a>
-      <a class="nbtn fill" href="#install"><i class="bi bi-terminal"></i> {{ __('landing.navInstall') }}</a>
-      <a class="nbtn" href="https://buymeacoffee.com/weslleyharakawa" target="_blank" rel="noopener"><i class="bi bi-heart"></i> <span class="hide-sm">{{ __('landing.footerCoffee') }}</span></a>
+      <a class="nbtn fill" href="#install">{{ __('landing.navInstall') }}</a>
+      <a class="nbtn hide-sm" href="https://buymeacoffee.com/weslleyharakawa" target="_blank" rel="noopener">{{ __('landing.footerCoffee') }}</a>
       <div class="lang" id="langPick">
         <button class="lang-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="{{ __('landing.language') }}">
           <i class="bi bi-globe2"></i><span class="lang-code">{{ strtoupper(str_replace('_', '-', $locale)) }}</span>
