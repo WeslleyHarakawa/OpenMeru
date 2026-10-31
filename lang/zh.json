@@ -537,5 +537,15 @@
   "landing.footerFaq": "常见问题",
   "landing.footerLicense": "MIT 许可证",
   "landing.footerCoffee": "请我喝杯咖啡",
-  "landing.navHome": "主页"
+  "landing.navHome": "主页",
+  "landing.navShots": "截图",
+  "landing.shotsTitle": "界面截图",
+  "landing.shotsLead": "点击图片可放大查看。",
+  "landing.shotInbox": "打开一封邮件的收件箱",
+  "landing.shotCompose": "富文本编辑器",
+  "landing.shotSettings": "账户设置",
+  "landing.shotLogin": "登录页面",
+  "landing.shotAdmin": "管理后台：邮箱",
+  "landing.shotAdminSettings": "管理后台：品牌与设置",
+  "landing.close": "关闭"
 }

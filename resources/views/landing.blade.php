@@ -135,6 +135,26 @@
     .features b { display: block; margin-bottom: 6px; }
     .features p { font-family: Inter, system-ui, sans-serif; color: var(--muted); margin: 0; font-size: 14px; }
 
+    .shots { position: relative; }
+    .shots-track { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 4px 2px 8px; }
+    .shots-track::-webkit-scrollbar { display: none; }
+    .shot { flex: 0 0 min(560px, 86%); scroll-snap-align: start; margin: 0; }
+    .shot a { display: block; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--code); transition: border-color .15s, transform .15s; }
+    .shot a:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .shot img { display: block; width: 100%; height: auto; cursor: zoom-in; }
+    .shot figcaption { font-family: Inter, system-ui, sans-serif; font-size: 13px; color: var(--muted); margin-top: 8px; }
+    .shots-nav { position: absolute; top: 40%; z-index: 2; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: var(--bg); color: var(--ink); font-size: 24px; line-height: 1; cursor: pointer; display: grid; place-items: center; box-shadow: 0 6px 18px rgba(0,0,0,.18); }
+    .shots-nav.prev { left: -14px; } .shots-nav.next { right: -14px; }
+    .shots-nav:hover { border-color: var(--accent); color: var(--accent); }
+    .lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,.88); display: grid; place-items: center; padding: 24px; }
+    .lightbox[hidden] { display: none; }
+    .lightbox figure { margin: 0; max-width: min(1280px, 94vw); text-align: center; }
+    .lightbox img { max-width: 100%; max-height: 82vh; border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+    .lightbox figcaption { color: #ddd; font-family: Inter, system-ui, sans-serif; font-size: 14px; margin-top: 12px; }
+    .lb-close, .lb-nav { position: absolute; background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.25); border-radius: 50%; width: 44px; height: 44px; font-size: 28px; line-height: 1; cursor: pointer; display: grid; place-items: center; }
+    .lb-close { top: 18px; right: 18px; }
+    .lb-nav { top: 50%; transform: translateY(-50%); } .lb-nav.prev { left: 18px; } .lb-nav.next { right: 18px; }
+    .lb-close:hover, .lb-nav:hover { background: var(--accent); border-color: var(--accent); }
     pre.flow { background: var(--code); border: 1px solid var(--line); border-radius: 10px; padding: 20px; overflow-x: auto; font-size: 13px; line-height: 1.55; color: var(--muted); margin: 0; }
     pre.flow b { color: var(--ink); font-weight: 600; }
 
@@ -200,6 +220,8 @@
       .foot-nav a:nth-child(2) { border-right: 0; }
       .foot-nav a:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
       .waitlist form { flex-direction: column; }
+      .shots-nav { display: none; }
+      .lb-nav { display: none; }
       .waitlist button { padding: 12px; }
       .need td:first-child { width: auto; white-space: normal; }
     }
@@ -215,6 +237,7 @@
     <nav class="links">
       <a class="hide-sm" href="{{ $repo }}" target="_blank" rel="noopener"><i class="bi bi-github"></i> GitHub</a>
       <a class="hide-sm" href="/docs"><i class="bi bi-book"></i> {{ __('landing.footerDocs') }}</a>
+      <a class="hide-sm" href="#screenshots">{{ __('landing.navShots') }}</a>
       <a class="hide-sm" href="#faq">{{ __('landing.footerFaq') }}</a>
       <a class="nbtn fill" href="#install"><i class="bi bi-terminal"></i> {{ __('landing.navInstall') }}</a>
       <a class="nbtn" href="https://buymeacoffee.com/weslleyharakawa" target="_blank" rel="noopener"><i class="bi bi-heart"></i> <span class="hide-sm">{{ __('landing.footerCoffee') }}</span></a>
@@ -280,6 +303,27 @@
         <p>{!! __('landing.demoAdminText') !!}</p>
         <span class="demo-go">{{ __('landing.demoAdminGo') }}</span>
       </a>
+    </div>
+  </section>
+
+  <section class="pad" id="screenshots">
+    <h2>{{ __('landing.shotsTitle') }}</h2>
+    <p class="txt">{{ __('landing.shotsLead') }}</p>
+    @php($shots = [
+      ['inbox', __('landing.shotInbox')], ['compose', __('landing.shotCompose')], ['settings', __('landing.shotSettings')],
+      ['login', __('landing.shotLogin')], ['admin', __('landing.shotAdmin')], ['admin-settings', __('landing.shotAdminSettings')],
+    ])
+    <div class="shots">
+      <button class="shots-nav prev" type="button" aria-label="previous">‹</button>
+      <div class="shots-track" id="shotsTrack">
+        @foreach ($shots as [$file, $caption])
+        <figure class="shot">
+          <a href="/assets/shots/{{ $file }}.jpg" data-shot="{{ $file }}" data-caption="{{ $caption }}"><img src="/assets/shots/{{ $file }}-thumb.jpg" alt="{{ $caption }}" width="640" height="333" loading="lazy"></a>
+          <figcaption>{{ $caption }}</figcaption>
+        </figure>
+        @endforeach
+      </div>
+      <button class="shots-nav next" type="button" aria-label="next">›</button>
     </div>
   </section>
 
@@ -448,7 +492,32 @@ php artisan openmeru:install</pre></div>
   </div>
 </footer>
 
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lb-close" type="button" aria-label="{{ __('landing.close') }}">×</button>
+  <button class="lb-nav prev" type="button" aria-label="previous">‹</button>
+  <figure><img src="" alt=""><figcaption></figcaption></figure>
+  <button class="lb-nav next" type="button" aria-label="next">›</button>
+</div>
+
 <script>
+  (function () {
+    var track = document.getElementById("shotsTrack"), lb = document.getElementById("lightbox");
+    if (track && lb) {
+      var links = [].slice.call(track.querySelectorAll("a[data-shot]")), current = 0;
+      var img = lb.querySelector("img"), cap = lb.querySelector("figcaption");
+      function show(i) { current = (i + links.length) % links.length; img.src = links[current].getAttribute("href"); img.alt = cap.textContent = links[current].dataset.caption; lb.hidden = false; document.body.style.overflow = "hidden"; }
+      function hide() { lb.hidden = true; img.src = ""; document.body.style.overflow = ""; }
+      links.forEach(function (a, i) { a.addEventListener("click", function (e) { e.preventDefault(); show(i); }); });
+      lb.querySelector(".lb-close").addEventListener("click", hide);
+      lb.querySelector(".lb-nav.prev").addEventListener("click", function () { show(current - 1); });
+      lb.querySelector(".lb-nav.next").addEventListener("click", function () { show(current + 1); });
+      lb.addEventListener("click", function (e) { if (e.target === lb) hide(); });
+      document.addEventListener("keydown", function (e) { if (lb.hidden) return; if (e.key === "Escape") hide(); if (e.key === "ArrowLeft") show(current - 1); if (e.key === "ArrowRight") show(current + 1); });
+      var step = function () { return track.querySelector(".shot").getBoundingClientRect().width + 16; };
+      document.querySelector(".shots-nav.prev").addEventListener("click", function () { track.scrollBy({ left: -step(), behavior: "smooth" }); });
+      document.querySelector(".shots-nav.next").addEventListener("click", function () { track.scrollBy({ left: step(), behavior: "smooth" }); });
+    }
+  })();
   (function () {
     var pick = document.getElementById("langPick"), btn = pick.querySelector(".lang-btn"), menu = pick.querySelector(".lang-menu");
     function toggle(open) { menu.classList.toggle("show", open); btn.setAttribute("aria-expanded", open ? "true" : "false"); }

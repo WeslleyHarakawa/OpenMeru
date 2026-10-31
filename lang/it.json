@@ -537,5 +537,15 @@
   "landing.footerFaq": "FAQ",
   "landing.footerLicense": "Licenza MIT",
   "landing.footerCoffee": "Offrimi un caffè",
-  "landing.navHome": "Pagina principale"
+  "landing.navHome": "Pagina principale",
+  "landing.navShots": "Schermate",
+  "landing.shotsTitle": "Schermate",
+  "landing.shotsLead": "Clicca su un'immagine per ingrandirla.",
+  "landing.shotInbox": "Posta in arrivo con un messaggio aperto",
+  "landing.shotCompose": "Editor di testo ricco",
+  "landing.shotSettings": "Impostazioni dell'account",
+  "landing.shotLogin": "Pagina di accesso",
+  "landing.shotAdmin": "Admin: caselle",
+  "landing.shotAdminSettings": "Admin: marchio e impostazioni",
+  "landing.close": "Chiudi"
 }

@@ -537,5 +537,15 @@
   "landing.footerFaq": "Perguntas",
   "landing.footerLicense": "Licença MIT",
   "landing.footerCoffee": "Me pague um café",
-  "landing.navHome": "Página principal"
+  "landing.navHome": "Página principal",
+  "landing.navShots": "Telas",
+  "landing.shotsTitle": "Telas do sistema",
+  "landing.shotsLead": "Clique em uma imagem para ampliar.",
+  "landing.shotInbox": "Caixa de entrada com uma mensagem aberta",
+  "landing.shotCompose": "Editor de texto rico",
+  "landing.shotSettings": "Configurações da conta",
+  "landing.shotLogin": "Tela de login",
+  "landing.shotAdmin": "Admin: caixas de e-mail",
+  "landing.shotAdminSettings": "Admin: marca e configurações",
+  "landing.close": "Fechar"
 }

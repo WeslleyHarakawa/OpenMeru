@@ -537,5 +537,15 @@
   "landing.footerFaq": "FAQ",
   "landing.footerLicense": "MIT-Lizenz",
   "landing.footerCoffee": "Spendier mir einen Kaffee",
-  "landing.navHome": "Startseite"
+  "landing.navHome": "Startseite",
+  "landing.navShots": "Screenshots",
+  "landing.shotsTitle": "Screenshots",
+  "landing.shotsLead": "Klicken Sie auf ein Bild, um es zu vergrößern.",
+  "landing.shotInbox": "Posteingang mit geöffneter Nachricht",
+  "landing.shotCompose": "Rich-Text-Editor",
+  "landing.shotSettings": "Kontoeinstellungen",
+  "landing.shotLogin": "Anmeldeseite",
+  "landing.shotAdmin": "Admin: Postfächer",
+  "landing.shotAdminSettings": "Admin: Marke und Einstellungen",
+  "landing.close": "Schließen"
 }

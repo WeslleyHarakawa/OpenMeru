@@ -537,5 +537,15 @@
   "landing.footerFaq": "FAQ",
   "landing.footerLicense": "MIT-licentie",
   "landing.footerCoffee": "Trakteer me op koffie",
-  "landing.navHome": "Hoofdpagina"
+  "landing.navHome": "Hoofdpagina",
+  "landing.navShots": "Schermafbeeldingen",
+  "landing.shotsTitle": "Schermafbeeldingen",
+  "landing.shotsLead": "Klik op een afbeelding om te vergroten.",
+  "landing.shotInbox": "Inbox met een geopend bericht",
+  "landing.shotCompose": "Rijke teksteditor",
+  "landing.shotSettings": "Accountinstellingen",
+  "landing.shotLogin": "Inlogpagina",
+  "landing.shotAdmin": "Beheer: mailboxen",
+  "landing.shotAdminSettings": "Beheer: huisstijl en instellingen",
+  "landing.close": "Sluiten"
 }

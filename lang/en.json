@@ -537,5 +537,15 @@
   "landing.footerFaq": "FAQ",
   "landing.footerLicense": "MIT License",
   "landing.footerCoffee": "Buy me a coffee",
-  "landing.navHome": "Main page"
+  "landing.navHome": "Main page",
+  "landing.navShots": "Screenshots",
+  "landing.shotsTitle": "Screenshots",
+  "landing.shotsLead": "Click any image to enlarge it.",
+  "landing.shotInbox": "Inbox with a message open",
+  "landing.shotCompose": "Rich-text editor",
+  "landing.shotSettings": "Account settings",
+  "landing.shotLogin": "Sign-in page",
+  "landing.shotAdmin": "Admin: mailboxes",
+  "landing.shotAdminSettings": "Admin: branding and settings",
+  "landing.close": "Close"
 }

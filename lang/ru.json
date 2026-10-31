@@ -537,5 +537,15 @@
   "landing.footerFaq": "Вопросы",
   "landing.footerLicense": "Лицензия MIT",
   "landing.footerCoffee": "Угостить кофе",
-  "landing.navHome": "Главная"
+  "landing.navHome": "Главная",
+  "landing.navShots": "Скриншоты",
+  "landing.shotsTitle": "Скриншоты",
+  "landing.shotsLead": "Нажмите на изображение, чтобы увеличить.",
+  "landing.shotInbox": "Входящие с открытым письмом",
+  "landing.shotCompose": "Редактор с форматированием",
+  "landing.shotSettings": "Настройки аккаунта",
+  "landing.shotLogin": "Страница входа",
+  "landing.shotAdmin": "Админка: почтовые ящики",
+  "landing.shotAdminSettings": "Админка: бренд и настройки",
+  "landing.close": "Закрыть"
 }
