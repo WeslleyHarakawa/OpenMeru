@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Support\Git;
 use App\Support\Version;
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
@@ -56,7 +57,7 @@ class PublishCommand extends Command
 
     private function git(string $args): string
     {
-        $process = Process::fromShellCommandline('git '.$args, base_path(), null, null, 300);
+        $process = Process::fromShellCommandline(Git::command($args), base_path(), null, null, 300);
         $process->run();
         if (! $process->isSuccessful()) {
             $this->components->error(trim($process->getErrorOutput() ?: $process->getOutput()));

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Support\Git;
 use App\Support\Updates;
 use App\Support\Version;
 use Illuminate\Console\Command;
@@ -34,7 +35,7 @@ class UpdateCommand extends Command
 
         try {
             $this->step('Checking the working tree');
-            $dirty = trim($this->sh('git status --porcelain --untracked-files=no'));
+            $dirty = trim($this->sh(Git::command('status --porcelain --untracked-files=no')));
             if ($dirty !== '') {
                 throw new \RuntimeException("Local changes would be overwritten by the update:\n".$dirty."\nCommit them (php artisan openmeru:publish) or discard them (git checkout -- .) first.");
             }
@@ -44,9 +45,10 @@ class UpdateCommand extends Command
             }
 
             $this->step('Fetching the latest code');
-            $this->sh('git fetch --quiet origin');
-            $branch = trim($this->sh('git rev-parse --abbrev-ref HEAD'));
-            $this->sh('git pull --ff-only --quiet origin '.escapeshellarg($branch));
+            $this->sh(Git::command('fetch --quiet origin'));
+            $branch = trim($this->sh(Git::command('rev-parse --abbrev-ref HEAD')));
+            $this->clearUntrackedCopies('origin/'.$branch);
+            $this->sh(Git::command('pull --ff-only --quiet origin '.escapeshellarg($branch)));
 
             $this->step('Installing PHP dependencies');
             $composer = $this->composer();
@@ -72,6 +74,33 @@ class UpdateCommand extends Command
             $this->components->error($e->getMessage());
 
             return self::FAILURE;
+        }
+    }
+
+    /**
+     * Files the new version adds that already exist here untracked (Laravel creates the
+     * storage .gitignore files on its own) would make the pull refuse. When the local copy
+     * is identical to the incoming one it is just dropped; anything different stops the update.
+     */
+    private function clearUntrackedCopies(string $target): void
+    {
+        $incoming = array_filter(explode("\n", trim($this->sh(Git::command('diff --name-only --diff-filter=A HEAD '.escapeshellarg($target))))));
+        $tracked = array_flip(array_filter(explode("\n", trim($this->sh(Git::command('ls-files'))))));
+        $blocking = [];
+        foreach ($incoming as $path) {
+            if (isset($tracked[$path]) || ! file_exists(base_path($path))) {
+                continue;
+            }
+            $theirs = $this->sh(Git::command('show '.escapeshellarg($target.':'.$path)));
+            if ($theirs === (string) file_get_contents(base_path($path))) {
+                unlink(base_path($path));
+                $this->note('Dropped untracked copy of '.$path.' (identical to the update)');
+            } else {
+                $blocking[] = $path;
+            }
+        }
+        if ($blocking) {
+            throw new \RuntimeException("These untracked files differ from the ones the update brings:\n".implode("\n", $blocking)."\nMove them away and run the update again.");
         }
     }
 

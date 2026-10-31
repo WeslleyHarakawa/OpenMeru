@@ -2,8 +2,6 @@
 
 namespace App\Support;
 
-use Symfony\Component\Process\Process;
-
 /** The version of the code that is running, from the VERSION file at the project root. */
 class Version
 {
@@ -32,10 +30,23 @@ class Version
         if (! self::isGitCheckout()) {
             return null;
         }
-        $process = Process::fromShellCommandline('git rev-parse --short HEAD', base_path());
-        $process->run();
+        $process = Git::run('rev-parse --short HEAD', 30);
+        if ($process->isSuccessful()) {
+            return trim($process->getOutput());
+        }
 
-        return $process->isSuccessful() ? trim($process->getOutput()) : null;
+        // No usable git binary for this user: read the ref files directly.
+        $head = trim((string) @file_get_contents(base_path('.git/HEAD')));
+        if (str_starts_with($head, 'ref: ')) {
+            $ref = substr($head, 5);
+            $sha = trim((string) @file_get_contents(base_path('.git/'.$ref)));
+            if ($sha === '' && preg_match('/^([0-9a-f]{40}) '.preg_quote($ref, '/').'$/m', (string) @file_get_contents(base_path('.git/packed-refs')), $m)) {
+                $sha = $m[1];
+            }
+            $head = $sha;
+        }
+
+        return preg_match('/^[0-9a-f]{40}$/', $head) ? substr($head, 0, 7) : null;
     }
 
     public static function newerAvailable(string $latest): bool

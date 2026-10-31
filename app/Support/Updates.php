@@ -16,7 +16,8 @@ use Throwable;
  */
 class Updates
 {
-    public const STATUS_FILE = 'private/openmeru-update.json';
+    // On the "local" disk, whose root is storage/app/private.
+    public const STATUS_FILE = 'openmeru-update.json';
 
     public const CACHE_KEY = 'openmeru:update-check';
 
