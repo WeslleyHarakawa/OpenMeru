@@ -10,6 +10,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\InboundController;
 use App\Http\Controllers\MailboxController;
+use App\Http\Controllers\SignupController;
+use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\TranslateController;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +56,11 @@ Route::get('/brand/{asset}', [SettingsController::class, 'asset'])->where('asset
 Route::view('/privacy', 'legal.privacy')->name('privacy');
 Route::view('/terms', 'legal.terms')->name('terms');
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:10,1')->name('login.attempt');
+// Self-service mailboxes, when Settings → Security allows them.
+Route::middleware('guest')->group(function () {
+    Route::get('/signup', [SignupController::class, 'show'])->name('signup');
+    Route::post('/signup', [SignupController::class, 'store'])->middleware('throttle:5,1')->name('signup.store');
+});
 
 // Usual webmail addresses lead to the sign-in page.
 foreach (['webmail', 'email'] as $alias) {
@@ -62,6 +69,14 @@ foreach (['webmail', 'email'] as $alias) {
 
 Route::middleware(['auth', 'mailbox.active'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    // Two-factor: the code screen after the password, and the account's own setup.
+    Route::get('/two-factor', [TwoFactorController::class, 'challenge'])->name('two-factor.challenge');
+    Route::post('/two-factor', [TwoFactorController::class, 'verify'])->middleware('throttle:10,1')->name('two-factor.verify');
+    Route::get('/api/account/2fa', [TwoFactorController::class, 'status'])->name('two-factor.status');
+    Route::post('/api/account/2fa/enable', [TwoFactorController::class, 'enable'])->name('two-factor.enable');
+    Route::post('/api/account/2fa/confirm', [TwoFactorController::class, 'confirm'])->middleware('throttle:10,1')->name('two-factor.confirm');
+    Route::post('/api/account/2fa/disable', [TwoFactorController::class, 'disable'])->middleware('throttle:10,1')->name('two-factor.disable');
+    Route::post('/api/account/2fa/recovery', [TwoFactorController::class, 'recovery'])->middleware('throttle:10,1')->name('two-factor.recovery');
     Route::post('/impersonate/stop', [ImpersonateController::class, 'stop'])->name('impersonate.stop');
 
     Route::get('/api/me', [MailboxController::class, 'me']);
@@ -105,6 +120,8 @@ Route::prefix('admin')->middleware('admin.area')->name('admin.')->group(function
     Route::post('/settings/test', [SettingsController::class, 'test'])->name('settings.test');
     Route::post('/settings/vapid', [SettingsController::class, 'generateVapid'])->name('settings.vapid');
     Route::put('/settings/brand', [SettingsController::class, 'brand'])->name('settings.brand');
+    Route::put('/settings/security', [SettingsController::class, 'security'])->name('settings.security');
+    Route::post('/accounts/{account}/two-factor/reset', [AccountController::class, 'resetTwoFactor'])->name('accounts.2fa.reset');
     Route::get('/update', [UpdateController::class, 'status'])->name('update.status');
     Route::post('/update', [UpdateController::class, 'start'])->name('update.start');
     Route::post('/update/check', [UpdateController::class, 'check'])->name('update.check');

@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: ['hooks/inbound']);
         // The page script writes the language cookie, so it is stored in plain text.
         $middleware->encryptCookies(except: [\App\Support\Locales::COOKIE]);
-        $middleware->web(append: [\App\Http\Middleware\SetLocale::class, \App\Http\Middleware\DemoReadOnly::class]);
+        $middleware->web(append: [\App\Http\Middleware\SetLocale::class, \App\Http\Middleware\DemoReadOnly::class, \App\Http\Middleware\EnsureTwoFactor::class]);
         $middleware->trustProxies(at: '*');
         // The sign-in page is the site root on a normal install and /mail on openmeru.com.
         $middleware->redirectGuestsTo(fn () => route('login'));

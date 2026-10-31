@@ -4,6 +4,7 @@
       <strong>{{ $account->name }}</strong><br>
       <span class="hint">{{ $account->email }}</span>
       @if ($account->is_admin) <span class="pill admin">{{ __('admin.pillAdmin') }}</span> @endif
+      @if ($account->two_factor_confirmed_at) <span class="pill on" title="{{ __('twoFactorOn') }}"><i class="bi bi-shield-lock"></i> 2FA</span> @endif
     </td>
     <td><span class="pill {{ $account->is_active ? 'on' : 'off' }}">{{ $account->is_active ? __('admin.active') : __('admin.disabled') }}</span></td>
     <td>{{ $account->messages_count }} @if ($account->unread_count) <span class="hint">({{ __('admin.unread', ['count' => $account->unread_count]) }})</span> @endif</td>
@@ -49,10 +50,16 @@
             <span class="hint">{{ __('admin.selfNote') }}</span>
           @endif
         </div>
-        <div class="col-12 d-flex gap-2">
+        <div class="col-12 d-flex gap-2 flex-wrap">
           <button class="btn btn-primary" type="submit"><i class="bi bi-check-lg"></i> {{ __('save') }}</button>
+          @if ($account->two_factor_confirmed_at)
+            <button class="btn btn-outline-danger" type="submit" form="tfa-reset-{{ $account->id }}" onclick="return confirm(@js(__('admin.twoFactorResetConfirm', ['email' => $account->email])));"><i class="bi bi-shield-x"></i> {{ __('admin.twoFactorResetButton') }}</button>
+          @endif
         </div>
       </form>
+      @if ($account->two_factor_confirmed_at)
+        <form id="tfa-reset-{{ $account->id }}" method="POST" action="{{ route('admin.accounts.2fa.reset', $account) }}" hidden>@csrf</form>
+      @endif
     </td>
   </tr>
 @empty

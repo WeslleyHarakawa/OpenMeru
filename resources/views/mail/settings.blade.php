@@ -23,6 +23,7 @@
           <a class="settings-tab" role="tab" href="#password" data-tab="password"><i class="bi bi-key"></i> <span data-i18n="password">{{ __('password') }}</span></a>
           <a class="settings-tab" role="tab" href="#forwarding" data-tab="forwarding"><i class="bi bi-forward"></i> <span data-i18n="forwarding">{{ __('forwarding') }}</span></a>
           <a class="settings-tab" role="tab" href="#notify" data-tab="notify"><i class="bi bi-bell"></i> <span data-i18n="notifications">{{ __('notifications') }}</span></a>
+          <a class="settings-tab" role="tab" href="#security" data-tab="security"><i class="bi bi-shield-lock"></i> <span data-i18n="security">{{ __('security') }}</span></a>
           <a class="settings-tab danger" role="tab" href="#delete" data-tab="delete"><i class="bi bi-trash"></i> <span data-i18n="deleteAccount">{{ __('deleteAccount') }}</span></a>
         </div>
 
@@ -89,6 +90,7 @@
           </div>
         </section>
 
+        @include('mail.security-pane')
         <section class="settings-pane" data-pane="delete" hidden>
           @if ($user->is_admin)
             <p class="form-text" data-i18n="adminCannotDelete">{{ __('adminCannotDelete') }}</p>

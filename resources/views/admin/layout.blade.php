@@ -55,7 +55,7 @@
   <header class="admin-top">
     <a class="brand-mini" href="/admin">
       @include('partials.logo', ['class' => 'sm'])
-      <span class="brand-text"><span>{{ \App\Support\Brand::isCustom() ? \App\Support\Brand::name() : 'OpenMeru' }} Admin</span><span class="ver" title="OpenMeru Mail {{ \App\Support\Version::current() }}">v{{ \App\Support\Version::current() }}</span></span>
+      <span class="brand-text"><span>OpenMeru Admin</span><span class="ver" title="OpenMeru Mail {{ \App\Support\Version::current() }}">v{{ \App\Support\Version::current() }}</span></span>
     </a>
     <nav>
       <a href="{{ route('admin.accounts') }}" class="{{ request()->routeIs('admin.accounts') ? 'active' : '' }}"><i class="bi bi-people"></i> {{ __('admin.accounts') }}</a>

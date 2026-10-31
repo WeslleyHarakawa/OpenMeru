@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\EnsureTwoFactor;
 use App\Mail\Outbox;
+use App\Support\TwoFactor;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
@@ -49,7 +51,16 @@ class AuthController extends Controller
 
         RateLimiter::clear($lockKey);
         $request->session()->regenerate();
+        $request->session()->forget(EnsureTwoFactor::SESSION_KEY);
         $request->user()->forceFill(['last_login_at' => now()])->save();
+
+        if (TwoFactor::enabled($request->user())) {
+            if ($request->input('next') === '/admin') {
+                $request->session()->put('url.intended', '/admin');
+            }
+
+            return response()->json(['redirect' => route('two-factor.challenge')]);
+        }
 
         if ($request->input('next') === '/admin') {
             return response()->json(['redirect' => '/admin']);

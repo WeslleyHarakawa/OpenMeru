@@ -23,6 +23,9 @@
       <button class="eye" type="button" data-action="toggle-password" data-i18n-aria="showPw" aria-label="{{ __('showPw') }}"><i class="bi bi-eye"></i></button>
     </label>
     <a class="forgot" href="/forgot" data-i18n="forgot">{{ __('forgot') }}</a>
+    @if (empty($admin) && \App\Http\Controllers\SignupController::allowed())
+      <a class="forgot" href="{{ route('signup') }}" style="justify-self:start" data-i18n="signupLink">{{ __('signupLink') }}</a>
+    @endif
     <p id="formError" class="form-error" role="alert"></p>
     <button class="btn-go" type="submit"><span data-i18n="signIn">{{ __('signIn') }}</span> <i class="bi bi-arrow-right"></i></button>
   </form>

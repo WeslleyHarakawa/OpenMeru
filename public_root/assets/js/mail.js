@@ -129,6 +129,47 @@
     }
   }
 
+  if (page === "two-factor") {
+    const form = document.getElementById("twoFactorForm");
+    const error = document.getElementById("formError");
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const code = form.code.value.trim();
+      if (!code) return (error.textContent = t("twoFactorCodeRequired"));
+      error.textContent = "";
+      try {
+        const data = await api("POST", "/two-factor", { code });
+        location.href = data.redirect || WEBMAIL;
+      } catch (e) {
+        error.textContent = e.status === 429 ? t("tooMany") : t("twoFactorWrongCode");
+      }
+    });
+  }
+
+  if (page === "signup") {
+    const form = document.getElementById("signupForm");
+    const error = document.getElementById("formError");
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const f = form;
+      if (!f.name.value.trim()) return (error.textContent = t("nameRequired"));
+      if (!/^[a-z0-9]([a-z0-9._-]*[a-z0-9])?$/.test(f.local.value.trim().toLowerCase())) return (error.textContent = t("signupLocalInvalid"));
+      if (f.password.value.length < 8) return (error.textContent = t("pwShort"));
+      if (f.password.value !== f.password_confirmation.value) return (error.textContent = t("pwMismatch"));
+      error.textContent = "";
+      const btn = form.querySelector("button[type='submit']");
+      btn.disabled = true;
+      try {
+        const data = await api("POST", "/signup", { name: f.name.value.trim(), local: f.local.value.trim().toLowerCase(), password: f.password.value, password_confirmation: f.password_confirmation.value, recovery_email: f.recovery_email.value.trim() || null });
+        location.href = data.redirect || WEBMAIL;
+      } catch (e) {
+        const first = e.data && e.data.errors ? Object.keys(e.data.errors)[0] : null;
+        error.textContent = e.status === 429 ? t("tooMany") : first === "local" ? t("signupTaken") : first === "recovery_email" ? t("forwardOwnDomain") : t("error");
+        btn.disabled = false;
+      }
+    });
+  }
+
   if (page === "login") {
     const form = document.getElementById("loginForm");
     const error = document.getElementById("formError");
@@ -1251,6 +1292,47 @@
         errorEl.textContent = errorText(e);
       }
     });
+
+    // ---- Security: two-factor authentication ----
+    const tfaStart = document.getElementById("tfaStart");
+    if (tfaStart) {
+      const show = (id) => ["tfaOff", "tfaSetup", "tfaCodes", "tfaOn"].forEach((k) => { document.getElementById(k).hidden = k !== id; });
+      const showCodes = (codes) => {
+        document.getElementById("tfaCodesList").textContent = codes.join("\n");
+        show("tfaCodes");
+      };
+      tfaStart.addEventListener("click", async () => {
+        try {
+          const data = await api("POST", "/api/account/2fa/enable");
+          document.getElementById("tfaQr").innerHTML = data.qr;
+          document.getElementById("tfaSecret").textContent = data.secret;
+          show("tfaSetup");
+          document.querySelector("#tfaConfirmForm input[name='code']").focus();
+        } catch (e) { toast(errorText(e)); }
+      });
+      document.getElementById("tfaConfirmForm").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const f = event.target;
+        try {
+          const data = await api("POST", "/api/account/2fa/confirm", { code: f.code.value.trim() });
+          f.reset();
+          toast(t("twoFactorEnabled"));
+          showCodes(data.recovery_codes);
+        } catch (e) { toast(e.status === 422 ? t("twoFactorWrongCode") : errorText(e)); }
+      });
+      document.getElementById("tfaCodesDone").addEventListener("click", () => { show("tfaOn"); document.querySelector("#tfaOn .alert, .settings-pane[data-pane='security'] .alert")?.remove(); });
+      document.getElementById("tfaDisableForm").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const f = event.target;
+        const action = event.submitter && event.submitter.value === "disable" ? "disable" : "recovery";
+        try {
+          const data = await api("POST", "/api/account/2fa/" + action, { code: f.code.value.trim() });
+          f.reset();
+          if (action === "disable") { toast(t("twoFactorDisabled")); show("tfaOff"); }
+          else showCodes(data.recovery_codes);
+        } catch (e) { toast(e.status === 422 ? t("twoFactorWrongCode") : errorText(e)); }
+      });
+    }
 
     document.getElementById("passwordForm").addEventListener("submit", async (event) => {
       event.preventDefault();

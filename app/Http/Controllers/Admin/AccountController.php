@@ -103,6 +103,15 @@ class AccountController extends Controller
         return redirect()->back()->with('status', __('admin.updated', ['email' => $account->email]));
     }
 
+    /** A person lost the phone: the admin clears their 2FA so they can sign in and set it up again. */
+    public function resetTwoFactor(Request $request, User $account): RedirectResponse
+    {
+        \App\Support\TwoFactor::reset($account);
+        DB::table('sessions')->where('user_id', $account->id)->delete();
+
+        return redirect()->back()->with('status', __('admin.twoFactorReset', ['email' => $account->email]));
+    }
+
     public function destroy(Request $request, User $account): RedirectResponse
     {
         abort_if($account->is($request->user()), 422, __('admin.cannotDeleteSelf'));

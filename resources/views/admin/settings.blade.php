@@ -10,6 +10,7 @@
     <a href="#push" data-pane-link="push"><i class="bi bi-bell"></i> {{ __('admin.menuPush') }}</a>
     <a href="#translate" data-pane-link="translate"><i class="bi bi-translate"></i> {{ __('admin.menuTranslate') }}</a>
     <a href="#inbound" data-pane-link="inbound"><i class="bi bi-cloud-arrow-down"></i> {{ __('admin.menuInbound') }}</a>
+    <a href="#security" data-pane-link="security"><i class="bi bi-shield-lock"></i> {{ __('admin.menuSecurity') }}</a>
     <a href="#updates" data-pane-link="updates"><i class="bi bi-arrow-repeat"></i> {{ __('admin.menuUpdates') }}</a>
   </nav>
 
@@ -65,8 +66,18 @@
   <section class="panel" data-pane="smtp">
     <h2><i class="bi bi-send"></i> {{ __('admin.smtpTitle') }}</h2>
     <p class="hint">{{ __('admin.smtpLead') }}</p>
-    <form method="POST" action="{{ route('admin.settings.update') }}" class="row g-3" autocomplete="off">
+    <form method="POST" action="{{ route('admin.settings.update') }}" class="row g-3" autocomplete="off" id="smtpForm">
       @csrf @method('PUT')
+      <div class="col-md-6">
+        <label class="form-label" for="smtp_provider">{{ __('admin.provider') }}</label>
+        <select class="form-select" id="smtp_provider" name="smtp_provider">
+          @foreach (\App\Mail\Outbox::PROVIDERS as $key => $preset)
+            <option value="{{ $key }}" data-host="{{ $preset['host'] }}" data-port="{{ $preset['port'] }}" data-login="{{ $preset['login'] ?? '' }}" data-api="{{ $preset['api'] ? 1 : 0 }}" @selected(old('smtp_provider', $smtp_provider) === $key)>{{ $key === 'custom' ? __('admin.providerCustom') : $preset['name'] }}</option>
+          @endforeach
+        </select>
+        <div class="hint mt-1" id="providerHint">{{ __('admin.providerHint') }}</div>
+      </div>
+      <div class="col-md-6"></div>
       <div class="col-md-6">
         <label class="form-label" for="smtp_host">{{ __('admin.smtpServer') }}</label>
         <input class="form-control" id="smtp_host" name="smtp_host" value="{{ old('smtp_host', $smtp_host) }}" required>
@@ -86,7 +97,7 @@
           <button class="btn btn-outline-secondary" type="button" data-reveal="smtp_password" title="{{ __('admin.showHide') }}"><i class="bi bi-eye"></i></button>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6" id="brevoApiField">
         <label class="form-label" for="brevo_api_key">{{ __('admin.brevoKey') }} @if ($brevo_api_key) <span class="pill on">{{ __('admin.pillSaved') }}</span> @else <span class="pill off">{{ __('admin.pillNotSet') }}</span> @endif</label>
         <div class="input-group">
           <input class="form-control" id="brevo_api_key" name="brevo_api_key" type="password" value="{{ $brevo_api_key }}" placeholder="xkeysib-..." autocomplete="new-password">
@@ -165,6 +176,22 @@
     <p class="mb-0">{{ __('admin.secret') }}: @if ($inbound_secret_set) <span class="pill on">{{ __('admin.secretSet') }}</span> @else <span class="pill off">{{ __('admin.secretMissing') }}</span> @endif</p>
   </section>
 
+  <section class="panel" data-pane="security">
+    <h2><i class="bi bi-shield-lock"></i> {{ __('admin.securityTitle') }}</h2>
+    <form method="POST" action="{{ route('admin.settings.security') }}" class="d-flex flex-column gap-3">
+      @csrf @method('PUT')
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="allow_signup" name="allow_signup" value="1" @checked($allow_signup)>
+        <label class="form-check-label" for="allow_signup"><strong>{{ __('admin.allowSignup') }}</strong><div class="hint">{{ __('admin.allowSignupHint', ['url' => url('/signup')]) }}</div></label>
+      </div>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="require_2fa" name="require_2fa" value="1" @checked($require_2fa)>
+        <label class="form-check-label" for="require_2fa"><strong>{{ __('admin.require2fa') }}</strong><div class="hint">{{ __('admin.require2faHint') }}</div></label>
+      </div>
+      <div><button class="btn btn-primary" type="submit"><i class="bi bi-check-lg"></i> {{ __('admin.saveSettings') }}</button></div>
+    </form>
+  </section>
+
   <section class="panel" data-pane="updates">
     <h2><i class="bi bi-arrow-repeat"></i> {{ __('admin.menuUpdates') }} <span class="pill admin">v{{ \App\Support\Version::current() }}</span></h2>
     <form method="POST" action="{{ route('admin.update.check') }}" class="d-flex align-items-center gap-3 flex-wrap">
@@ -178,6 +205,18 @@
 </div>
 <script>
   (function () {
+    var provider = document.getElementById("smtp_provider");
+    if (provider) {
+      var apply = function (fill) {
+        var o = provider.options[provider.selectedIndex];
+        var host = document.getElementById("smtp_host"), port = document.getElementById("smtp_port"), login = document.getElementById("smtp_username");
+        if (fill && o.dataset.host) { host.value = o.dataset.host; port.value = o.dataset.port; if (o.dataset.login) login.value = o.dataset.login; }
+        host.readOnly = !!o.dataset.host && o.value !== "custom" && o.value !== "ses";
+        document.getElementById("brevoApiField").hidden = o.dataset.api !== "1";
+      };
+      provider.addEventListener("change", function () { apply(true); });
+      apply(false);
+    }
     document.querySelectorAll(".file-pick input[type=file]").forEach(function (input) {
       input.addEventListener("change", function () {
         var name = input.parentElement.querySelector(".file-name");

@@ -220,6 +220,11 @@ a { color: var(--brand); }
 .stack { display: grid; gap: 14px; margin-top: 28px; }
 
 .field { position: relative; display: block; }
+.field-domain input { padding-right: 46%; }
+.domain-suffix { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px; pointer-events: none; max-width: 44%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tfa-qr { display: inline-block; padding: 10px; background: #fff; border: 1px solid var(--line); border-radius: 14px; margin: 8px 0 12px; }
+.tfa-qr svg { display: block; width: 220px; height: 220px; }
+.tfa-codes { background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; font-size: 15px; line-height: 1.8; columns: 2; max-width: 420px; }
 
 .field > .bi {
   position: absolute;

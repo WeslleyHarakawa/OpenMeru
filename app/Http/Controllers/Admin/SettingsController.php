@@ -23,6 +23,7 @@ class SettingsController extends Controller
     {
         if (auth()->user()->is_demo) {
             return view('admin.settings', [
+                'smtp_provider' => 'brevo',
                 'smtp_host' => 'smtp-relay.brevo.com',
                 'smtp_port' => '587',
                 'smtp_username' => 'demo@smtp-brevo.com',
@@ -41,10 +42,13 @@ class SettingsController extends Controller
                 'brand_secondary' => Brand::DEFAULT_SECONDARY,
                 'brand_colors_custom' => false,
                 'brand_assets' => array_fill_keys(array_keys(Brand::ASSETS), null),
+                'allow_signup' => false,
+                'require_2fa' => false,
             ]);
         }
 
         return view('admin.settings', [
+            'smtp_provider' => Outbox::provider(),
             'smtp_host' => Setting::get('smtp_host', 'smtp-relay.brevo.com'),
             'smtp_port' => Setting::get('smtp_port', '587'),
             'smtp_username' => Setting::get('smtp_username'),
@@ -63,6 +67,8 @@ class SettingsController extends Controller
             'brand_secondary' => Brand::secondary(),
             'brand_colors_custom' => Brand::hasCustomColors(),
             'brand_assets' => array_combine(array_keys(Brand::ASSETS), array_map(fn ($a) => Brand::assetUrl($a), array_keys(Brand::ASSETS))),
+            'allow_signup' => Setting::get('allow_signup') === '1',
+            'require_2fa' => \App\Support\TwoFactor::required(),
         ]);
     }
 
@@ -84,6 +90,7 @@ class SettingsController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $data = $request->validate([
+            'smtp_provider' => ['nullable', 'in:'.implode(',', array_keys(Outbox::PROVIDERS))],
             'smtp_host' => ['required', 'string', 'max:255'],
             'smtp_port' => ['required', 'integer', 'between:1,65535'],
             'smtp_username' => ['required', 'string', 'max:255'],
@@ -93,6 +100,7 @@ class SettingsController extends Controller
             'system_from' => ['required', 'email', 'max:255', 'regex:/@'.preg_quote((string) config('inbound.domain'), '/').'$/i'],
         ], ['system_from.regex' => __('admin.fromMustBeDomain', ['domain' => config('inbound.domain')])]);
 
+        Setting::put('smtp_provider', $data['smtp_provider'] ?? 'custom');
         foreach (['smtp_host', 'smtp_port', 'smtp_username', 'system_from'] as $key) {
             Setting::put($key, trim((string) $data[$key]));
         }
@@ -104,6 +112,15 @@ class SettingsController extends Controller
         }
 
         return redirect()->route('admin.settings')->with('status', __('admin.settingsSaved'));
+    }
+
+    /** Settings → Security: self-service sign-up and mandatory 2FA. */
+    public function security(Request $request): RedirectResponse
+    {
+        Setting::put('allow_signup', $request->boolean('allow_signup') ? '1' : '0');
+        \App\Support\TwoFactor::setRequired($request->boolean('require_2fa'));
+
+        return redirect()->route('admin.settings', ['#security'])->with('status', __('admin.securitySaved'));
     }
 
     /** Settings → General: name, logo, icon, favicon, sign-in background and colours. */
