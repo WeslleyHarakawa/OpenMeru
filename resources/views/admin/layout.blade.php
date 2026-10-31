@@ -7,7 +7,8 @@
     body { background: var(--bg); color: var(--ink); min-height: 100vh; }
     .admin-top { display:flex; align-items:center; gap:16px; padding:14px 24px; background:var(--surface); border-bottom:1px solid var(--line); flex-wrap:wrap; }
     .admin-top .brand-mini { display:flex; align-items:center; gap:10px; font-weight:700; font-size:18px; color:var(--ink); text-decoration:none; }
-    .admin-top .brand-mini .ver { font-weight:500; font-size:12px; color:var(--muted); background:var(--bg); border:1px solid var(--line); border-radius:999px; padding:2px 8px; margin-left:2px; }
+    .admin-top .brand-mini .brand-text { display:flex; flex-direction:column; line-height:1.1; }
+    .admin-top .brand-mini .ver { font-weight:500; font-size:11px; color:var(--muted); letter-spacing:.02em; margin-top:3px; }
     .admin-top nav { display:flex; gap:6px; flex-wrap:wrap; }
     .admin-top nav a { padding:8px 14px; border-radius:10px; color:var(--muted); text-decoration:none; font-weight:500; }
     .admin-top nav a.active, .admin-top nav a:hover { background:var(--brand-soft); color:var(--brand); }
@@ -40,7 +41,7 @@
   <header class="admin-top">
     <a class="brand-mini" href="/admin">
       @include('partials.logo', ['class' => 'sm'])
-      {{ \App\Support\Brand::isCustom() ? \App\Support\Brand::name() : 'OpenMeru' }} Admin <span class="ver" title="OpenMeru Mail {{ \App\Support\Version::current() }}">v{{ \App\Support\Version::current() }}</span>
+      <span class="brand-text"><span>{{ \App\Support\Brand::isCustom() ? \App\Support\Brand::name() : 'OpenMeru' }} Admin</span><span class="ver" title="OpenMeru Mail {{ \App\Support\Version::current() }}">v{{ \App\Support\Version::current() }}</span></span>
     </a>
     <nav>
       <a href="{{ route('admin.accounts') }}" class="{{ request()->routeIs('admin.accounts') ? 'active' : '' }}"><i class="bi bi-people"></i> {{ __('admin.accounts') }}</a>
