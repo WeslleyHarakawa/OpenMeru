@@ -23,6 +23,11 @@ Route::middleware('guest')->group(function () {
 
 // The site root is the project's landing page; the webmail lives under /mail.
 Route::view('/', 'landing')->name('home');
+// One-line installer: curl -fsSL https://openmeru.com/install | bash
+Route::get('/install', fn () => response(file_get_contents(base_path('install.sh')), 200, [
+    'Content-Type' => 'text/plain; charset=utf-8',
+    'Cache-Control' => 'public, max-age=300',
+]))->name('install');
 Route::get('/mail', [MailboxController::class, 'entry'])->name('login');
 // Public read-only demo.
 Route::get('/demo', [DemoController::class, 'mailbox'])->middleware('throttle:30,1')->name('demo');

@@ -150,11 +150,11 @@
 
     <div class="install">
       <div class="tabs" role="tablist">
-        <button role="tab" aria-selected="true" data-cmd="git clone {{ $repo }}.git openmeru-app">git</button>
+        <button role="tab" aria-selected="true" data-cmd="curl -fsSL https://openmeru.com/install | bash">curl</button>
+        <button role="tab" aria-selected="false" data-cmd="git clone {{ $repo }}.git openmeru-app && cd openmeru-app && composer install --no-dev && php artisan openmeru:install">git</button>
         <button role="tab" aria-selected="false" data-cmd="curl -L {{ $repo }}/archive/refs/heads/main.zip -o openmeru.zip">zip</button>
-        <button role="tab" aria-selected="false" data-cmd="cd openmeru-app && composer install --no-dev && cp .env.example .env && php artisan key:generate">setup</button>
       </div>
-      <div class="cmd"><code id="cmd">git clone {{ $repo }}.git openmeru-app</code><button class="copy" data-copy="#cmd">copy</button></div>
+      <div class="cmd"><code id="cmd">curl -fsSL https://openmeru.com/install | bash</code><button class="copy" data-copy="#cmd">copy</button></div>
     </div>
 
     <div class="actions">
@@ -216,7 +216,7 @@
   <section class="pad">
     <h2>What you need</h2>
     <table class="need">
-      <tr><td>A server</td><td>A Linux VPS with PHP 8.3+ (8.5 recommended), MySQL 8 or MariaDB, Composer and nginx or Apache. <a href="https://www.cloudpanel.io" target="_blank" rel="noopener">CloudPanel</a> makes it easy.</td></tr>
+      <tr><td>A server</td><td>A Linux VPS with PHP 8.5, MySQL 8 or MariaDB, Composer and nginx or Apache. <a href="https://www.cloudpanel.io" target="_blank" rel="noopener">CloudPanel</a> makes it easy.</td></tr>
       <tr><td>A domain</td><td>Its DNS must be on <a href="https://www.cloudflare.com" target="_blank" rel="noopener">Cloudflare</a>. The free plan is enough.</td></tr>
       <tr><td>Brevo</td><td>Sends your mail. The free plan includes 300 emails per day. <a href="https://www.brevo.com" target="_blank" rel="noopener">brevo.com</a></td></tr>
       <tr><td>A Gmail account</td><td>Receives a copy of every incoming message (the catch-all) and the admin sign-in codes. Create one just for the project.</td></tr>
@@ -242,30 +242,16 @@
       <div class="num">02</div>
       <div>
         <h3>Install the app on your server</h3>
-        <p class="txt">Sign in to your server over SSH as the site user (in CloudPanel, the user of the site you created for your domain). Then run:</p>
-        <div class="block"><button class="copy">copy</button><pre>cd ~
-git clone {{ $repo }}.git openmeru-app
+        <p class="txt">Create a MySQL database first (CloudPanel: <b>Databases → Add Database</b>) and keep its name, user and password at hand. Then sign in to your server over SSH as the site user (in CloudPanel, the user of the site you created for your domain) and run one line:</p>
+        <div class="block"><button class="copy">copy</button><pre>curl -fsSL https://openmeru.com/install | bash</pre></div>
+        <p class="txt">It checks PHP and Composer, downloads the app into <code class="i">~/openmeru-app</code>, installs the dependencies and asks you, one by one, for your domain, the Gmail for the sign-in codes, the database and the first admin. Passwords are typed, never shown or stored in your shell history. It generates the keys, creates the tables and prints the two values you will need in Cloudflare.</p>
+        <p class="txt">Prefer to see every step? The same thing by hand:</p>
+        <div class="block"><button class="copy">copy</button><pre>git clone {{ $repo }}.git openmeru-app
 cd openmeru-app
 composer install --no-dev --optimize-autoloader
-cp .env.example .env
-php artisan key:generate</pre></div>
-        <p class="txt">Create a MySQL database (CloudPanel: <b>Databases → Add Database</b>). Then edit <code class="i">.env</code>:</p>
-        <div class="block"><button class="copy">copy</button><pre>APP_URL=https://yourdomain.com
-MAIL_DOMAIN=yourdomain.com
-INBOUND_SECRET=        # output of: openssl rand -hex 24
-ADMIN_OTP_EMAIL=yourproject@gmail.com
-DB_DATABASE=openmeru
-DB_USERNAME=openmeru
-DB_PASSWORD=your-db-password</pre></div>
-        <p class="txt">Create the tables, your domain, the first admin and the push-notification keys:</p>
-        <div class="block"><button class="copy">copy</button><pre>php artisan migrate --force
-php artisan openmeru:domain yourdomain.com
-php artisan openmeru:admin admin@yourdomain.com "Administrator" 'a-strong-password'
-php artisan tinker --execute='App\Support\Push::generateKeys();'
-php artisan config:cache && php artisan route:cache && php artisan view:cache</pre></div>
-        <p class="txt">Point your web server at the <code class="i">public_root</code> folder. Either set the site's document root to <code class="i">~/openmeru-app/public_root</code>, or on CloudPanel copy the files into the site folder:</p>
-        <div class="block"><button class="copy">copy</button><pre>cp -a ~/openmeru-app/public_root/. ~/htdocs/yourdomain.com/</pre></div>
-        <div class="note">Turn on HTTPS. Let's Encrypt in CloudPanel and the Cloudflare proxy both work. <code class="i">storage/</code> and <code class="i">bootstrap/cache/</code> must be writable. When you're done, <code class="i">https://yourdomain.com/mail</code> shows the sign-in page.</div>
+php artisan openmeru:install</pre></div>
+        <p class="txt">Point your web server at the <code class="i">public_root</code> folder: set the site's document root to <code class="i">~/openmeru-app/public_root</code> (CloudPanel: <b>Settings → Root Directory</b> → <code class="i">yourdomain.com/openmeru-app/public_root</code> when the app lives inside the site folder). Updates are then just the same one line again.</p>
+        <div class="note">Turn on HTTPS. Let's Encrypt in CloudPanel and the Cloudflare proxy both work. When you're done, <code class="i">https://yourdomain.com/mail</code> shows the sign-in page. Run <code class="i">php artisan openmeru:install</code> again at any time: it keeps what is set and only asks for what is missing.</div>
       </div>
     </div>
 

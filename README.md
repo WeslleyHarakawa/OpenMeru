@@ -33,7 +33,7 @@ You don't run a mail server (no Postfix, no IMAP, no port 25). Brevo delivers ou
 
 | | |
 |---|---|
-| A server | Any Linux VPS with **PHP 8.3+** (8.5 recommended), **MySQL 8 / MariaDB 10.6+**, **Composer** and nginx or Apache. [CloudPanel](https://www.cloudpanel.io) makes this easy. |
+| A server | Any Linux VPS with **PHP 8.5**, **MySQL 8 / MariaDB 10.6+**, **Composer** and nginx or Apache. [CloudPanel](https://www.cloudpanel.io) makes this easy. |
 | A domain | Its DNS must be managed by **Cloudflare** (the free plan is enough). |
 | A Brevo account | Free plan: 300 emails per day. <https://www.brevo.com> |
 | A Gmail account | Receives a backup copy of every incoming message (the catch-all copy) and the admin sign-in codes. Create a new one just for this, for example `yourproject@gmail.com`. |
@@ -53,55 +53,39 @@ Even if your server is down, no mail is lost: it's all in Gmail.
 
 ## Step 2: Install the app on your server
 
-The example uses a CloudPanel site user `openmeru` and the domain `yourdomain.com`.
+Create a MySQL database and user first (CloudPanel: **Databases → Add Database**) and keep the name, user and password at hand.
+
+Then sign in to your server over SSH **as the site user** (not root) and run:
 
 ```bash
-cd ~
-git clone https://github.com/<your-user>/OpenMeru.git openmeru-app
+curl -fsSL https://openmeru.com/install | bash
+```
+
+The installer:
+
+1. checks PHP 8.5, the extensions, Composer and git;
+2. clones the app into `~/openmeru-app` (`--dir` to change it) and runs `composer install`;
+3. starts `php artisan openmeru:install`, which asks for your domain, the public URL, the Gmail for the sign-in codes, the database and the first admin. Passwords are typed without echo and never passed on the command line;
+4. generates `APP_KEY`, `INBOUND_SECRET` and the push keys, creates the tables, saves the Brevo SMTP relay if you have the key at hand, builds the caches, and prints what is left to do in Cloudflare.
+
+The same thing by hand:
+
+```bash
+git clone https://github.com/WeslleyHarakawa/OpenMeru.git openmeru-app
 cd openmeru-app
 composer install --no-dev --optimize-autoloader
-cp .env.example .env
-php artisan key:generate
+php artisan openmeru:install
 ```
 
-Create a MySQL database and user. In CloudPanel: **Databases → Add Database**. Then edit `.env`:
-
-```ini
-APP_URL=https://yourdomain.com
-MAIL_DOMAIN=yourdomain.com
-INBOUND_SECRET=   # paste the output of: openssl rand -hex 24
-ADMIN_OTP_EMAIL=yourproject@gmail.com
-DB_DATABASE=...
-DB_USERNAME=...
-DB_PASSWORD=...
-```
-
-Set up the database, your domain, the first admin and the push-notification keys:
-
-```bash
-php artisan migrate --force
-php artisan openmeru:domain yourdomain.com
-php artisan openmeru:admin admin@yourdomain.com "Administrator" 'a-strong-password'
-php artisan tinker --execute='App\Support\Push::generateKeys();'
-php artisan config:cache && php artisan route:cache && php artisan view:cache
-```
+`openmeru:install` can be run again at any time: it keeps what is already set and only asks for what is missing. Every answer can also be given as an option (`--domain`, `--url`, `--otp-email`, `--db-name`, `--db-user`, `--admin-email`, …; `php artisan openmeru:install --help`), except passwords.
 
 ### Point the web server at `public_root`
 
-The public files live in `public_root/` (not `public/`). Pick one of these:
+The public files live in `public_root/` (not `public/`). Set the site's document root to `~/openmeru-app/public_root`.
 
-- **Option A, any server:** set the site's document root to `/home/openmeru/openmeru-app/public_root`.
-- **Option B, CloudPanel default:** keep the root at `~/htdocs/yourdomain.com` and copy the files there. Repeat this after every update:
-
-  ```bash
-  cp -a ~/openmeru-app/public_root/. ~/htdocs/yourdomain.com/
-  ```
-
-  `public_root/index.php` finds the app in `~/openmeru-app` on its own.
+On CloudPanel the app is usually inside the site folder (`~/htdocs/yourdomain.com/openmeru-app`): go to the site's **Settings → Root Directory** and set it to `yourdomain.com/openmeru-app/public_root`. Nothing needs to be copied, now or after updates.
 
 nginx needs the usual Laravel rule, `try_files $uri $uri/ /index.php?$query_string;`, and HTTPS. CloudPanel's free Let's Encrypt certificate works, and so does Cloudflare's proxy.
-
-Make `storage/` and `bootstrap/cache/` writable by the site user.
 
 Open `https://yourdomain.com/mail` and you should see the sign-in page.
 
@@ -175,22 +159,30 @@ If receiving fails, check:
 
 ## Updating
 
+The same line that installs also updates. Run it as the site user:
+
+```bash
+curl -fsSL https://openmeru.com/install | bash
+```
+
+It pulls the latest code, runs `composer install`, migrates the database and rebuilds the caches. `.env` and your settings are kept. By hand:
+
 ```bash
 cd ~/openmeru-app
 git pull
 composer install --no-dev --optimize-autoloader
 php artisan migrate --force
 php artisan config:cache && php artisan route:cache && php artisan view:cache
-cp -a public_root/. ~/htdocs/yourdomain.com/   # only for option B
 ```
 
 ## Commands
 
 | Command | What it does |
 |---|---|
+| `php artisan openmeru:install` | Interactive setup: `.env`, keys, database, domain, admin, SMTP, caches. Safe to run again |
 | `php artisan openmeru:domain example.com` | Sets the mailbox domain (`.env` and texts) |
-| `php artisan openmeru:admin email "Name" 'password'` | Creates or resets an admin mailbox |
-| `php artisan openmeru:smtp host port login key from` | Saves the SMTP relay (Brevo) |
+| `php artisan openmeru:admin email "Name"` | Creates or resets an admin mailbox; asks for the password without echo (it can also be given as a third argument) |
+| `php artisan openmeru:smtp host port login - from` | Saves the SMTP relay (Brevo); `-` asks for the key without echo |
 
 ## Security notes
 

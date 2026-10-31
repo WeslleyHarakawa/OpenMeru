@@ -2,6 +2,8 @@
 
 use App\Models\Setting;
 use App\Models\User;
+use App\Support\EnvFile;
+use App\Support\MailDomain;
 use Illuminate\Support\Facades\Artisan;
 
 // The password can be left out: it is then asked for without echo, so it never lands in the
@@ -54,26 +56,13 @@ Artisan::command('openmeru:smtp {host} {port} {username} {password} {from} {apiK
 // rewrites the domain shown in the translation files.
 Artisan::command('openmeru:domain {domain}', function (string $domain) {
     $domain = mb_strtolower(trim($domain));
-    if (! preg_match('/^([a-z0-9-]+\.)+[a-z]{2,}$/', $domain)) {
+    if (! MailDomain::valid($domain)) {
         $this->error('Invalid domain: '.$domain);
 
         return 1;
     }
-    // The texts ship with openmeru.com; after a first change they carry MAIL_DOMAIN.
-    $current = str_contains((string) file_get_contents(lang_path('en.json')), '@openmeru.com')
-        ? 'openmeru.com'
-        : (string) config('inbound.domain');
-
-    $env = base_path('.env');
-    $text = (string) file_get_contents($env);
-    $text = preg_match('/^MAIL_DOMAIN=.*$/m', $text)
-        ? preg_replace('/^MAIL_DOMAIN=.*$/m', 'MAIL_DOMAIN='.$domain, $text)
-        : rtrim($text)."\nMAIL_DOMAIN=".$domain."\n";
-    file_put_contents($env, $text);
-
-    foreach (glob(lang_path('*.json')) as $file) {
-        file_put_contents($file, str_replace($current, $domain, (string) file_get_contents($file)));
-    }
+    (new EnvFile(base_path('.env')))->set(['MAIL_DOMAIN' => $domain]);
+    MailDomain::rewriteTexts($domain);
     $this->call('config:clear');
     $this->info('Domain set to '.$domain.'. Mailboxes are now user@'.$domain.'.');
 })->purpose('Use your own mail domain');

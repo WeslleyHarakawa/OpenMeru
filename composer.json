@@ -6,7 +6,7 @@
     "keywords": ["webmail", "email", "laravel", "brevo", "cloudflare"],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
+        "php": "^8.5",
         "laravel/framework": "^13.17",
         "laravel/tinker": "^3.0",
         "minishlink/web-push": "^11.0",
