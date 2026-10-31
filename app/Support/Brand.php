@@ -121,6 +121,14 @@ class Brand
         return self::settings()['secondary'] ?: self::DEFAULT_SECONDARY;
     }
 
+    /** "#d2151a" as "210, 21, 26", the form Bootstrap's *-rgb variables want. */
+    public static function rgb(string $hex): string
+    {
+        $hex = ltrim($hex, '#');
+
+        return implode(', ', array_map(fn ($i) => hexdec(substr($hex, $i, 2)), [0, 2, 4]));
+    }
+
     public static function hasCustomColors(): bool
     {
         return self::settings()['primary'] !== '' || self::settings()['secondary'] !== '';
@@ -160,7 +168,8 @@ class Brand
         $s = self::secondary();
 
         return ':root,[data-theme="dark"]{--brand:'.$p.';--brand-dark:'.$s.';--brand-2:'.$p.';--brand-3:'.$s.';'
-            .'--brand-1:color-mix(in srgb,'.$p.' 55%,white);--brand-soft:color-mix(in srgb,'.$p.' 14%,white)}'
+            .'--brand-1:color-mix(in srgb,'.$p.' 55%,white);--brand-soft:color-mix(in srgb,'.$p.' 14%,white);'
+            .'--bs-primary-rgb:'.self::rgb($p).';--bs-link-color-rgb:'.self::rgb($p).';--bs-link-hover-color-rgb:'.self::rgb($s).'}'
             .'[data-theme="dark"]{--brand-soft:color-mix(in srgb,'.$p.' 28%,#0f172a)}';
     }
 

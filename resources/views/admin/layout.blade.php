@@ -8,7 +8,7 @@
     .admin-top { display:flex; align-items:center; gap:16px; padding:14px 24px; background:var(--surface); border-bottom:1px solid var(--line); flex-wrap:wrap; }
     .admin-top .brand-mini { display:flex; align-items:center; gap:10px; font-weight:700; font-size:18px; color:var(--ink); text-decoration:none; }
     .admin-top .brand-mini .brand-text { display:flex; flex-direction:column; line-height:1.1; }
-    .admin-top .brand-mini .logo-mark { width:36px; height:36px; flex:0 0 36px; border-radius:10px; object-fit:contain; }
+    .admin-top .brand-mini .logo-mark { width:44px; height:44px; flex:0 0 44px; border-radius:10px; object-fit:contain; }
     .admin-top .brand-mini .ver { font-weight:500; font-size:11px; color:var(--muted); letter-spacing:.02em; margin-top:3px; }
     .admin-top nav { display:flex; gap:6px; flex-wrap:wrap; }
     .admin-top nav a { padding:8px 14px; border-radius:10px; color:var(--muted); text-decoration:none; font-weight:500; }

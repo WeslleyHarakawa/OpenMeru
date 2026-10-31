@@ -21,6 +21,32 @@
   color-scheme: light;
 }
 
+
+/* Bootstrap's primary follows the brand colour (red by default, the client's own when set): no blue anywhere. */
+:root, [data-theme="dark"] {
+  --bs-primary: var(--brand);
+  --bs-primary-rgb: 210, 21, 26;
+  --bs-link-color: var(--brand);
+  --bs-link-hover-color: var(--brand-dark);
+  --bs-link-color-rgb: 210, 21, 26;
+  --bs-link-hover-color-rgb: 166, 15, 20;
+  --bs-focus-ring-color: color-mix(in srgb, var(--brand) 25%, transparent);
+}
+.btn-primary { --bs-btn-bg: var(--brand); --bs-btn-border-color: var(--brand); --bs-btn-hover-bg: var(--brand-dark); --bs-btn-hover-border-color: var(--brand-dark); --bs-btn-active-bg: var(--brand-dark); --bs-btn-active-border-color: var(--brand-dark); --bs-btn-disabled-bg: var(--brand); --bs-btn-disabled-border-color: var(--brand); }
+.btn-outline-primary { --bs-btn-color: var(--brand); --bs-btn-border-color: var(--brand); --bs-btn-hover-bg: var(--brand); --bs-btn-hover-border-color: var(--brand); --bs-btn-active-bg: var(--brand); --bs-btn-active-border-color: var(--brand); --bs-btn-disabled-color: var(--brand); --bs-btn-disabled-border-color: var(--brand); }
+.btn-link { --bs-btn-color: var(--brand); --bs-btn-hover-color: var(--brand-dark); }
+.form-check-input:checked { background-color: var(--brand); border-color: var(--brand); }
+.form-check-input:focus, .form-control:focus, .form-select:focus { border-color: color-mix(in srgb, var(--brand) 60%, transparent); box-shadow: 0 0 0 .25rem color-mix(in srgb, var(--brand) 22%, transparent); }
+.nav-pills { --bs-nav-pills-link-active-bg: var(--brand); }
+.text-primary { color: var(--brand) !important; }
+.bg-primary { background-color: var(--brand) !important; }
+.border-primary { border-color: var(--brand) !important; }
+.dropdown-item.active, .dropdown-item:active { background-color: var(--brand); }
+.page-link { color: var(--brand); }
+.active > .page-link, .page-link.active { background-color: var(--brand); border-color: var(--brand); }
+.progress-bar { background-color: var(--brand); }
+.spinner-border.text-primary { color: var(--brand) !important; }
+
 [data-theme="dark"] {
   --bg: #0e1116;
   --sidebar: #12161d;
@@ -72,11 +98,11 @@ a { color: var(--brand); }
   width: 64px;
   height: 64px;
   display: block;
-  filter: drop-shadow(0 10px 18px rgba(18, 52, 160, 0.28));
+  filter: drop-shadow(0 10px 18px rgba(120, 10, 14, 0.28));
 }
 
-.logo-mark.sm { width: 34px; height: 34px; filter: none; }
-.logo-mark.lg { width: 92px; height: 92px; }
+.logo-mark.sm { width: 48px; height: 48px; filter: none; object-fit: contain; }
+.logo-mark.lg { width: 120px; height: 120px; object-fit: contain; }
 
 .wordmark,
 .auth-title {
