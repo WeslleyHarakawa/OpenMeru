@@ -4,11 +4,7 @@
 
 @section('card')
   <div id="resetForm">
-    <svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true">
-      <rect width="64" height="64" rx="18" fill="url(#logoR)"/>
-      <path fill="#fff" d="M15 24h34a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H15a2 2 0 0 1-2-2V26a2 2 0 0 1 2-2z"/>
-      <path d="M14 25.2 32 37.2 50 25.2" fill="none" stroke="#2f6bff" stroke-width="2.2" stroke-linejoin="round"/>
-    </svg>
+    @include('partials.logo', ['class' => ''])
     <h1 class="auth-title" data-i18n="forgotTitle">{{ __('forgotTitle') }}</h1>
     <p class="auth-lead" data-i18n="forgotLead">{{ __('forgotLead') }}</p>
     <form id="forgotForm" class="stack" novalidate>

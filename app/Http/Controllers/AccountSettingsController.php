@@ -93,14 +93,11 @@ class AccountSettingsController extends Controller
 
     public function password(Request $request): JsonResponse
     {
+        // The person is signed in (password or admin-set one they may not know): no current password asked.
         $data = $request->validate([
-            'current_password' => ['required', 'string'],
             'password' => ['required', 'string', 'min:8', 'max:200', 'confirmed'],
         ]);
         $user = $request->user();
-        if (! Hash::check($data['current_password'], $user->password)) {
-            throw ValidationException::withMessages(['current_password' => 'wrongPassword']);
-        }
 
         $user->forceFill(['password' => $data['password']])->save();
         // Sign out every other session that used the old password.

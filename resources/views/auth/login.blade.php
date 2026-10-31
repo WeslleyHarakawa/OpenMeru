@@ -3,13 +3,9 @@
 @section('page', 'login')
 
 @section('card')
-  <svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true">
-    <rect width="64" height="64" rx="18" fill="url(#logoR)"/>
-    <path fill="#fff" d="M15 24h34a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H15a2 2 0 0 1-2-2V26a2 2 0 0 1 2-2z"/>
-    <path d="M14 25.2 32 37.2 50 25.2" fill="none" stroke="#2f6bff" stroke-width="2.2" stroke-linejoin="round"/>
-  </svg>
-  <h1 class="wordmark">OpenMeru</h1>
-  <p class="product">{{ !empty($admin) ? 'ADMIN' : 'MAIL' }}</p>
+  @include('partials.logo', ['class' => ''])
+  <h1 class="wordmark">{{ \App\Support\Brand::wordmark() }}</h1>
+  <p class="product">{{ \App\Support\Brand::product(!empty($admin) ? 'ADMIN' : 'MAIL') }}</p>
   @if (!empty($notAdmin))
     <p class="form-error" style="text-align:center;margin-top:12px">{{ __('admin.notAdmin', ['email' => $notAdmin]) }}</p>
   @endif

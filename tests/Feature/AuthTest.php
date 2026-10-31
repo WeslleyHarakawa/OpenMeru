@@ -177,4 +177,25 @@ class AuthTest extends TestCase
         $this->getJson('/api/messages')->assertUnauthorized();
         $this->getJson('/api/me')->assertUnauthorized();
     }
+
+    public function test_a_signed_in_person_changes_the_password_without_typing_the_old_one(): void
+    {
+        $user = $this->user();
+
+        $this->actingAs($user)->putJson('/api/account/password', [
+            'password' => 'brand new pass',
+            'password_confirmation' => 'brand new pass',
+        ])->assertOk();
+
+        $this->post('/logout');
+        $this->login('brand new pass')->assertOk();
+    }
+
+    public function test_the_new_password_must_be_confirmed_and_long_enough(): void
+    {
+        $user = $this->user();
+
+        $this->actingAs($user)->putJson('/api/account/password', ['password' => 'short', 'password_confirmation' => 'short'])->assertStatus(422);
+        $this->actingAs($user)->putJson('/api/account/password', ['password' => 'brand new pass', 'password_confirmation' => 'other'])->assertStatus(422);
+    }
 }

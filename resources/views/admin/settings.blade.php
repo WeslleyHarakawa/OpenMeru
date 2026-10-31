@@ -3,7 +3,48 @@
 @section('title', __('admin.smtp'))
 
 @section('content')
-  <section class="panel">
+<div class="settings-layout">
+  <nav class="settings-nav" aria-label="{{ __('admin.smtp') }}">
+    <a href="#general" data-pane-link="general"><i class="bi bi-sliders"></i> {{ __('admin.general') }}</a>
+    <a href="#smtp" data-pane-link="smtp"><i class="bi bi-send"></i> {{ __('admin.menuSmtp') }}</a>
+    <a href="#push" data-pane-link="push"><i class="bi bi-bell"></i> {{ __('admin.menuPush') }}</a>
+    <a href="#translate" data-pane-link="translate"><i class="bi bi-translate"></i> {{ __('admin.menuTranslate') }}</a>
+    <a href="#inbound" data-pane-link="inbound"><i class="bi bi-cloud-arrow-down"></i> {{ __('admin.menuInbound') }}</a>
+    <a href="#updates" data-pane-link="updates"><i class="bi bi-arrow-repeat"></i> {{ __('admin.menuUpdates') }}</a>
+  </nav>
+
+  <div class="settings-panes">
+
+  <section class="panel" data-pane="general">
+    <h2><i class="bi bi-sliders"></i> {{ __('admin.generalTitle') }}</h2>
+    <p class="hint">{{ __('admin.generalLead') }}</p>
+    <form method="POST" action="{{ route('admin.settings.brand') }}" class="row g-3" enctype="multipart/form-data">
+      @csrf @method('PUT')
+      <div class="col-md-6">
+        <label class="form-label" for="brand_name">{{ __('admin.brandName') }}</label>
+        <input class="form-control" id="brand_name" name="brand_name" maxlength="60" value="{{ old('brand_name', $brand_name) }}" placeholder="{{ __('admin.brandNamePh') }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="logo">{{ __('admin.brandLogo') }}</label>
+        <div class="d-flex align-items-center gap-3">
+          @include('partials.logo', ['class' => 'sm'])
+          <input class="form-control" id="logo" name="logo" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+        </div>
+        <div class="hint mt-1">{{ __('admin.brandLogoHint') }}</div>
+      </div>
+      <div class="col-12 d-flex align-items-center gap-2 flex-wrap">
+        <button class="btn btn-primary" type="submit"><i class="bi bi-check-lg"></i> {{ __('admin.brandSave') }}</button>
+      </div>
+    </form>
+    @if ($brand_logo)
+      <form method="POST" action="{{ route('admin.settings.brand.logo.remove') }}" class="mt-2">
+        @csrf @method('DELETE')
+        <button class="btn btn-outline-secondary btn-sm" type="submit"><i class="bi bi-x-circle"></i> {{ __('admin.removeLogo') }}</button>
+      </form>
+    @endif
+  </section>
+
+  <section class="panel" data-pane="smtp">
     <h2><i class="bi bi-send"></i> {{ __('admin.smtpTitle') }}</h2>
     <p class="hint">{{ __('admin.smtpLead') }}</p>
     <form method="POST" action="{{ route('admin.settings.update') }}" class="row g-3" autocomplete="off">
@@ -42,9 +83,7 @@
         <button class="btn btn-primary" type="submit"><i class="bi bi-check-lg"></i> {{ __('admin.saveSettings') }}</button>
       </div>
     </form>
-  </section>
-
-  <section class="panel">
+    <hr>
     <h2><i class="bi bi-envelope-check"></i> {{ __('admin.testTitle') }}</h2>
     <form method="POST" action="{{ route('admin.settings.test') }}" class="row g-3">
       @csrf
@@ -57,7 +96,7 @@
     </form>
   </section>
 
-  <section class="panel">
+  <section class="panel" data-pane="push">
     <h2><i class="bi bi-bell"></i> {{ __('admin.pushTitle') }}</h2>
     <p class="hint">{{ __('admin.pushLead', ['count' => $push_devices]) }}</p>
     @if ($vapid_public)
@@ -80,40 +119,57 @@
     </form>
   </section>
 
-  <section class="panel">
-<h2><i class="bi bi-translate"></i> {{ __('admin.trTitle') }}</h2>
-<p class="hint">{{ __('admin.trHint') }}</p>
-<form method="POST" action="{{ route('admin.settings.translate') }}" class="row g-3" autocomplete="off">
-  @csrf
-  @method('PUT')
-  <div class="col-md-6">
-    <label class="form-label" for="cf_account_id">{{ __('admin.trAccount') }}</label>
-    <input class="form-control" id="cf_account_id" name="cf_account_id" value="{{ old('cf_account_id', $cf_account_id) }}" placeholder="0123456789abcdef0123456789abcdef">
-  </div>
-  <div class="col-md-6">
-    <label class="form-label" for="cf_ai_token">{{ __('admin.trToken') }}</label>
-    <input class="form-control" id="cf_ai_token" name="cf_ai_token" type="password" autocomplete="new-password" placeholder="{{ $cf_ai_token_set ? __('admin.trTokenKeep') : '' }}">
-  </div>
-  <div class="col-12 d-flex align-items-center gap-3">
-    <button class="btn btn-primary" type="submit">{{ __('admin.trSave') }}</button>
-    <span class="pill {{ $cf_account_id && $cf_ai_token_set ? 'on' : 'off' }}">{{ $cf_account_id && $cf_ai_token_set ? __('admin.trOn') : __('admin.trOff') }}</span>
-  </div>
-</form>
-</section>
+  <section class="panel" data-pane="translate">
+    <h2><i class="bi bi-translate"></i> {{ __('admin.trTitle') }}</h2>
+    <p class="hint">{{ __('admin.trHint') }}</p>
+    <form method="POST" action="{{ route('admin.settings.translate') }}" class="row g-3" autocomplete="off">
+      @csrf
+      @method('PUT')
+      <div class="col-md-6">
+        <label class="form-label" for="cf_account_id">{{ __('admin.trAccount') }}</label>
+        <input class="form-control" id="cf_account_id" name="cf_account_id" value="{{ old('cf_account_id', $cf_account_id) }}" placeholder="0123456789abcdef0123456789abcdef">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="cf_ai_token">{{ __('admin.trToken') }}</label>
+        <input class="form-control" id="cf_ai_token" name="cf_ai_token" type="password" autocomplete="new-password" placeholder="{{ $cf_ai_token_set ? __('admin.trTokenKeep') : '' }}">
+      </div>
+      <div class="col-12 d-flex align-items-center gap-3">
+        <button class="btn btn-primary" type="submit">{{ __('admin.trSave') }}</button>
+        <span class="pill {{ $cf_account_id && $cf_ai_token_set ? 'on' : 'off' }}">{{ $cf_account_id && $cf_ai_token_set ? __('admin.trOn') : __('admin.trOff') }}</span>
+      </div>
+    </form>
+  </section>
 
-  <section class="panel">
+  <section class="panel" data-pane="inbound">
     <h2><i class="bi bi-cloud-arrow-down"></i> {{ __('admin.inboundTitle') }}</h2>
     <p class="hint">{{ __('admin.inboundLead', ['header' => 'X-OpenMeru-Secret']) }}</p>
     <p class="mb-1">URL: <code class="copy">{{ $inbound_url }}?to=&lt;{{ __('admin.recipient') }}&gt;</code></p>
     <p class="mb-0">{{ __('admin.secret') }}: @if ($inbound_secret_set) <span class="pill on">{{ __('admin.secretSet') }}</span> @else <span class="pill off">{{ __('admin.secretMissing') }}</span> @endif</p>
   </section>
 
-  <section class="panel">
-    <h2><i class="bi bi-arrow-repeat"></i> OpenMeru Mail v{{ \App\Support\Version::current() }}</h2>
+  <section class="panel" data-pane="updates">
+    <h2><i class="bi bi-arrow-repeat"></i> {{ __('admin.menuUpdates') }} <span class="pill admin">v{{ \App\Support\Version::current() }}</span></h2>
     <form method="POST" action="{{ route('admin.update.check') }}" class="d-flex align-items-center gap-3 flex-wrap">
       @csrf
       <button class="btn btn-outline-primary" type="submit"><i class="bi bi-cloud-arrow-down"></i> {{ __('admin.checkUpdates') }}</button>
       <span class="hint">{{ __('admin.updateOrTerminal') }} <code class="copy">{{ \App\Support\Updates::installCommand() }}</code></span>
     </form>
   </section>
+
+  </div>
+</div>
+<script>
+  (function () {
+    var links = document.querySelectorAll("[data-pane-link]");
+    var panes = document.querySelectorAll("[data-pane]");
+    function show(name) {
+      var found = false;
+      panes.forEach(function (p) { var on = p.dataset.pane === name; p.hidden = !on; if (on) found = true; });
+      if (!found) return show("general");
+      links.forEach(function (l) { l.classList.toggle("active", l.dataset.paneLink === name); });
+    }
+    links.forEach(function (l) { l.addEventListener("click", function (e) { e.preventDefault(); history.replaceState(null, "", "#" + l.dataset.paneLink); show(l.dataset.paneLink); }); });
+    show((location.hash || "#general").slice(1));
+  })();
+</script>
 @endsection

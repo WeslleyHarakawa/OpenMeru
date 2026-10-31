@@ -3,7 +3,7 @@
 <head>
   @include('partials.head')
   <meta name="theme-color" content="#2f6bff">
-  <title>OpenMeru Mail</title>
+  <title>{{ \App\Support\Brand::name() }}</title>
 </head>
 <body data-page="@yield('page')">
   <div class="auth">
@@ -14,19 +14,9 @@
         <path fill="rgba(8,24,90,.28)" d="M0 980C180 860 300 1140 560 980C720 860 760 1080 800 1000V1200H0Z"/>
       </svg>
       <div class="brand-lockup">
-        <svg class="logo-mark lg" viewBox="0 0 64 64">
-          <defs>
-            <linearGradient id="logoL" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#8ebaff"/>
-              <stop offset="100%" stop-color="#1f5bff"/>
-            </linearGradient>
-          </defs>
-          <rect width="64" height="64" rx="18" fill="url(#logoL)"/>
-          <path fill="#fff" d="M15 24h34a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H15a2 2 0 0 1-2-2V26a2 2 0 0 1 2-2z"/>
-          <path d="M14 25.2 32 37.2 50 25.2" fill="none" stroke="#2f6bff" stroke-width="2.2" stroke-linejoin="round"/>
-        </svg>
-        <div class="wordmark">OpenMeru</div>
-        <div class="product">MAIL</div>
+        @include('partials.logo', ['class' => 'lg'])
+        <div class="wordmark">{{ \App\Support\Brand::wordmark() }}</div>
+        @if (\App\Support\Brand::product())<div class="product">\App\Support\Brand::product()</div>@endif
       </div>
     </section>
     <main class="auth-panel">

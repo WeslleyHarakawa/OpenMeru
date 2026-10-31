@@ -104,6 +104,18 @@
 
   const validEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
+  // Show/hide buttons next to any password field (account settings, admin forms).
+  document.querySelectorAll("[data-toggle-eye]").forEach((eye) => {
+    eye.addEventListener("click", () => {
+      const input = eye.parentElement.querySelector("input");
+      if (!input) return;
+      const show = input.type === "password";
+      input.type = show ? "text" : "password";
+      eye.innerHTML = show ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+      eye.setAttribute("aria-label", show ? t("hidePw") : t("showPw"));
+    });
+  });
+
   if (page === "login" || page === "forgot" || page === "reset") {
     const eye = document.querySelector("[data-action='toggle-password']");
     if (eye) {
@@ -1246,7 +1258,7 @@
       if (f.password.value.length < 8) return (errorEl.textContent = t("pwShort"));
       if (f.password.value !== f.password_confirmation.value) return (errorEl.textContent = t("pwMismatch"));
       try {
-        await api("PUT", "/api/account/password", { current_password: f.current_password.value, password: f.password.value, password_confirmation: f.password_confirmation.value });
+        await api("PUT", "/api/account/password", { password: f.password.value, password_confirmation: f.password_confirmation.value });
         f.reset();
         errorEl.textContent = "";
         toast(t("passwordChanged"));

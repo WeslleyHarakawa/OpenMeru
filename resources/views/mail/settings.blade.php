@@ -3,7 +3,7 @@
 <head>
   @include('partials.head')
   <meta name="theme-color" content="#f3f5f8">
-  <title>{{ __('accountSettings') }} · OpenMeru Mail</title>
+  <title>{{ __('accountSettings') }} · {{ \App\Support\Brand::name() }}</title>
 </head>
 <body data-page="settings" data-email="{{ $user->email }}" data-name="{{ $user->name }}">
   @include('partials.demo-bar')
@@ -52,12 +52,16 @@
 
         <section class="settings-pane" data-pane="password" hidden>
           <form id="passwordForm">
-            <label class="form-label" data-i18n="currentPassword">{{ __('currentPassword') }}</label>
-            <input class="form-control mb-3" name="current_password" type="password" autocomplete="current-password" required>
             <label class="form-label" data-i18n="newPassword">{{ __('newPassword') }}</label>
-            <input class="form-control mb-3" name="password" type="password" autocomplete="new-password" minlength="8" required>
+            <div class="pw-wrap mb-3">
+              <input class="form-control" name="password" type="password" autocomplete="new-password" minlength="8" required>
+              <button class="eye" type="button" data-toggle-eye data-i18n-aria="showPw" aria-label="{{ __('showPw') }}"><i class="bi bi-eye"></i></button>
+            </div>
             <label class="form-label" data-i18n="confirmPassword">{{ __('confirmPassword') }}</label>
-            <input class="form-control mb-3" name="password_confirmation" type="password" autocomplete="new-password" minlength="8" required>
+            <div class="pw-wrap mb-3">
+              <input class="form-control" name="password_confirmation" type="password" autocomplete="new-password" minlength="8" required>
+              <button class="eye" type="button" data-toggle-eye data-i18n-aria="showPw" aria-label="{{ __('showPw') }}"><i class="bi bi-eye"></i></button>
+            </div>
             <button class="btn btn-primary" type="submit" data-i18n="savePassword">{{ __('savePassword') }}</button>
           </form>
         </section>

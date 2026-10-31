@@ -2,7 +2,7 @@
 <html lang="{{ \App\Support\Locales::tag(app()->getLocale()) }}" data-theme="light">
 <head>
   @include('partials.head')
-  <title>@yield('title') · Admin · OpenMeru Mail</title>
+  <title>@yield('title') · Admin · {{ \App\Support\Brand::name() }}</title>
   <style>
     body { background: var(--bg); color: var(--ink); min-height: 100vh; }
     .admin-top { display:flex; align-items:center; gap:16px; padding:14px 24px; background:var(--surface); border-bottom:1px solid var(--line); flex-wrap:wrap; }
@@ -26,19 +26,21 @@
     .pill.on { background:#dcfce7; color:#166534; } .pill.off { background:#fee2e2; color:#991b1b; } .pill.admin { background:var(--brand-soft); color:var(--brand); }
     code.copy { background:var(--bg); padding:3px 8px; border-radius:6px; word-break:break-all; }
     .domain-addon { background:var(--bg); color:var(--muted); border-color:var(--line); }
+    .settings-layout { display:grid; grid-template-columns:230px 1fr; gap:22px; align-items:start; }
+    .settings-nav { position:sticky; top:16px; display:flex; flex-direction:column; gap:4px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:10px; }
+    .settings-nav a { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; color:var(--muted); text-decoration:none; font-weight:500; }
+    .settings-nav a.active, .settings-nav a:hover { background:var(--brand-soft); color:var(--brand); }
+    .settings-panes .panel[hidden] { display:none; }
+    .settings-panes .logo-mark { width:44px; height:44px; border-radius:12px; object-fit:contain; }
+    @media (max-width: 820px) { .settings-layout { grid-template-columns:1fr; } .settings-nav { position:static; flex-direction:row; flex-wrap:wrap; } }
   </style>
 </head>
 <body data-page="admin">
   @include('partials.demo-bar')
   <header class="admin-top">
     <a class="brand-mini" href="/admin">
-      <svg class="logo-mark sm" viewBox="0 0 64 64" width="32" height="32" aria-hidden="true">
-        <defs><linearGradient id="logoA" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6ea8ff"/><stop offset="100%" stop-color="#1d57f5"/></linearGradient></defs>
-        <rect width="64" height="64" rx="18" fill="url(#logoA)"/>
-        <path fill="#fff" d="M15 24h34a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H15a2 2 0 0 1-2-2V26a2 2 0 0 1 2-2z"/>
-        <path d="M14 25.2 32 37.2 50 25.2" fill="none" stroke="#2f6bff" stroke-width="2.2" stroke-linejoin="round"/>
-      </svg>
-      OpenMeru Admin <span class="ver" title="OpenMeru Mail {{ \App\Support\Version::current() }}">v{{ \App\Support\Version::current() }}</span>
+      @include('partials.logo', ['class' => 'sm'])
+      {{ \App\Support\Brand::isCustom() ? \App\Support\Brand::name() : 'OpenMeru' }} Admin <span class="ver" title="OpenMeru Mail {{ \App\Support\Version::current() }}">v{{ \App\Support\Version::current() }}</span>
     </a>
     <nav>
       <a href="{{ route('admin.accounts') }}" class="{{ request()->routeIs('admin.accounts') ? 'active' : '' }}"><i class="bi bi-people"></i> {{ __('admin.accounts') }}</a>

@@ -68,14 +68,18 @@ The installer:
 3. starts `php artisan openmeru:install`, which asks for your domain, the public URL, the Gmail for the sign-in codes, the database and the first admin. Passwords are typed without echo and never passed on the command line;
 4. generates `APP_KEY`, `INBOUND_SECRET` and the push keys, creates the tables, saves the Brevo SMTP relay if you have the key at hand, builds the caches, and prints what is left to do in Cloudflare.
 
-The same thing by hand:
+The same thing by hand (a fresh clone has no writable folders yet, so create them first):
 
 ```bash
 git clone https://github.com/WeslleyHarakawa/OpenMeru.git openmeru-app
 cd openmeru-app
+mkdir -p storage/app/private storage/app/public storage/logs storage/framework/cache/data storage/framework/sessions storage/framework/views bootstrap/cache
+chmod -R u+rwX,g+rwX storage bootstrap/cache   # and chown them to the web server user if it is not you
 composer install --no-dev --optimize-autoloader
 php artisan openmeru:install
 ```
+
+Without those folders the app answers 500 ("Please provide a valid cache path").
 
 `openmeru:install` can be run again at any time: it keeps what is already set and only asks for what is missing. Every answer can also be given as an option (`--domain`, `--url`, `--otp-email`, `--db-name`, `--db-user`, `--admin-email`, …; `php artisan openmeru:install --help`), except passwords.
 
@@ -87,7 +91,9 @@ On CloudPanel the app is usually inside the site folder (`~/htdocs/yourdomain.co
 
 nginx needs the usual Laravel rule, `try_files $uri $uri/ /index.php?$query_string;`, and HTTPS. CloudPanel's free Let's Encrypt certificate works, and so does Cloudflare's proxy.
 
-Open `https://yourdomain.com/mail` and you should see the sign-in page.
+Open `https://yourdomain.com/` and you should see the sign-in page: on an install the webmail **is** the site root (`/mail`, `/webmail` and `/email` redirect there). Only openmeru.com itself keeps its project page at the root.
+
+**Do Step 3 (Brevo) before opening `/admin`.** Signing in to `/admin` sends a 6-digit code by e-mail, and e-mail only works once the Brevo relay is saved. A mailbox can sign in at the root with just e-mail and password at any time.
 
 ## Step 3: Brevo, for sending
 
@@ -133,6 +139,12 @@ Brevo accepts only senders on a verified domain, so every mailbox sends as `user
    | **Secret** | `INBOUND_SECRET` | the same value as `INBOUND_SECRET` in `.env` |
 
 ### 4.3 Send the catch-all to the Worker
+
+You have two ways to route mail to the Worker; both keep a copy of everything in Gmail.
+
+- **Catch-all → Worker** (simplest): every address on the domain reaches OpenMeru, new mailboxes work the moment you create them. Use it when nothing else receives mail on this domain.
+- **One rule per mailbox** (safest when the domain already forwards mail elsewhere): leave the catch-all as it is and add a routing rule `name@yourdomain.com → Send to a Worker → openmeru-mail-inbound` for each mailbox you create in `/admin`. Addresses without a rule keep going wherever they went before.
+
 
 **Email Routing → Routing rules → Catch-all address → Edit**, then set:
 

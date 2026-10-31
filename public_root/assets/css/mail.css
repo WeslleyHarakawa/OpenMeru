@@ -256,6 +256,8 @@ a { color: var(--brand); }
 }
 
 .eye:hover { color: var(--ink); }
+.pw-wrap { position: relative; }
+.pw-wrap .form-control { padding-right: 48px; }
 
 .forgot {
   justify-self: end;
@@ -992,6 +994,8 @@ body[data-page="inbox"] { overflow: hidden; }
 .mailbox-bar { height: 34px; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0 12px; background: var(--brand); color: #fff; font-size: 13.5px; white-space: nowrap; overflow: hidden; }
 .mailbox-bar span { opacity: .85; }
 .mailbox-bar strong { font-weight: 700; overflow: hidden; text-overflow: ellipsis; }
+.mailbox-bar-admin { margin-left: 14px; color: #fff; text-decoration: none; background: rgba(255,255,255,.18); border-radius: 999px; padding: 3px 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+.mailbox-bar-admin:hover { background: rgba(255,255,255,.3); color: #fff; }
 .mailbox-bar + .shell, .mailbox-bar + .impersonating-bar + .shell { height: calc(100vh - 34px); height: calc(100dvh - 34px); }
 @media (max-width: 1100px) { .mailbox-bar ~ .shell .sidebar { top: 34px; height: calc(100% - 34px); } }
 /* Public demo banner */

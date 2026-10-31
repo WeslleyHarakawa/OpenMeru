@@ -3,7 +3,7 @@
 <head>
   @include('partials.head')
   <meta name="theme-color" content="#f3f5f8">
-  <title>OpenMeru Mail</title>
+  <title>{{ \App\Support\Brand::name() }}</title>
   <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" integrity="sha384-ecIckRi4QlKYya/FQUbBUjS4qp65jF/J87Guw5uzTbO1C1Jfa/6kYmd6dXUF6D7i" crossorigin="anonymous" rel="stylesheet">
 </head>
 <body data-page="inbox" data-email="{{ $user->email }}" data-name="{{ $user->name }}">

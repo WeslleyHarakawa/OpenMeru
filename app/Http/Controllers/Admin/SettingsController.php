@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Mail\Outbox;
 use App\Models\PushSubscription;
 use App\Models\Setting;
+use App\Support\Brand;
 use App\Support\Push;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
 use Throwable;
@@ -33,6 +36,8 @@ class SettingsController extends Controller
                 'inbound_secret_set' => true,
                 'cf_account_id' => '0123456789abcdef0123456789abcdef',
                 'cf_ai_token_set' => true,
+                'brand_name' => '',
+                'brand_logo' => null,
             ]);
         }
 
@@ -50,6 +55,8 @@ class SettingsController extends Controller
             'inbound_secret_set' => (string) config('inbound.secret') !== '',
             'cf_account_id' => Setting::get('cf_account_id'),
             'cf_ai_token_set' => (bool) Setting::get('cf_ai_token'),
+            'brand_name' => (string) Setting::get('brand_name'),
+            'brand_logo' => Brand::logoPath(),
         ]);
     }
 
@@ -91,6 +98,47 @@ class SettingsController extends Controller
         }
 
         return redirect()->route('admin.settings')->with('status', __('admin.settingsSaved'));
+    }
+
+    /** Settings → General: the name and logo this install shows instead of OpenMeru Mail. */
+    public function brand(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'brand_name' => ['nullable', 'string', 'max:60'],
+            'logo' => ['nullable', 'file', 'mimes:png,jpg,jpeg,webp,svg', 'max:1024'],
+        ]);
+        Setting::put('brand_name', trim((string) ($data['brand_name'] ?? '')));
+        if ($request->hasFile('logo')) {
+            $old = Setting::get('brand_logo');
+            $path = $request->file('logo')->storeAs('branding', 'logo-'.time().'.'.strtolower($request->file('logo')->getClientOriginalExtension()), 'local');
+            Setting::put('brand_logo', $path);
+            if ($old && $old !== $path) {
+                Storage::disk('local')->delete($old);
+            }
+        }
+        Brand::forget();
+
+        return redirect()->route('admin.settings', ['#general'])->with('status', __('admin.brandSaved'));
+    }
+
+    public function removeLogo(): RedirectResponse
+    {
+        if ($old = Setting::get('brand_logo')) {
+            Storage::disk('local')->delete($old);
+        }
+        Setting::put('brand_logo', '');
+        Brand::forget();
+
+        return redirect()->route('admin.settings', ['#general'])->with('status', __('admin.brandLogoRemoved'));
+    }
+
+    /** The uploaded logo, public: it is on the sign-in page. */
+    public function logo(): StreamedResponse
+    {
+        $path = Brand::logoPath();
+        abort_unless($path && Storage::disk('local')->exists($path), 404);
+
+        return Storage::disk('local')->response($path, null, ['Cache-Control' => 'public, max-age=86400']);
     }
 
     public function generateVapid(): RedirectResponse
