@@ -525,5 +525,6 @@
   "landing.footerTerms": "Conditions",
   "landing.language": "Langue",
   "admin.providerDefault": ":name (par défaut)",
-  "admin.providerSite": "Récupérez le login et la clé chez :name →"
+  "admin.providerSite": "Récupérez le login et la clé chez :name →",
+  "admin.uploadLimitLow": "Le PHP de ce serveur n'accepte que des envois jusqu'à :limit Mo : les fichiers plus gros échouent avant d'atteindre l'app (le fond demande :needed Mo). OpenMeru fournit public_root/.user.ini et .htaccess avec les bonnes valeurs ; si le serveur les ignore, mettez upload_max_filesize=30M et post_max_size=64M dans php.ini et redémarrez PHP."
 }

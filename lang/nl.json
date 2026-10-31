@@ -525,5 +525,6 @@
   "landing.footerTerms": "Voorwaarden",
   "landing.language": "Taal",
   "admin.providerDefault": ":name (standaard)",
-  "admin.providerSite": "Haal je login en sleutel op bij :name →"
+  "admin.providerSite": "Haal je login en sleutel op bij :name →",
+  "admin.uploadLimitLow": "De PHP van deze server accepteert alleen uploads tot :limit MB, dus grotere bestanden mislukken voordat ze de app bereiken (de achtergrond heeft :needed MB nodig). OpenMeru levert public_root/.user.ini en .htaccess met de juiste waarden; negeert de server die, zet dan upload_max_filesize=30M en post_max_size=64M in php.ini en herstart PHP."
 }

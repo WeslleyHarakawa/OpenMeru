@@ -525,5 +525,6 @@
   "landing.footerTerms": "Условия",
   "landing.language": "Язык",
   "admin.providerDefault": ":name (по умолчанию)",
-  "admin.providerSite": "Получите логин и ключ на :name →"
+  "admin.providerSite": "Получите логин и ключ на :name →",
+  "admin.uploadLimitLow": "PHP на этом сервере принимает загрузки только до :limit МБ, поэтому файлы больше не доходят до приложения (фону нужно :needed МБ). OpenMeru поставляет public_root/.user.ini и .htaccess с нужными значениями; если сервер их игнорирует, задайте upload_max_filesize=30M и post_max_size=64M в php.ini и перезапустите PHP."
 }

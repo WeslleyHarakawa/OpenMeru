@@ -126,6 +126,30 @@ class Brand
         return self::settings()['primary'] !== '' || self::settings()['secondary'] !== '';
     }
 
+    /**
+     * The biggest upload PHP itself lets through, in kilobytes. The app ships .user.ini and
+     * .htaccess to raise it; a server that ignores those (Apache without AllowOverride)
+     * stays at its own limit, and the admin is told so instead of seeing uploads fail.
+     */
+    public static function phpUploadLimitKb(): int
+    {
+        $bytes = fn (string $v) => match (strtoupper(substr(trim($v), -1))) {
+            'G' => (int) $v * 1024 * 1024 * 1024,
+            'M' => (int) $v * 1024 * 1024,
+            'K' => (int) $v * 1024,
+            default => (int) $v,
+        };
+        $limits = array_filter([(string) ini_get('upload_max_filesize'), (string) ini_get('post_max_size')], fn ($v) => $v !== '' && (int) $v > 0);
+
+        return $limits ? (int) floor(min(array_map($bytes, $limits)) / 1024) : PHP_INT_MAX;
+    }
+
+    /** The largest size the brand uploads need (the sign-in background). */
+    public static function neededUploadKb(): int
+    {
+        return max(array_column(self::ASSETS, 'max'));
+    }
+
     /** CSS that overrides the stylesheet's brand variables with the custom colours, or '' when none are set. */
     public static function cssVars(): string
     {

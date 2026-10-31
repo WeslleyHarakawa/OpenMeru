@@ -19,6 +19,9 @@
   <section class="panel" data-pane="general">
     <h2><i class="bi bi-sliders"></i> {{ __('admin.generalTitle') }}</h2>
     <p class="hint">{{ __('admin.generalLead') }}</p>
+    @if (\App\Support\Brand::phpUploadLimitKb() < \App\Support\Brand::neededUploadKb())
+      <div class="alert alert-warning small" id="uploadLimitWarning"><i class="bi bi-exclamation-triangle"></i> {{ __('admin.uploadLimitLow', ['limit' => round(\App\Support\Brand::phpUploadLimitKb() / 1024, 1), 'needed' => round(\App\Support\Brand::neededUploadKb() / 1024)]) }}</div>
+    @endif
     <form method="POST" action="{{ route('admin.settings.brand') }}" class="row g-3" enctype="multipart/form-data">
       @csrf @method('PUT')
       <div class="col-md-6">
