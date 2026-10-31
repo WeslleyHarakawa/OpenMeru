@@ -20,7 +20,7 @@
       </div>
       <div class="col-md-4">
         <label class="form-label" for="password">{{ __('admin.passwordMin') }}</label>
-        <input class="form-control" id="password" name="password" type="text" required minlength="8" autocomplete="new-password">
+        <div class="pw-wrap"><input class="form-control" id="password" name="password" type="password" required minlength="8" autocomplete="new-password"><button class="eye" type="button" data-toggle-eye aria-label="{{ __('showPw') }}"><i class="bi bi-eye"></i></button></div>
       </div>
       <div class="col-md-6">
         <label class="form-label" for="recovery_email">{{ __('admin.recoveryOptional') }}</label>

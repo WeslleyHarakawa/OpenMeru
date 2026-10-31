@@ -31,7 +31,7 @@
         </div>
         <div class="col-md-4">
           <label class="form-label">{{ __('admin.newPasswordKeep') }}</label>
-          <input class="form-control" name="password" type="text" minlength="8" autocomplete="new-password">
+          <div class="pw-wrap"><input class="form-control" name="password" type="password" minlength="8" autocomplete="new-password"><button class="eye" type="button" data-toggle-eye aria-label="{{ __('showPw') }}"><i class="bi bi-eye"></i></button></div>
         </div>
         <div class="col-md-4">
           <label class="form-label">{{ __('recoveryEmail') }}</label>

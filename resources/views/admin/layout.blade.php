@@ -14,6 +14,8 @@
     .admin-top nav a.active, .admin-top nav a:hover { background:var(--brand-soft); color:var(--brand); }
     .admin-top .spacer { flex:1; }
     .admin-main { max-width:1100px; margin:0 auto; padding:28px 16px 60px; }
+    .app-footer { display:flex; flex-wrap:wrap; justify-content:center; gap:8px 18px; padding:18px 16px 28px; color:var(--muted); font-size:13px; }
+    .app-footer a { color:var(--muted); }
     .panel { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px; margin-bottom:22px; }
     .panel h2 { font-size:18px; font-weight:600; margin:0 0 16px; }
     .panel .hint { color:var(--muted); font-size:13px; }
@@ -33,6 +35,8 @@
     .settings-nav a.active, .settings-nav a:hover { background:var(--brand-soft); color:var(--brand); }
     .settings-panes .panel[hidden] { display:none; }
     .settings-panes .logo-mark { width:44px; height:44px; border-radius:12px; object-fit:contain; }
+    .file-pick { display:flex; align-items:center; gap:10px; cursor:pointer; margin:0; }
+    .file-pick .btn { border-radius:10px; }
     @media (max-width: 820px) { .settings-layout { grid-template-columns:1fr; } .settings-nav { position:static; flex-direction:row; flex-wrap:wrap; } }
   </style>
 </head>
@@ -69,6 +73,7 @@
     @endunless
     @yield('content')
   </main>
+  @include('partials.footer')
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="/assets/js/mail.js?v={{ filemtime(public_path('assets/js/mail.js')) }}"></script>
   <script>

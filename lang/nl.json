@@ -134,7 +134,7 @@
   "terms": "Gebruiksvoorwaarden",
   "openMailbox": "Geopende mailbox:",
   "admin.accounts": "Accounts",
-  "admin.smtp": "Settings",
+  "admin.smtp": "Instellingen",
   "admin.myMailbox": "Mijn mailbox",
   "admin.theme": "Thema",
   "admin.showHide": "Tonen/verbergen",
@@ -334,5 +334,9 @@
   "admin.menuPush": "Pushmeldingen",
   "admin.menuTranslate": "Vertaling (Cloudflare AI)",
   "admin.menuInbound": "Inkomende mail (Cloudflare)",
-  "admin.menuUpdates": "Updates"
+  "admin.menuUpdates": "Updates",
+  "allRightsReserved": "Alle rechten voorbehouden.",
+  "developedBy": "Ontwikkeld door :name.",
+  "admin.chooseFile": "Kies een bestand…",
+  "admin.noFileChosen": "Geen bestand gekozen"
 }

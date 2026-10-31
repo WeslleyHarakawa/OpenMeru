@@ -104,16 +104,16 @@
 
   const validEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
-  // Show/hide buttons next to any password field (account settings, admin forms).
-  document.querySelectorAll("[data-toggle-eye]").forEach((eye) => {
-    eye.addEventListener("click", () => {
-      const input = eye.parentElement.querySelector("input");
-      if (!input) return;
-      const show = input.type === "password";
-      input.type = show ? "text" : "password";
-      eye.innerHTML = show ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
-      eye.setAttribute("aria-label", show ? t("hidePw") : t("showPw"));
-    });
+  // Show/hide buttons next to any password field (account settings, admin forms, rows loaded later).
+  document.addEventListener("click", (event) => {
+    const eye = event.target.closest("[data-toggle-eye]");
+    if (!eye) return;
+    const input = eye.parentElement.querySelector("input");
+    if (!input) return;
+    const show = input.type === "password";
+    input.type = show ? "text" : "password";
+    eye.innerHTML = show ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+    eye.setAttribute("aria-label", show ? t("hidePw") : t("showPw"));
   });
 
   if (page === "login" || page === "forgot" || page === "reset") {

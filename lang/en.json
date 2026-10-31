@@ -334,5 +334,9 @@
   "admin.menuPush": "Push notifications",
   "admin.menuTranslate": "Translation (Cloudflare AI)",
   "admin.menuInbound": "Incoming mail (Cloudflare)",
-  "admin.menuUpdates": "Updates"
+  "admin.menuUpdates": "Updates",
+  "allRightsReserved": "All rights reserved.",
+  "developedBy": "Developed by :name.",
+  "admin.chooseFile": "Choose a file…",
+  "admin.noFileChosen": "No file chosen"
 }

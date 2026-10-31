@@ -50,7 +50,7 @@ class UpdatesTest extends TestCase
         $this->assertSame('1.2.00', Version::bump('1.1.09', 'minor'));
         $this->assertSame('2.0.00', Version::bump('v1.1.09', 'major'));
         $this->assertSame('1.1.09', Version::bump('1.1.8'));
-        $this->assertTrue(Version::newerAvailable('1.1.12'));
+        $this->assertTrue(Version::newerAvailable(Version::bump(Version::current())));
         $this->assertFalse(Version::newerAvailable('1.1.08'));
         $this->assertTrue(Version::newerAvailable('99.0.00'));
         $this->assertFalse(Version::newerAvailable(Version::current()));

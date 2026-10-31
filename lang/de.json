@@ -134,7 +134,7 @@
   "terms": "Nutzungsbedingungen",
   "openMailbox": "Geöffnetes Postfach:",
   "admin.accounts": "Konten",
-  "admin.smtp": "Settings",
+  "admin.smtp": "Einstellungen",
   "admin.myMailbox": "Mein Postfach",
   "admin.theme": "Design",
   "admin.showHide": "Anzeigen/ausblenden",
@@ -334,5 +334,9 @@
   "admin.menuPush": "Push-Benachrichtigungen",
   "admin.menuTranslate": "Übersetzung (Cloudflare AI)",
   "admin.menuInbound": "Eingehende Mail (Cloudflare)",
-  "admin.menuUpdates": "Updates"
+  "admin.menuUpdates": "Updates",
+  "allRightsReserved": "Alle Rechte vorbehalten.",
+  "developedBy": "Entwickelt von :name.",
+  "admin.chooseFile": "Datei auswählen…",
+  "admin.noFileChosen": "Keine Datei ausgewählt"
 }

@@ -134,7 +134,7 @@
   "terms": "使用条款",
   "openMailbox": "当前邮箱：",
   "admin.accounts": "账户",
-  "admin.smtp": "Settings",
+  "admin.smtp": "设置",
   "admin.myMailbox": "我的邮箱",
   "admin.theme": "主题",
   "admin.showHide": "显示/隐藏",
@@ -334,5 +334,9 @@
   "admin.menuPush": "推送通知",
   "admin.menuTranslate": "翻译（Cloudflare AI）",
   "admin.menuInbound": "收信（Cloudflare）",
-  "admin.menuUpdates": "更新"
+  "admin.menuUpdates": "更新",
+  "allRightsReserved": "保留所有权利。",
+  "developedBy": "由 :name 开发。",
+  "admin.chooseFile": "选择文件…",
+  "admin.noFileChosen": "未选择文件"
 }

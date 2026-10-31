@@ -28,7 +28,11 @@
         <label class="form-label" for="logo">{{ __('admin.brandLogo') }}</label>
         <div class="d-flex align-items-center gap-3">
           @include('partials.logo', ['class' => 'sm'])
-          <input class="form-control" id="logo" name="logo" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+          <label class="file-pick" for="logo">
+            <input id="logo" name="logo" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" hidden>
+            <span class="btn btn-outline-secondary"><i class="bi bi-upload"></i> {{ __('admin.chooseFile') }}</span>
+            <span class="file-name hint" data-empty="{{ __('admin.noFileChosen') }}">{{ __('admin.noFileChosen') }}</span>
+          </label>
         </div>
         <div class="hint mt-1">{{ __('admin.brandLogoHint') }}</div>
       </div>
@@ -160,6 +164,12 @@
 </div>
 <script>
   (function () {
+    document.querySelectorAll(".file-pick input[type=file]").forEach(function (input) {
+      input.addEventListener("change", function () {
+        var name = input.parentElement.querySelector(".file-name");
+        name.textContent = input.files && input.files[0] ? input.files[0].name : name.dataset.empty;
+      });
+    });
     var links = document.querySelectorAll("[data-pane-link]");
     var panes = document.querySelectorAll("[data-pane]");
     function show(name) {

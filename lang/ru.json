@@ -134,7 +134,7 @@
   "terms": "Условия использования",
   "openMailbox": "Открыт ящик:",
   "admin.accounts": "Учётные записи",
-  "admin.smtp": "Settings",
+  "admin.smtp": "Настройки",
   "admin.myMailbox": "Мой ящик",
   "admin.theme": "Тема",
   "admin.showHide": "Показать/скрыть",
@@ -334,5 +334,9 @@
   "admin.menuPush": "Push-уведомления",
   "admin.menuTranslate": "Перевод (Cloudflare AI)",
   "admin.menuInbound": "Входящая почта (Cloudflare)",
-  "admin.menuUpdates": "Обновления"
+  "admin.menuUpdates": "Обновления",
+  "allRightsReserved": "Все права защищены.",
+  "developedBy": "Разработано: :name.",
+  "admin.chooseFile": "Выбрать файл…",
+  "admin.noFileChosen": "Файл не выбран"
 }
