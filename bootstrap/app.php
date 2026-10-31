@@ -22,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'mailbox.active' => \App\Http\Middleware\EnsureMailboxActive::class,
             'admin.area' => \App\Http\Middleware\AdminArea::class,
+            'source.only' => \App\Http\Middleware\SourceOnly::class,
         ]);
         // Check who is asking before resolving /admin/accounts/{account}: otherwise a visitor
         // can tell which account ids exist (404 for a missing one, 401 for a real one).

@@ -33,6 +33,7 @@ class UpdatesTest extends TestCase
 
     public function test_version_endpoint_tells_the_running_version(): void
     {
+        config(['updates.source' => true]);
         $this->getJson('/version')
             ->assertOk()
             ->assertJsonPath('version', Version::current())

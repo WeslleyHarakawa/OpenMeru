@@ -22,26 +22,29 @@ Route::middleware('guest')->group(function () {
     Route::post('/reset', [AuthController::class, 'reset'])->middleware('throttle:5,1')->name('password.update');
 });
 
-// The site root is the project's landing page; the webmail lives under /mail.
-Route::view('/', 'landing')->name('home');
-// One-line installer: curl -fsSL https://openmeru.com/install | bash
-Route::get('/install', fn () => response(file_get_contents(base_path('install.sh')), 200, [
-    'Content-Type' => 'text/plain; charset=utf-8',
-    'Cache-Control' => 'public, max-age=300',
-]))->name('install');
-// What other installs ask to know whether an update is out.
-Route::get('/version', fn () => response()->json([
-    'version' => \App\Support\Version::current(),
-    'commit' => \App\Support\Version::commit(),
-    'released_at' => \App\Support\Version::releasedAt(),
-    'repo' => 'https://github.com/WeslleyHarakawa/OpenMeru',
-    'url' => 'https://github.com/WeslleyHarakawa/OpenMeru/commits/main',
-    'install' => url('/install'),
-])->header('Cache-Control', 'public, max-age=300'))->name('version');
+// Every install is somebody's webmail: the root is the sign-in page and nothing about the
+// project shows. Only openmeru.com itself (config updates.source) has the landing page, the
+// demo, the installer and the version feed.
+Route::get('/', fn () => config('updates.source') ? view('landing') : redirect('/mail'))->name('home');
+Route::middleware('source.only')->group(function () {
+    // One-line installer: curl -fsSL https://openmeru.com/install | bash
+    Route::get('/install', fn () => response(file_get_contents(base_path('install.sh')), 200, [
+        'Content-Type' => 'text/plain; charset=utf-8',
+        'Cache-Control' => 'public, max-age=300',
+    ]))->name('install');
+    // What other installs ask to know whether an update is out.
+    Route::get('/version', fn () => response()->json([
+        'version' => \App\Support\Version::current(),
+        'commit' => \App\Support\Version::commit(),
+        'released_at' => \App\Support\Version::releasedAt(),
+        'repo' => 'https://github.com/WeslleyHarakawa/OpenMeru',
+        'url' => 'https://github.com/WeslleyHarakawa/OpenMeru/commits/main',
+        'install' => url('/install'),
+    ])->header('Cache-Control', 'public, max-age=300'))->name('version');
+    Route::get('/demo', [DemoController::class, 'mailbox'])->middleware('throttle:30,1')->name('demo');
+    Route::get('/demo/admin', [DemoController::class, 'admin'])->middleware('throttle:30,1')->name('demo.admin');
+});
 Route::get('/mail', [MailboxController::class, 'entry'])->name('login');
-// Public read-only demo.
-Route::get('/demo', [DemoController::class, 'mailbox'])->middleware('throttle:30,1')->name('demo');
-Route::get('/demo/admin', [DemoController::class, 'admin'])->middleware('throttle:30,1')->name('demo.admin');
 Route::view('/privacy', 'legal.privacy')->name('privacy');
 Route::view('/terms', 'legal.terms')->name('terms');
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:10,1')->name('login.attempt');
