@@ -396,7 +396,6 @@ php artisan openmeru:install</pre></div>
     <span>{!! __('developedBy', ['name' => '<a href="https://www.linkedin.com/in/weslleyharakawa" target="_blank" rel="noopener">Weslley Harakawa</a>']) !!}</span>
     <span class="r">
       <a href="{{ $repo }}" target="_blank" rel="noopener">GitHub</a>
-      <a href="/mail">{{ __('landing.footerWebmail') }}</a>
       <a href="{{ route('privacy') }}">{{ __('landing.footerPrivacy') }}</a>
       <a href="{{ route('terms') }}">{{ __('landing.footerTerms') }}</a>
     </span>
