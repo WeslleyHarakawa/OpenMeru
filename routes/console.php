@@ -57,6 +57,13 @@ Artisan::command('openmeru:smtp {host} {port} {username} {password} {from} {apiK
     $this->info('SMTP salvo.');
 })->purpose('Save the SMTP relay settings');
 
+// The cloud-hosting waitlist from the landing page, newest first (openmeru.com only).
+Artisan::command('openmeru:waitlist', function () {
+    $rows = \Illuminate\Support\Facades\DB::table('cloud_waitlist')->orderByDesc('created_at')->get();
+    $this->table(['Email', 'Language', 'Since'], $rows->map(fn ($r) => [$r->email, $r->locale, $r->created_at])->all());
+    $this->info($rows->count().' on the list.');
+})->purpose('List the cloud-hosting waitlist');
+
 // Switches the install to your own domain (MAIL_DOMAIN in .env).
 Artisan::command('openmeru:domain {domain}', function (string $domain) {
     $domain = mb_strtolower(trim($domain));

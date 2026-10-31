@@ -526,5 +526,16 @@
   "landing.language": "语言",
   "admin.providerDefault": ":name（默认）",
   "admin.providerSite": "在 :name 获取登录名和密钥 →",
-  "admin.uploadLimitLow": "此服务器的 PHP 只接受不超过 :limit MB 的上传，更大的文件在到达应用前就会失败（背景图需要 :needed MB）。OpenMeru 自带 public_root/.user.ini 和 .htaccess 并设好了正确的值；若服务器忽略它们，请在 php.ini 中设置 upload_max_filesize=30M 和 post_max_size=64M 并重启 PHP。"
+  "admin.uploadLimitLow": "此服务器的 PHP 只接受不超过 :limit MB 的上传，更大的文件在到达应用前就会失败（背景图需要 :needed MB）。OpenMeru 自带 public_root/.user.ini 和 .htaccess 并设好了正确的值；若服务器忽略它们，请在 php.ini 中设置 upload_max_filesize=30M 和 post_max_size=64M 并重启 PHP。",
+  "landing.waitTitle": "云托管版上线时通知我",
+  "landing.waitText": "自托管永远免费。托管云版本即将推出。",
+  "landing.waitPlaceholder": "your@email.com",
+  "landing.waitButton": "通知我",
+  "landing.waitDone": "谢谢！我们会通知你。",
+  "landing.waitError": "这个地址看起来不对。",
+  "landing.footerDocs": "文档",
+  "landing.footerFaq": "常见问题",
+  "landing.footerLicense": "MIT 许可证",
+  "landing.footerCoffee": "请我喝杯咖啡",
+  "landing.navHome": "主页"
 }

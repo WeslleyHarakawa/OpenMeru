@@ -526,5 +526,16 @@
   "landing.language": "Idioma",
   "admin.providerDefault": ":name (padrão)",
   "admin.providerSite": "Pegue o login e a chave em :name →",
-  "admin.uploadLimitLow": "O PHP deste servidor só aceita envios de até :limit MB, então arquivos maiores falham antes de chegar ao app (o fundo precisa de :needed MB). O OpenMeru traz public_root/.user.ini e .htaccess com os valores certos; se o servidor ignorá-los, defina upload_max_filesize=30M e post_max_size=64M no php.ini e reinicie o PHP."
+  "admin.uploadLimitLow": "O PHP deste servidor só aceita envios de até :limit MB, então arquivos maiores falham antes de chegar ao app (o fundo precisa de :needed MB). O OpenMeru traz public_root/.user.ini e .htaccess com os valores certos; se o servidor ignorá-los, defina upload_max_filesize=30M e post_max_size=64M no php.ini e reinicie o PHP.",
+  "landing.waitTitle": "Seja avisado quando a versão na nuvem for lançada",
+  "landing.waitText": "Hospedar por conta própria é sempre grátis. A versão gerenciada na nuvem está chegando.",
+  "landing.waitPlaceholder": "seu@email.com",
+  "landing.waitButton": "Me avise",
+  "landing.waitDone": "Obrigado! Vamos te avisar.",
+  "landing.waitError": "Esse endereço não parece válido.",
+  "landing.footerDocs": "Documentação",
+  "landing.footerFaq": "Perguntas",
+  "landing.footerLicense": "Licença MIT",
+  "landing.footerCoffee": "Me pague um café",
+  "landing.navHome": "Página principal"
 }

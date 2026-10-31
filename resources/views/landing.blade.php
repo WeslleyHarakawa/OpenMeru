@@ -77,6 +77,11 @@
     nav.links { display: flex; gap: 22px; font-size: 14px; align-items: center; }
     nav.links a { text-decoration: none; color: var(--muted); }
     nav.links a:hover { color: var(--ink); }
+    nav.links a .bi { margin-right: 4px; }
+    nav.links a.nbtn { border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; padding: 7px 14px; font-weight: 600; }
+    nav.links a.nbtn.fill { background: var(--accent); color: #fff; }
+    nav.links a.nbtn:hover { filter: brightness(1.1); color: var(--accent); }
+    nav.links a.nbtn.fill:hover { color: #fff; }
     .lang { position: relative; }
     .lang-btn { font: inherit; display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; }
     .lang-btn:hover { border-color: var(--accent); }
@@ -160,10 +165,22 @@
     details[open] summary::before { content: "− "; }
     details p { font-family: Inter, system-ui, sans-serif; color: var(--muted); margin: 10px 0 0; }
 
-    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; padding-top: 26px; padding-bottom: 40px; font-size: 12px; color: var(--faint); white-space: nowrap; }
-    footer a { text-decoration: underline; }
+    .waitlist { text-align: center; border-bottom: 0; }
+    .waitlist h3 { font-size: 24px; }
+    .waitlist p.txt { margin: 0 auto 18px; }
+    .waitlist form { display: flex; max-width: 520px; margin: 0 auto; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--code); }
+    .waitlist input { flex: 1; min-width: 0; font: inherit; font-family: Inter, system-ui, sans-serif; font-size: 15px; padding: 14px 16px; border: 0; background: transparent; color: var(--ink); outline: none; }
+    .waitlist button { font: inherit; font-weight: 600; font-size: 14px; border: 0; background: var(--accent); color: #fff; padding: 0 20px; cursor: pointer; white-space: nowrap; }
+    .waitlist .wait-msg { min-height: 1.5em; margin: 12px auto 0; font-size: 14px; }
+    .foot-nav { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .foot-nav a { display: flex; align-items: center; gap: 10px; padding: 18px 22px; text-decoration: none; color: var(--muted); font-size: 14px; border-right: 1px solid var(--line); }
+    .foot-nav a:last-child { border-right: 0; }
+    .foot-nav a:hover { color: var(--ink); background: var(--bg2); }
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 22px; padding-top: 22px; padding-bottom: 40px; font-size: 12px; color: var(--faint); white-space: nowrap; }
+    footer a { text-decoration: none; color: inherit; }
+    footer span a { text-decoration: underline; text-underline-offset: 3px; }
     footer a:hover { color: var(--ink); }
-    footer .r { display: flex; gap: 18px; justify-content: flex-end; flex-wrap: wrap; }
+    footer a.coffee { color: var(--accent); }
 
     @media (max-width: 640px) {
       nav.links a.hide-sm { display: none; }
@@ -178,8 +195,12 @@
       .vars { display: block; overflow-x: auto; }
       .wrap { padding: 0; }
       header.top .wrap, footer .wrap { padding-left: 16px; padding-right: 16px; }
-      footer .wrap { flex-direction: column; text-align: center; white-space: normal; }
-      footer .r { justify-content: center; }
+      footer .wrap { white-space: normal; text-align: center; }
+      .foot-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .foot-nav a:nth-child(2) { border-right: 0; }
+      .foot-nav a:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .waitlist form { flex-direction: column; }
+      .waitlist button { padding: 12px; }
       .need td:first-child { width: auto; white-space: normal; }
     }
   </style>
@@ -192,10 +213,11 @@
       <img class="dark" src="/assets/brand/logo-dark.png" alt="OpenMeru" width="650" height="174">
     </a>
     <nav class="links">
-      <a href="#demo">{{ __('landing.navDemo') }}</a>
-      <a class="hide-sm" href="#how">{{ __('landing.navHow') }}</a>
-      <a class="hide-sm" href="#install">{{ __('landing.navInstall') }}</a>
-      <a class="hide-sm" href="{{ $repo }}" target="_blank" rel="noopener">GitHub</a>
+      <a class="hide-sm" href="{{ $repo }}" target="_blank" rel="noopener"><i class="bi bi-github"></i> GitHub</a>
+      <a class="hide-sm" href="/docs"><i class="bi bi-book"></i> {{ __('landing.footerDocs') }}</a>
+      <a class="hide-sm" href="#faq">{{ __('landing.footerFaq') }}</a>
+      <a class="nbtn fill" href="#install"><i class="bi bi-terminal"></i> {{ __('landing.navInstall') }}</a>
+      <a class="nbtn" href="https://buymeacoffee.com/weslleyharakawa" target="_blank" rel="noopener"><i class="bi bi-heart"></i> <span class="hide-sm">{{ __('landing.footerCoffee') }}</span></a>
       <div class="lang" id="langPick">
         <button class="lang-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="{{ __('landing.language') }}">
           <i class="bi bi-globe2"></i><span class="lang-code">{{ strtoupper(str_replace('_', '-', $locale)) }}</span>
@@ -388,23 +410,41 @@ php artisan openmeru:install</pre></div>
     <div class="block"><button class="copy">{{ __('landing.copy') }}</button><pre>curl -fsSL https://openmeru.com/install | bash</pre></div>
   </section>
 
-  <section class="pad">
+  <section class="pad" id="faq">
     <h2>{{ __('landing.faqTitle') }}</h2>
     @foreach ([1, 2, 3, 4, 5, 6] as $n)
     <details><summary>{{ __('landing.q'.$n) }}</summary><p>{!! __('landing.a'.$n) !!}</p></details>
     @endforeach
   </section>
+
+  <section class="pad waitlist">
+    <h3>{{ __('landing.waitTitle') }}</h3>
+    <p class="txt">{{ __('landing.waitText') }}</p>
+    <form id="waitlist" action="{{ route('waitlist') }}" method="post">
+      @csrf
+      <input type="email" name="email" required placeholder="{{ __('landing.waitPlaceholder') }}" autocomplete="email">
+      <button type="submit"><i class="bi bi-arrow-right"></i> {{ __('landing.waitButton') }}</button>
+    </form>
+    <p class="txt wait-msg" aria-live="polite"></p>
+  </section>
 </main>
+
+<nav class="foot-nav wrap frame">
+  <a href="{{ $repo }}" target="_blank" rel="noopener"><i class="bi bi-github"></i> GitHub</a>
+  <a href="/docs"><i class="bi bi-book"></i> {{ __('landing.footerDocs') }}</a>
+  <a href="#faq"><i class="bi bi-question-circle"></i> {{ __('landing.footerFaq') }}</a>
+  <a href="https://x.com/weslleyharakawa" target="_blank" rel="noopener"><i class="bi bi-twitter-x"></i> X / Twitter</a>
+</nav>
 
 <footer>
   <div class="wrap">
-    <span>© {{ date('Y') }} <a href="https://openmeru.com">OpenMeru</a>. {{ __('allRightsReserved') }}</span>
-    <span>{!! __('developedBy', ['name' => '<a href="https://www.linkedin.com/in/weslleyharakawa" target="_blank" rel="noopener">Weslley Harakawa</a>']) !!}</span>
-    <span class="r">
-      <a href="{{ $repo }}" target="_blank" rel="noopener">GitHub</a>
-      <a href="{{ route('privacy') }}">{{ __('landing.footerPrivacy') }}</a>
-      <a href="{{ route('terms') }}">{{ __('landing.footerTerms') }}</a>
-    </span>
+    <span>© {{ date('Y') }} <a href="https://github.com/WeslleyHarakawa" target="_blank" rel="noopener">Weslley Harakawa</a></span>
+    <a href="https://x.com/weslleyharakawa" target="_blank" rel="noopener"><i class="bi bi-twitter-x"></i> @weslleyharakawa</a>
+    <a href="https://www.linkedin.com/in/weslleyharakawa" target="_blank" rel="noopener"><i class="bi bi-linkedin"></i> LinkedIn</a>
+    <a href="{{ route('privacy') }}">{{ __('landing.footerPrivacy') }}</a>
+    <a href="{{ route('terms') }}">{{ __('landing.footerTerms') }}</a>
+    <a href="{{ $repo }}/blob/main/LICENSE" target="_blank" rel="noopener">{{ __('landing.footerLicense') }}</a>
+    <a class="coffee" href="https://buymeacoffee.com/weslleyharakawa" target="_blank" rel="noopener"><i class="bi bi-heart"></i> {{ __('landing.footerCoffee') }}</a>
   </div>
 </footer>
 
@@ -421,6 +461,17 @@ php artisan openmeru:install</pre></div>
       document.querySelectorAll(".tabs button").forEach(function (x) { x.setAttribute("aria-selected", x === b ? "true" : "false"); });
       document.getElementById("cmd").textContent = b.dataset.cmd;
     });
+  });
+  var wl = document.getElementById("waitlist");
+  if (wl) wl.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var msg = wl.parentElement.querySelector(".wait-msg"), btn = wl.querySelector("button");
+    btn.disabled = true;
+    fetch(wl.action, { method: "POST", headers: { Accept: "application/json", "X-CSRF-TOKEN": wl.querySelector("[name=_token]").value, "Content-Type": "application/json" }, body: JSON.stringify({ email: wl.email.value }) })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) { msg.textContent = res.ok ? res.d.message : @json(__('landing.waitError')); if (res.ok) wl.reset(); })
+      .catch(function () { msg.textContent = @json(__('landing.waitError')); })
+      .then(function () { btn.disabled = false; });
   });
   var copied = @json(__('landing.copied')), copy = @json(__('landing.copy'));
   document.querySelectorAll(".copy").forEach(function (b) {

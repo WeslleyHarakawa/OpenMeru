@@ -526,5 +526,16 @@
   "landing.language": "Taal",
   "admin.providerDefault": ":name (standaard)",
   "admin.providerSite": "Haal je login en sleutel op bij :name →",
-  "admin.uploadLimitLow": "De PHP van deze server accepteert alleen uploads tot :limit MB, dus grotere bestanden mislukken voordat ze de app bereiken (de achtergrond heeft :needed MB nodig). OpenMeru levert public_root/.user.ini en .htaccess met de juiste waarden; negeert de server die, zet dan upload_max_filesize=30M en post_max_size=64M in php.ini en herstart PHP."
+  "admin.uploadLimitLow": "De PHP van deze server accepteert alleen uploads tot :limit MB, dus grotere bestanden mislukken voordat ze de app bereiken (de achtergrond heeft :needed MB nodig). OpenMeru levert public_root/.user.ini en .htaccess met de juiste waarden; negeert de server die, zet dan upload_max_filesize=30M en post_max_size=64M in php.ini en herstart PHP.",
+  "landing.waitTitle": "Krijg bericht als de cloudversie uitkomt",
+  "landing.waitText": "Zelf hosten blijft altijd gratis. De beheerde cloudversie komt eraan.",
+  "landing.waitPlaceholder": "jouw@email.nl",
+  "landing.waitButton": "Houd me op de hoogte",
+  "landing.waitDone": "Bedankt! We laten het je weten.",
+  "landing.waitError": "Dat adres ziet er niet goed uit.",
+  "landing.footerDocs": "Documentatie",
+  "landing.footerFaq": "FAQ",
+  "landing.footerLicense": "MIT-licentie",
+  "landing.footerCoffee": "Trakteer me op koffie",
+  "landing.navHome": "Hoofdpagina"
 }

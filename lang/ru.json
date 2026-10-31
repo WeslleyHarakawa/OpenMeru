@@ -526,5 +526,16 @@
   "landing.language": "Язык",
   "admin.providerDefault": ":name (по умолчанию)",
   "admin.providerSite": "Получите логин и ключ на :name →",
-  "admin.uploadLimitLow": "PHP на этом сервере принимает загрузки только до :limit МБ, поэтому файлы больше не доходят до приложения (фону нужно :needed МБ). OpenMeru поставляет public_root/.user.ini и .htaccess с нужными значениями; если сервер их игнорирует, задайте upload_max_filesize=30M и post_max_size=64M в php.ini и перезапустите PHP."
+  "admin.uploadLimitLow": "PHP на этом сервере принимает загрузки только до :limit МБ, поэтому файлы больше не доходят до приложения (фону нужно :needed МБ). OpenMeru поставляет public_root/.user.ini и .htaccess с нужными значениями; если сервер их игнорирует, задайте upload_max_filesize=30M и post_max_size=64M в php.ini и перезапустите PHP.",
+  "landing.waitTitle": "Узнайте первыми о запуске облачной версии",
+  "landing.waitText": "Самостоятельный хостинг всегда бесплатен. Управляемая облачная версия скоро.",
+  "landing.waitPlaceholder": "vash@email.com",
+  "landing.waitButton": "Сообщить мне",
+  "landing.waitDone": "Спасибо! Мы вам напишем.",
+  "landing.waitError": "Этот адрес выглядит неверно.",
+  "landing.footerDocs": "Документация",
+  "landing.footerFaq": "Вопросы",
+  "landing.footerLicense": "Лицензия MIT",
+  "landing.footerCoffee": "Угостить кофе",
+  "landing.navHome": "Главная"
 }
