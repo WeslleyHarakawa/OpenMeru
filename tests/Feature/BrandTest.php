@@ -31,7 +31,7 @@ class BrandTest extends TestCase
 
     public function test_default_brand_is_openmeru_mail(): void
     {
-        $this->get('/')->assertOk()->assertSee('OpenMeru')->assertSee('MAIL')->assertSee('<svg class="logo-mark', false);
+        $this->get('/')->assertOk()->assertSee('OpenMeru')->assertSee('MAIL')->assertSee('<svg class="logo-mark', false)->assertDontSee('Brand::product');
         $this->assertSame('OpenMeru Mail', Brand::name());
         $this->get('/brand/logo')->assertNotFound();
     }

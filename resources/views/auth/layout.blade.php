@@ -16,7 +16,7 @@
       <div class="brand-lockup">
         @include('partials.logo', ['class' => 'lg'])
         <div class="wordmark">{{ \App\Support\Brand::wordmark() }}</div>
-        @if (\App\Support\Brand::product())<div class="product">\App\Support\Brand::product()</div>@endif
+        @if (\App\Support\Brand::product())<div class="product">{{ \App\Support\Brand::product() }}</div>@endif
       </div>
     </section>
     <main class="auth-panel">
