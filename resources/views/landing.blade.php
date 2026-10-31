@@ -33,6 +33,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" integrity="sha384-XGjxtQfXaH2tnPFa9x+ruJTuLE3Aa6LhHSWRr1XeTyhezb4abCG4ccI5AkVDxqC+" crossorigin="anonymous" rel="stylesheet">
   <script type="application/ld+json">{!! json_encode([
     '@context' => 'https://schema.org',
     '@type' => 'SoftwareApplication',
@@ -71,9 +72,16 @@
     nav.links { display: flex; gap: 22px; font-size: 14px; align-items: center; }
     nav.links a { text-decoration: none; color: var(--muted); }
     nav.links a:hover { color: var(--ink); }
-    .lang { position: relative; display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
-    .lang svg { width: 16px; height: 16px; }
-    .lang select { font: inherit; font-size: 13px; background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; cursor: pointer; }
+    .lang { position: relative; }
+    .lang-btn { font: inherit; display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; }
+    .lang-btn:hover { border-color: var(--accent); }
+    .lang-btn .bi { font-size: 16px; line-height: 1; }
+    .lang-code { font-size: 12px; font-weight: 700; letter-spacing: .04em; }
+    .lang-menu { display: none; position: absolute; right: 0; top: calc(100% + 8px); z-index: 20; width: 320px; max-width: calc(100vw - 24px); padding: 6px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); box-shadow: 0 12px 32px rgba(0,0,0,.18); grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 4px; }
+    .lang-menu.show { display: grid; }
+    .lang-menu a { display: block; text-decoration: none; color: var(--ink); font-family: Inter, system-ui, sans-serif; font-size: 14px; padding: 7px 12px; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .lang-menu a:hover { background: var(--code); }
+    .lang-menu a.active { background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); font-weight: 600; }
 
     section { border-bottom: 1px solid var(--line); }
     .pad { padding: 64px 28px; }
@@ -146,7 +154,7 @@
     details[open] summary::before { content: "− "; }
     details p { font-family: Inter, system-ui, sans-serif; color: var(--muted); margin: 10px 0 0; }
 
-    footer .wrap { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 14px; padding-top: 26px; padding-bottom: 40px; font-size: 13px; color: var(--faint); }
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; padding-top: 26px; padding-bottom: 40px; font-size: 12px; color: var(--faint); white-space: nowrap; }
     footer a { text-decoration: underline; }
     footer a:hover { color: var(--ink); }
     footer .r { display: flex; gap: 18px; justify-content: flex-end; flex-wrap: wrap; }
@@ -154,6 +162,8 @@
     @media (max-width: 640px) {
       nav.links a.hide-sm { display: none; }
       nav.links { gap: 14px; }
+      .lang-code { display: none; }
+      .lang-btn { width: 36px; padding: 0; justify-content: center; }
       .pad, .hero { padding-left: 16px; padding-right: 16px; }
       .hero { padding-top: 56px; }
       .step { grid-template-columns: minmax(0, 1fr); }
@@ -162,7 +172,7 @@
       .vars { display: block; overflow-x: auto; }
       .wrap { padding: 0; }
       header.top .wrap, footer .wrap { padding-left: 16px; padding-right: 16px; }
-      footer .wrap { grid-template-columns: minmax(0, 1fr); text-align: center; }
+      footer .wrap { flex-direction: column; text-align: center; white-space: normal; }
       footer .r { justify-content: center; }
       .need td:first-child { width: auto; white-space: normal; }
     }
@@ -180,13 +190,16 @@
       <a class="hide-sm" href="#how">{{ __('landing.navHow') }}</a>
       <a class="hide-sm" href="#install">{{ __('landing.navInstall') }}</a>
       <a class="hide-sm" href="{{ $repo }}" target="_blank" rel="noopener">GitHub</a>
-      <label class="lang">
-        <select id="langPick" aria-label="{{ __('landing.language') }}">
+      <div class="lang" id="langPick">
+        <button class="lang-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="{{ __('landing.language') }}">
+          <i class="bi bi-globe2"></i><span class="lang-code">{{ strtoupper(str_replace('_', '-', $locale)) }}</span>
+        </button>
+        <div class="lang-menu" role="menu">
           @foreach (\App\Support\Locales::ALL as $code => [$native, $tag])
-          <option value="{{ $code }}" lang="{{ $tag }}" @selected($code === $locale)>{{ $native }}</option>
+          <a role="menuitem" href="/?lang={{ $code }}" lang="{{ $tag }}" hreflang="{{ $tag }}" @class(['active' => $code === $locale])>{{ $native }}</a>
           @endforeach
-        </select>
-      </label>
+        </div>
+      </div>
     </nav>
   </div>
 </header>
@@ -391,9 +404,13 @@ php artisan openmeru:install</pre></div>
 </footer>
 
 <script>
-  document.getElementById("langPick").addEventListener("change", function () {
-    location.href = "/?lang=" + encodeURIComponent(this.value);
-  });
+  (function () {
+    var pick = document.getElementById("langPick"), btn = pick.querySelector(".lang-btn"), menu = pick.querySelector(".lang-menu");
+    function toggle(open) { menu.classList.toggle("show", open); btn.setAttribute("aria-expanded", open ? "true" : "false"); }
+    btn.addEventListener("click", function (e) { e.stopPropagation(); toggle(!menu.classList.contains("show")); });
+    document.addEventListener("click", function (e) { if (!pick.contains(e.target)) toggle(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") toggle(false); });
+  })();
   document.querySelectorAll(".tabs button").forEach(function (b) {
     b.addEventListener("click", function () {
       document.querySelectorAll(".tabs button").forEach(function (x) { x.setAttribute("aria-selected", x === b ? "true" : "false"); });
