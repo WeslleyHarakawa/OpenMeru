@@ -165,8 +165,8 @@ class AccountSettingsController extends Controller
     public function testPush(Request $request): JsonResponse
     {
         $sent = Push::send($request->user(), [
-            'title' => 'OpenMeru Mail',
-            'body' => 'As notificações estão funcionando.',
+            'title' => \App\Support\Brand::name(),
+            'body' => __('pushTestBody'),
             'url' => parse_url(route('login'), PHP_URL_PATH) ?: '/',
             'tag' => 'test',
         ]);

@@ -338,5 +338,7 @@
   "allRightsReserved": "Todos los derechos reservados.",
   "developedBy": "Desarrollado por :name.",
   "admin.chooseFile": "Elegir un archivo…",
-  "admin.noFileChosen": "Ningún archivo elegido"
+  "admin.noFileChosen": "Ningún archivo elegido",
+  "admin.pillAdmin": "admin",
+  "pushTestBody": "Las notificaciones funcionan."
 }

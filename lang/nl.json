@@ -338,5 +338,7 @@
   "allRightsReserved": "Alle rechten voorbehouden.",
   "developedBy": "Ontwikkeld door :name.",
   "admin.chooseFile": "Kies een bestand…",
-  "admin.noFileChosen": "Geen bestand gekozen"
+  "admin.noFileChosen": "Geen bestand gekozen",
+  "admin.pillAdmin": "beheerder",
+  "pushTestBody": "Meldingen werken."
 }

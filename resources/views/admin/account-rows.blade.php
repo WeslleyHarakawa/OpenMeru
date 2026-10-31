@@ -3,7 +3,7 @@
     <td>
       <strong>{{ $account->name }}</strong><br>
       <span class="hint">{{ $account->email }}</span>
-      @if ($account->is_admin) <span class="pill admin">admin</span> @endif
+      @if ($account->is_admin) <span class="pill admin">{{ __('admin.pillAdmin') }}</span> @endif
     </td>
     <td><span class="pill {{ $account->is_active ? 'on' : 'off' }}">{{ $account->is_active ? __('admin.active') : __('admin.disabled') }}</span></td>
     <td>{{ $account->messages_count }} @if ($account->unread_count) <span class="hint">({{ __('admin.unread', ['count' => $account->unread_count]) }})</span> @endif</td>

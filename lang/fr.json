@@ -338,5 +338,7 @@
   "allRightsReserved": "Tous droits réservés.",
   "developedBy": "Développé par :name.",
   "admin.chooseFile": "Choisir un fichier…",
-  "admin.noFileChosen": "Aucun fichier choisi"
+  "admin.noFileChosen": "Aucun fichier choisi",
+  "admin.pillAdmin": "admin",
+  "pushTestBody": "Les notifications fonctionnent."
 }

@@ -338,5 +338,7 @@
   "allRightsReserved": "保留所有权利。",
   "developedBy": "由 :name 开发。",
   "admin.chooseFile": "选择文件…",
-  "admin.noFileChosen": "未选择文件"
+  "admin.noFileChosen": "未选择文件",
+  "admin.pillAdmin": "管理员",
+  "pushTestBody": "通知正常工作。"
 }

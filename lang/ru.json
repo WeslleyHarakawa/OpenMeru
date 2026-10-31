@@ -338,5 +338,7 @@
   "allRightsReserved": "Все права защищены.",
   "developedBy": "Разработано: :name.",
   "admin.chooseFile": "Выбрать файл…",
-  "admin.noFileChosen": "Файл не выбран"
+  "admin.noFileChosen": "Файл не выбран",
+  "admin.pillAdmin": "админ",
+  "pushTestBody": "Уведомления работают."
 }
