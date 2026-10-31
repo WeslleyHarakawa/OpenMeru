@@ -300,5 +300,20 @@
   "admin.trSave": "Save translation",
   "admin.trSaved": "Translation settings saved.",
   "admin.trOn": "Cloudflare on",
-  "admin.trOff": "Chrome only"
+  "admin.trOff": "Chrome only",
+  "admin.updateAvailable": "Update :version is available",
+  "admin.updateCurrent": "You are on :version.",
+  "admin.updateWhatsNew": "What changed",
+  "admin.updateNow": "Update now",
+  "admin.updateOrTerminal": "Or run this on the server, as the site user:",
+  "admin.updateTerminalOnly": "This install is not a git checkout, so update it from the terminal, as the site user:",
+  "admin.updating": "Updating…",
+  "admin.updatingHint": "Backing up the database, fetching the code, installing dependencies, migrating. Keep this page open.",
+  "admin.updateFailed": "The update failed",
+  "admin.updateFailedHint": "The previous version is still running. The log below says why; fix it and try again.",
+  "admin.updateCheckFailed": "Could not check for updates: :error",
+  "admin.updateFound": "Update :version is available.",
+  "admin.upToDate": "You are on the latest version (:version).",
+  "admin.checkUpdates": "Check for updates",
+  "admin.close": "Close"
 }

@@ -107,4 +107,13 @@
     <p class="mb-1">URL: <code class="copy">{{ $inbound_url }}?to=&lt;{{ __('admin.recipient') }}&gt;</code></p>
     <p class="mb-0">{{ __('admin.secret') }}: @if ($inbound_secret_set) <span class="pill on">{{ __('admin.secretSet') }}</span> @else <span class="pill off">{{ __('admin.secretMissing') }}</span> @endif</p>
   </section>
+
+  <section class="panel">
+    <h2><i class="bi bi-arrow-repeat"></i> OpenMeru Mail v{{ \App\Support\Version::current() }}</h2>
+    <form method="POST" action="{{ route('admin.update.check') }}" class="d-flex align-items-center gap-3 flex-wrap">
+      @csrf
+      <button class="btn btn-outline-primary" type="submit"><i class="bi bi-cloud-arrow-down"></i> {{ __('admin.checkUpdates') }}</button>
+      <span class="hint">{{ __('admin.updateOrTerminal') }} <code class="copy">{{ \App\Support\Updates::installCommand() }}</code></span>
+    </form>
+  </section>
 @endsection

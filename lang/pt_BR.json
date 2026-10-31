@@ -300,5 +300,20 @@
   "admin.trSave": "Salvar tradução",
   "admin.trSaved": "Configuração de tradução salva.",
   "admin.trOn": "Cloudflare ativa",
-  "admin.trOff": "Só Chrome"
+  "admin.trOff": "Só Chrome",
+  "admin.updateAvailable": "Atualização :version disponível",
+  "admin.updateCurrent": "Você está na versão :version.",
+  "admin.updateWhatsNew": "O que mudou",
+  "admin.updateNow": "Atualizar agora",
+  "admin.updateOrTerminal": "Ou rode isto no servidor, como o usuário do site:",
+  "admin.updateTerminalOnly": "Esta instalação não é um checkout git; atualize pelo terminal, como o usuário do site:",
+  "admin.updating": "Atualizando…",
+  "admin.updatingHint": "Fazendo backup do banco, baixando o código, instalando dependências e migrando. Mantenha esta página aberta.",
+  "admin.updateFailed": "A atualização falhou",
+  "admin.updateFailedHint": "A versão anterior continua funcionando. O log abaixo diz por quê; corrija e tente de novo.",
+  "admin.updateCheckFailed": "Não foi possível verificar atualizações: :error",
+  "admin.updateFound": "Atualização :version disponível.",
+  "admin.upToDate": "Você está na versão mais recente (:version).",
+  "admin.checkUpdates": "Verificar atualizações",
+  "admin.close": "Fechar"
 }

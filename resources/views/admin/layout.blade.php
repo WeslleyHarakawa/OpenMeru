@@ -45,7 +45,7 @@
       <a href="/mail"><i class="bi bi-envelope"></i> {{ __('admin.myMailbox') }}</a>
     </nav>
     <span class="spacer"></span>
-    <span class="hint" style="color:var(--muted)">{{ auth()->user()->email }}</span>
+    <span class="hint" style="color:var(--muted)" title="OpenMeru Mail {{ \App\Support\Version::current() }}">{{ auth()->user()->email }} · v{{ \App\Support\Version::current() }}</span>
     @include('partials.lang-menu')
     <button class="icon-btn" type="button" data-action="theme" aria-label="{{ __('admin.theme') }}"><i class="bi bi-moon"></i></button>
     <form method="POST" action="/logout">@csrf<input type="hidden" name="next" value="/admin"><button class="btn btn-sm btn-outline-secondary" type="submit">{{ __('signOut') }}</button></form>
@@ -60,6 +60,9 @@
     @if ($errors->any())
       <div class="alert alert-danger"><ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
     @endif
+    @unless (auth()->user()->is_demo)
+      @include('admin.update-banner')
+    @endunless
     @yield('content')
   </main>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\ImpersonateController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\UpdateController;
 use App\Http\Controllers\Admin\VerifyController;
 use App\Http\Controllers\AccountSettingsController;
 use App\Http\Controllers\AuthController;
@@ -28,6 +29,15 @@ Route::get('/install', fn () => response(file_get_contents(base_path('install.sh
     'Content-Type' => 'text/plain; charset=utf-8',
     'Cache-Control' => 'public, max-age=300',
 ]))->name('install');
+// What other installs ask to know whether an update is out.
+Route::get('/version', fn () => response()->json([
+    'version' => \App\Support\Version::current(),
+    'commit' => \App\Support\Version::commit(),
+    'released_at' => \App\Support\Version::releasedAt(),
+    'repo' => 'https://github.com/WeslleyHarakawa/OpenMeru',
+    'url' => 'https://github.com/WeslleyHarakawa/OpenMeru/commits/main',
+    'install' => url('/install'),
+])->header('Cache-Control', 'public, max-age=300'))->name('version');
 Route::get('/mail', [MailboxController::class, 'entry'])->name('login');
 // Public read-only demo.
 Route::get('/demo', [DemoController::class, 'mailbox'])->middleware('throttle:30,1')->name('demo');
@@ -85,4 +95,8 @@ Route::prefix('admin')->middleware('admin.area')->name('admin.')->group(function
     Route::put('/settings/translate', [SettingsController::class, 'translate'])->name('settings.translate');
     Route::post('/settings/test', [SettingsController::class, 'test'])->name('settings.test');
     Route::post('/settings/vapid', [SettingsController::class, 'generateVapid'])->name('settings.vapid');
+    Route::get('/update', [UpdateController::class, 'status'])->name('update.status');
+    Route::post('/update', [UpdateController::class, 'start'])->name('update.start');
+    Route::post('/update/check', [UpdateController::class, 'check'])->name('update.check');
+    Route::post('/update/dismiss', [UpdateController::class, 'dismiss'])->name('update.dismiss');
 });
