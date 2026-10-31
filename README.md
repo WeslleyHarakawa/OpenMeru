@@ -159,6 +159,8 @@ If receiving fails, check:
 
 ## Updating
 
+Every install asks `https://openmeru.com/version` once a day. When a newer version is out, `/admin` shows a banner with **Update now** (on git checkouts: database backup, `git pull`, `composer install`, migrations, caches, with the log on screen) and the one-line command for everything else.
+
 The same line that installs also updates. Run it as the site user:
 
 ```bash
