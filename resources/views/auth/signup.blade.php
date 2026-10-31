@@ -14,7 +14,7 @@
     <label class="field field-domain">
       <i class="bi bi-at"></i>
       <input name="local" autocomplete="username" data-i18n-ph="signupLocalPh" placeholder="{{ __('signupLocalPh') }}" required maxlength="64" pattern="[a-z0-9]([a-z0-9._-]*[a-z0-9])?" style="text-transform:lowercase">
-      <span class="domain-suffix">@{{ config('inbound.domain') }}</span>
+      <span class="domain-suffix">{{ '@'.config('inbound.domain') }}</span>
     </label>
     <label class="field">
       <i class="bi bi-lock"></i>
