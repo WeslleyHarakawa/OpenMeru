@@ -39,20 +39,20 @@ class UpdatesTest extends TestCase
             ->assertJsonPath('version', Version::current())
             ->assertJsonStructure(['version', 'commit', 'released_at', 'repo', 'url', 'install']);
 
-        $this->assertMatchesRegularExpression('/^\d+\.\d{2}\.\d{2}$/', Version::current());
+        $this->assertMatchesRegularExpression('/^\d+\.\d+\.\d{2}$/', Version::current());
     }
 
     public function test_bump_and_compare(): void
     {
-        $this->assertSame('1.01.10', Version::bump('1.01.09'));
-        $this->assertSame('1.02.00', Version::bump('1.01.99'));
-        $this->assertSame('2.00.00', Version::bump('1.99.99'));
-        $this->assertSame('1.02.00', Version::bump('1.01.09', 'minor'));
-        $this->assertSame('2.00.00', Version::bump('v1.01.09', 'major'));
-        $this->assertSame('1.01.09', Version::bump('1.1.8'));
-        $this->assertTrue(Version::newerAvailable('1.01.10'));
-        $this->assertFalse(Version::newerAvailable('1.01.08'));
-        $this->assertTrue(Version::newerAvailable('99.00.00'));
+        $this->assertSame('1.1.10', Version::bump('1.1.09'));
+        $this->assertSame('1.2.00', Version::bump('1.1.99'));
+        $this->assertSame('2.0.00', Version::bump('1.99.99'));
+        $this->assertSame('1.2.00', Version::bump('1.1.09', 'minor'));
+        $this->assertSame('2.0.00', Version::bump('v1.1.09', 'major'));
+        $this->assertSame('1.1.09', Version::bump('1.1.8'));
+        $this->assertTrue(Version::newerAvailable('1.1.11'));
+        $this->assertFalse(Version::newerAvailable('1.1.08'));
+        $this->assertTrue(Version::newerAvailable('99.0.00'));
         $this->assertFalse(Version::newerAvailable(Version::current()));
         $this->assertFalse(Version::newerAvailable('0.0.1'));
     }

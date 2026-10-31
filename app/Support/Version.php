@@ -55,9 +55,9 @@ class Version
     }
 
     /**
-     * Versions read X.XX.XX like a counter: the last number goes up on every release and
-     * rolls over into the middle one at 99 (1.01.99 -> 1.02.00), which rolls over into the
-     * first at 99 (1.99.99 -> 2.00.00). --minor and --major move the bigger number at once.
+     * Versions read X.X.XX like a counter: the last number goes up on every release and
+     * rolls over into the middle one at 99 (1.1.99 -> 1.2.00), which rolls over into the
+     * first at 99 (1.99.99 -> 2.0.00). --minor and --major move the bigger number at once.
      */
     public static function bump(string $version, string $level = 'patch'): string
     {
@@ -82,7 +82,7 @@ class Version
 
     public static function format(int $major, int $minor, int $patch): string
     {
-        return sprintf('%d.%02d.%02d', $major, $minor, $patch);
+        return sprintf('%d.%d.%02d', $major, $minor, $patch);
     }
 
     /** Comparable form: no "v", no zero padding (version_compare reads 1.01.010 as 1.1.10 anyway). */
