@@ -340,5 +340,18 @@
   "admin.chooseFile": "Выбрать файл…",
   "admin.noFileChosen": "Файл не выбран",
   "admin.pillAdmin": "админ",
-  "pushTestBody": "Уведомления работают."
+  "pushTestBody": "Уведомления работают.",
+  "admin.brandColors": "Цвета",
+  "admin.primaryColor": "Основной",
+  "admin.secondaryColor": "Дополнительный",
+  "admin.colorsHint": "Основной используется для кнопок, ссылок и выделений; дополнительный — для наведения и градиентов.",
+  "admin.resetColors": "Сбросить цвета",
+  "admin.loginBackground": "Фон страницы входа",
+  "admin.loginBackgroundHint": "PNG, JPG или WebP до 4 МБ, показывается за панелью бренда на странице входа.",
+  "admin.removeBackground": "Удалить фон",
+  "admin.brandIcon": "Иконка",
+  "admin.brandIconHint": "Маленький квадратный знак для боковой панели, шапки админки и иконки приложения на телефоне. PNG, JPG, WebP или SVG, до 1 МБ. Без иконки используется логотип.",
+  "admin.brandFavicon": "Favicon",
+  "admin.brandFaviconHint": "Значок вкладки браузера. ICO, PNG или SVG, до 512 КБ. Без favicon используется иконка.",
+  "admin.remove": "Удалить"
 }

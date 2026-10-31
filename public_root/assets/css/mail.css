@@ -130,6 +130,13 @@ a { color: var(--brand); }
   color: #fff;
 }
 
+.brand.has-bg {
+  background:
+    linear-gradient(155deg, color-mix(in srgb, var(--brand-2) 55%, transparent), color-mix(in srgb, var(--brand-3) 70%, transparent)),
+    var(--brand-bg) center / cover no-repeat;
+}
+.brand.has-bg .brand-waves { opacity: .35; }
+
 .brand-waves {
   position: absolute;
   inset: 0;
@@ -145,7 +152,8 @@ a { color: var(--brand); }
   align-items: center;
   justify-content: center;
   background: var(--surface);
-  padding: 72px 28px 40px;
+  /* room for the tools on top and the footer at the bottom keeps the card a little above centre */
+  padding: 72px 28px 110px;
 }
 
 .auth-tools {
@@ -919,7 +927,9 @@ body[data-page="inbox"] { overflow: hidden; }
 .app-footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
 .app-footer a:hover { color: var(--ink); }
 .app-footer a:hover { color: var(--brand); text-decoration: underline; }
-.auth-panel .app-footer { position: absolute; left: 0; right: 0; bottom: 16px; padding: 0 16px; }
+.auth-panel .app-footer { position: absolute; left: 0; right: 0; bottom: 14px; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; gap: 14px; white-space: nowrap; font-size: 12px; }
+.auth-panel .app-footer .foot-right { display: flex; gap: 14px; }
+@media (max-width: 1100px) { .auth-panel .app-footer { flex-wrap: wrap; justify-content: center; white-space: normal; } }
 
 .impersonating-bar { position: fixed; bottom: 44px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; align-items: center; gap: 12px; background: #f5b400; color: #1b2230; padding: 8px 10px 8px 16px; border-radius: 999px; box-shadow: 0 8px 24px rgba(0,0,0,.25); font-size: 14px; font-weight: 600; max-width: calc(100vw - 24px); }
 .impersonating-bar button { border: 0; border-radius: 999px; background: #1b2230; color: #fff; padding: 6px 14px; font-weight: 600; white-space: nowrap; }

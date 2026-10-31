@@ -340,5 +340,18 @@
   "admin.chooseFile": "Escolher ficheiro…",
   "admin.noFileChosen": "Nenhum ficheiro escolhido",
   "admin.pillAdmin": "admin",
-  "pushTestBody": "As notificações estão a funcionar."
+  "pushTestBody": "As notificações estão a funcionar.",
+  "admin.brandColors": "Cores",
+  "admin.primaryColor": "Primária",
+  "admin.secondaryColor": "Secundária",
+  "admin.colorsHint": "A primária é usada em botões, ligações e destaques; a secundária em estados de hover e gradientes.",
+  "admin.resetColors": "Repor cores",
+  "admin.loginBackground": "Fundo da página de entrada",
+  "admin.loginBackgroundHint": "PNG, JPG ou WebP até 4 MB, mostrado por trás do painel da marca na página de entrada.",
+  "admin.removeBackground": "Remover fundo",
+  "admin.brandIcon": "Ícone",
+  "admin.brandIconHint": "Marca pequena e quadrada para a barra lateral, o cabeçalho do admin e o ícone da app no telemóvel. PNG, JPG, WebP ou SVG, até 1 MB. Sem ícone, usa-se o logótipo.",
+  "admin.brandFavicon": "Favicon",
+  "admin.brandFaviconHint": "O ícone do separador do navegador. ICO, PNG ou SVG, até 512 KB. Sem favicon, usa-se o ícone.",
+  "admin.remove": "Remover"
 }

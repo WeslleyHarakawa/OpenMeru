@@ -1,7 +1,8 @@
-{{-- The product mark: the uploaded logo when there is one, else the OpenMeru envelope. --}}
+{{-- The product mark: the uploaded icon (small sizes) or logo when there is one, else the OpenMeru envelope. --}}
 @php($class = $class ?? '')
 @php($gid = 'logo'.substr(md5($class.uniqid('', true)), 0, 6))
-@if ($url = \App\Support\Brand::logoUrl())
+@php($url = str_contains($class, 'sm') ? \App\Support\Brand::iconUrl() : (\App\Support\Brand::logoUrl() ?: \App\Support\Brand::iconUrl()))
+@if ($url)
   <img class="logo-mark {{ $class }}" src="{{ $url }}" alt="{{ \App\Support\Brand::name() }}">
 @else
   <svg class="logo-mark {{ $class }}" viewBox="0 0 64 64" aria-hidden="true">

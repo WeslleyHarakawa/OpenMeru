@@ -4,17 +4,18 @@
   @include('partials.head')
   <title>@yield('title') · Admin · {{ \App\Support\Brand::name() }}</title>
   <style>
-    body { background: var(--bg); color: var(--ink); min-height: 100vh; }
+    body { background: var(--bg); color: var(--ink); min-height: 100vh; display:flex; flex-direction:column; }
     .admin-top { display:flex; align-items:center; gap:16px; padding:14px 24px; background:var(--surface); border-bottom:1px solid var(--line); flex-wrap:wrap; }
     .admin-top .brand-mini { display:flex; align-items:center; gap:10px; font-weight:700; font-size:18px; color:var(--ink); text-decoration:none; }
     .admin-top .brand-mini .brand-text { display:flex; flex-direction:column; line-height:1.1; }
+    .admin-top .brand-mini .logo-mark { width:36px; height:36px; flex:0 0 36px; border-radius:10px; object-fit:contain; }
     .admin-top .brand-mini .ver { font-weight:500; font-size:11px; color:var(--muted); letter-spacing:.02em; margin-top:3px; }
     .admin-top nav { display:flex; gap:6px; flex-wrap:wrap; }
     .admin-top nav a { padding:8px 14px; border-radius:10px; color:var(--muted); text-decoration:none; font-weight:500; }
     .admin-top nav a.active, .admin-top nav a:hover { background:var(--brand-soft); color:var(--brand); }
     .admin-top .spacer { flex:1; }
-    .admin-main { max-width:1100px; margin:0 auto; padding:28px 16px 60px; }
-    .app-footer { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:8px 18px; padding:18px 16px 28px; color:var(--muted); font-size:13px; }
+    .admin-main { max-width:1100px; width:100%; margin:0 auto; padding:28px 16px 40px; flex:1; }
+    .app-footer { max-width:1100px; width:100%; margin:0 auto; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:8px 18px; padding:18px 16px 28px; color:var(--muted); font-size:13px; }
     .app-footer .foot-center { text-align:center; }
     .app-footer .foot-right { display:flex; gap:18px; justify-content:flex-end; }
     @media (max-width:760px) { .app-footer { grid-template-columns:1fr; text-align:center; } .app-footer .foot-right { justify-content:center; } }
@@ -40,6 +41,11 @@
     .settings-panes .panel[hidden] { display:none; }
     .settings-panes .logo-mark { width:44px; height:44px; border-radius:12px; object-fit:contain; }
     .file-pick { display:flex; align-items:center; gap:10px; cursor:pointer; margin:0; }
+    .color-pick { display:flex; align-items:center; gap:8px; margin:0; cursor:pointer; }
+    .color-pick input[type=color] { width:42px; height:36px; border:1px solid var(--line); border-radius:10px; padding:2px; background:var(--surface); cursor:pointer; }
+    .asset-thumb { width:44px; height:44px; object-fit:contain; border-radius:10px; border:1px solid var(--line); background:var(--bg); }
+    .asset-thumb.background { width:72px; object-fit:cover; }
+    .asset-thumb.favicon { width:32px; height:32px; }
     .file-pick .btn { border-radius:10px; }
     @media (max-width: 820px) { .settings-layout { grid-template-columns:1fr; } .settings-nav { position:static; flex-direction:row; flex-wrap:wrap; } }
   </style>

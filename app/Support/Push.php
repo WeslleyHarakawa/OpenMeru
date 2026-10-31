@@ -41,6 +41,7 @@ class Push
         $title = $message->from_name ?: ($message->from_email ?: 'OpenMeru Mail');
         self::send($user, [
             'title' => $title,
+            'icon' => Brand::iconUrl() ?: '/assets/icon-192.png',
             'body' => $message->subject ?: __('noSubject', [], Locales::supported($user->locale) ? $user->locale : 'en'),
             'url' => (parse_url(route('login'), PHP_URL_PATH) ?: '/').'?open='.$message->id,
             'tag' => 'mail-'.$message->id,

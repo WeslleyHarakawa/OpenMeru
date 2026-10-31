@@ -340,5 +340,18 @@
   "admin.chooseFile": "Datei auswählen…",
   "admin.noFileChosen": "Keine Datei ausgewählt",
   "admin.pillAdmin": "Admin",
-  "pushTestBody": "Benachrichtigungen funktionieren."
+  "pushTestBody": "Benachrichtigungen funktionieren.",
+  "admin.brandColors": "Farben",
+  "admin.primaryColor": "Primär",
+  "admin.secondaryColor": "Sekundär",
+  "admin.colorsHint": "Primär für Schaltflächen, Links und Hervorhebungen; sekundär für Hover-Zustände und Verläufe.",
+  "admin.resetColors": "Farben zurücksetzen",
+  "admin.loginBackground": "Hintergrund der Anmeldeseite",
+  "admin.loginBackgroundHint": "PNG, JPG oder WebP bis 4 MB, hinter dem Markenbereich der Anmeldeseite.",
+  "admin.removeBackground": "Hintergrund entfernen",
+  "admin.brandIcon": "Icon",
+  "admin.brandIconHint": "Kleine quadratische Marke für Seitenleiste, Admin-Kopfzeile und App-Icon auf dem Handy. PNG, JPG, WebP oder SVG, bis 1 MB. Ohne Icon wird das Logo verwendet.",
+  "admin.brandFavicon": "Favicon",
+  "admin.brandFaviconHint": "Das Symbol im Browser-Tab. ICO, PNG oder SVG, bis 512 KB. Ohne Favicon wird das Icon verwendet.",
+  "admin.remove": "Entfernen"
 }

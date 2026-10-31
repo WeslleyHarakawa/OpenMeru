@@ -340,5 +340,18 @@
   "admin.chooseFile": "Choose a file…",
   "admin.noFileChosen": "No file chosen",
   "admin.pillAdmin": "admin",
-  "pushTestBody": "Notifications are working."
+  "pushTestBody": "Notifications are working.",
+  "admin.brandColors": "Colours",
+  "admin.primaryColor": "Primary",
+  "admin.secondaryColor": "Secondary",
+  "admin.colorsHint": "Primary is used for buttons, links and highlights; secondary for hover states and gradients.",
+  "admin.resetColors": "Reset colours",
+  "admin.loginBackground": "Sign-in page background",
+  "admin.loginBackgroundHint": "PNG, JPG or WebP up to 4 MB, shown behind the brand panel of the sign-in page.",
+  "admin.removeBackground": "Remove background",
+  "admin.brandIcon": "Icon",
+  "admin.brandIconHint": "Small square mark for the sidebar, the admin header and the app icon on phones. PNG, JPG, WebP or SVG, up to 1 MB. Falls back to the logo.",
+  "admin.brandFavicon": "Favicon",
+  "admin.brandFaviconHint": "The browser-tab icon. ICO, PNG or SVG, up to 512 KB. Falls back to the icon.",
+  "admin.remove": "Remove"
 }

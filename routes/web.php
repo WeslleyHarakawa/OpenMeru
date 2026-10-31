@@ -50,7 +50,7 @@ Route::middleware('source.only')->group(function () {
     Route::get('/demo', [DemoController::class, 'mailbox'])->middleware('throttle:30,1')->name('demo');
     Route::get('/demo/admin', [DemoController::class, 'admin'])->middleware('throttle:30,1')->name('demo.admin');
 });
-Route::get('/brand/logo', [SettingsController::class, 'logo'])->name('brand.logo');
+Route::get('/brand/{asset}', [SettingsController::class, 'asset'])->where('asset', 'logo|icon|favicon|background')->name('brand.asset');
 Route::view('/privacy', 'legal.privacy')->name('privacy');
 Route::view('/terms', 'legal.terms')->name('terms');
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:10,1')->name('login.attempt');
@@ -105,7 +105,6 @@ Route::prefix('admin')->middleware('admin.area')->name('admin.')->group(function
     Route::post('/settings/test', [SettingsController::class, 'test'])->name('settings.test');
     Route::post('/settings/vapid', [SettingsController::class, 'generateVapid'])->name('settings.vapid');
     Route::put('/settings/brand', [SettingsController::class, 'brand'])->name('settings.brand');
-    Route::delete('/settings/brand/logo', [SettingsController::class, 'removeLogo'])->name('settings.brand.logo.remove');
     Route::get('/update', [UpdateController::class, 'status'])->name('update.status');
     Route::post('/update', [UpdateController::class, 'start'])->name('update.start');
     Route::post('/update/check', [UpdateController::class, 'check'])->name('update.check');

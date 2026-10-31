@@ -340,5 +340,18 @@
   "admin.chooseFile": "Kies een bestand…",
   "admin.noFileChosen": "Geen bestand gekozen",
   "admin.pillAdmin": "beheerder",
-  "pushTestBody": "Meldingen werken."
+  "pushTestBody": "Meldingen werken.",
+  "admin.brandColors": "Kleuren",
+  "admin.primaryColor": "Primair",
+  "admin.secondaryColor": "Secundair",
+  "admin.colorsHint": "Primair voor knoppen, links en accenten; secundair voor hover-states en verlopen.",
+  "admin.resetColors": "Kleuren herstellen",
+  "admin.loginBackground": "Achtergrond van de inlogpagina",
+  "admin.loginBackgroundHint": "PNG, JPG of WebP tot 4 MB, achter het merkpaneel van de inlogpagina.",
+  "admin.removeBackground": "Achtergrond verwijderen",
+  "admin.brandIcon": "Icoon",
+  "admin.brandIconHint": "Klein vierkant merk voor de zijbalk, de adminkop en het app-icoon op telefoons. PNG, JPG, WebP of SVG, max. 1 MB. Zonder icoon wordt het logo gebruikt.",
+  "admin.brandFavicon": "Favicon",
+  "admin.brandFaviconHint": "Het icoon in het browsertabblad. ICO, PNG of SVG, max. 512 KB. Zonder favicon wordt het icoon gebruikt.",
+  "admin.remove": "Verwijderen"
 }

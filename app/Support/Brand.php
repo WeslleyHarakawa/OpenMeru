@@ -3,17 +3,29 @@
 namespace App\Support;
 
 use App\Models\Setting;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * What the install calls itself. The admin sets a name and a logo in
+ * What the install calls itself and looks like. The admin sets a name, a logo,
+ * a small icon, a favicon, a sign-in background and two colours in
  * Settings → General; until then the product shows as OpenMeru Mail.
  */
 class Brand
 {
     public const DEFAULT_NAME = 'OpenMeru Mail';
 
-    public const LOGO_PATH = 'branding/logo';
+    public const DEFAULT_PRIMARY = '#2f6bff';
+
+    public const DEFAULT_SECONDARY = '#1e56ea';
+
+    /** Uploadable files, with the types each accepts and its size limit in KB. */
+    public const ASSETS = [
+        'logo' => ['mimes' => 'png,jpg,jpeg,webp,svg', 'max' => 1024],
+        'icon' => ['mimes' => 'png,jpg,jpeg,webp,svg', 'max' => 1024],
+        'favicon' => ['mimes' => 'ico,png,svg', 'max' => 512],
+        'background' => ['mimes' => 'png,jpg,jpeg,webp', 'max' => 4096],
+    ];
 
     private static ?array $cache = null;
 
@@ -39,19 +51,98 @@ class Brand
         return self::isCustom() ? '' : $default;
     }
 
+    public static function assetPath(string $asset): ?string
+    {
+        $path = self::settings()[$asset] ?? '';
+
+        return $path !== '' && Storage::disk('local')->exists($path) ? $path : null;
+    }
+
+    public static function assetUrl(string $asset): ?string
+    {
+        $path = self::assetPath($asset);
+
+        return $path ? route('brand.asset', ['asset' => $asset, 'v' => Storage::disk('local')->lastModified($path)]) : null;
+    }
+
     public static function logoPath(): ?string
     {
-        return self::settings()['logo'] ?: null;
+        return self::assetPath('logo');
     }
 
     public static function logoUrl(): ?string
     {
-        $path = self::logoPath();
-        if (! $path || ! Storage::disk('local')->exists($path)) {
-            return null;
-        }
+        return self::assetUrl('logo');
+    }
 
-        return route('brand.logo', ['v' => Storage::disk('local')->lastModified($path)]);
+    /** The small mark (sidebar, admin header, app icon): the icon, else the logo. */
+    public static function iconUrl(): ?string
+    {
+        return self::assetUrl('icon') ?: self::assetUrl('logo');
+    }
+
+    public static function faviconUrl(): ?string
+    {
+        return self::assetUrl('favicon') ?: self::assetUrl('icon');
+    }
+
+    public static function faviconType(): string
+    {
+        $path = self::assetPath('favicon') ?: self::assetPath('icon');
+
+        return match (strtolower(pathinfo((string) $path, PATHINFO_EXTENSION))) {
+            'svg' => 'image/svg+xml',
+            'ico' => 'image/x-icon',
+            'jpg', 'jpeg' => 'image/jpeg',
+            'webp' => 'image/webp',
+            default => 'image/png',
+        };
+    }
+
+    public static function backgroundPath(): ?string
+    {
+        return self::assetPath('background');
+    }
+
+    public static function backgroundUrl(): ?string
+    {
+        return self::assetUrl('background');
+    }
+
+    /** The main colour (buttons, links, highlights), as #rrggbb. */
+    public static function primary(): string
+    {
+        return self::settings()['primary'] ?: self::DEFAULT_PRIMARY;
+    }
+
+    /** The darker companion (hover states, gradient ends). */
+    public static function secondary(): string
+    {
+        return self::settings()['secondary'] ?: self::DEFAULT_SECONDARY;
+    }
+
+    public static function hasCustomColors(): bool
+    {
+        return self::settings()['primary'] !== '' || self::settings()['secondary'] !== '';
+    }
+
+    /** CSS that overrides the stylesheet's brand variables with the custom colours, or '' when none are set. */
+    public static function cssVars(): string
+    {
+        if (! self::hasCustomColors()) {
+            return '';
+        }
+        $p = self::primary();
+        $s = self::secondary();
+
+        return ':root,[data-theme="dark"]{--brand:'.$p.';--brand-dark:'.$s.';--brand-2:'.$p.';--brand-3:'.$s.';'
+            .'--brand-1:color-mix(in srgb,'.$p.' 55%,white);--brand-soft:color-mix(in srgb,'.$p.' 14%,white)}'
+            .'[data-theme="dark"]{--brand-soft:color-mix(in srgb,'.$p.' 28%,#0f172a)}';
+    }
+
+    public static function validColor(?string $value): bool
+    {
+        return (bool) preg_match('/^#[0-9a-f]{6}$/i', (string) $value);
     }
 
     public static function forget(): void
@@ -59,12 +150,30 @@ class Brand
         self::$cache = null;
     }
 
-    /** @return array{name: string, logo: string} */
+    /** @return array<string, string> */
     private static function settings(): array
     {
-        return self::$cache ??= [
-            'name' => trim((string) Setting::get('brand_name')),
-            'logo' => trim((string) Setting::get('brand_logo')),
-        ];
+        if (self::$cache === null) {
+            $empty = ['name' => '', 'primary' => '', 'secondary' => ''] + array_fill_keys(array_keys(self::ASSETS), '');
+            try {
+                $get = fn (string $key) => trim((string) Setting::get($key));
+                $primary = strtolower($get('brand_primary'));
+                $secondary = strtolower($get('brand_secondary'));
+                $values = [
+                    'name' => $get('brand_name'),
+                    'primary' => self::validColor($primary) ? $primary : '',
+                    'secondary' => self::validColor($secondary) ? $secondary : '',
+                ];
+                foreach (array_keys(self::ASSETS) as $asset) {
+                    $values[$asset] = $get('brand_'.$asset);
+                }
+                self::$cache = $values;
+            } catch (QueryException) {
+                // No settings table yet (fresh install before migrate, or a page rendered without a database): defaults.
+                self::$cache = $empty;
+            }
+        }
+
+        return self::$cache;
     }
 }

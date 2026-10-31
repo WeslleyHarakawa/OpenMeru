@@ -340,5 +340,18 @@
   "admin.chooseFile": "Elegir un archivo…",
   "admin.noFileChosen": "Ningún archivo elegido",
   "admin.pillAdmin": "admin",
-  "pushTestBody": "Las notificaciones funcionan."
+  "pushTestBody": "Las notificaciones funcionan.",
+  "admin.brandColors": "Colores",
+  "admin.primaryColor": "Primario",
+  "admin.secondaryColor": "Secundario",
+  "admin.colorsHint": "El primario se usa en botones, enlaces y resaltados; el secundario en estados hover y degradados.",
+  "admin.resetColors": "Restablecer colores",
+  "admin.loginBackground": "Fondo de la página de acceso",
+  "admin.loginBackgroundHint": "PNG, JPG o WebP de hasta 4 MB, mostrado detrás del panel de marca de la página de acceso.",
+  "admin.removeBackground": "Quitar fondo",
+  "admin.brandIcon": "Icono",
+  "admin.brandIconHint": "Marca pequeña y cuadrada para la barra lateral, la cabecera del admin y el icono de la app en el móvil. PNG, JPG, WebP o SVG, hasta 1 MB. Sin icono se usa el logotipo.",
+  "admin.brandFavicon": "Favicon",
+  "admin.brandFaviconHint": "El icono de la pestaña del navegador. ICO, PNG o SVG, hasta 512 KB. Sin favicon se usa el icono.",
+  "admin.remove": "Quitar"
 }

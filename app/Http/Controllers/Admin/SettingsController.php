@@ -37,7 +37,10 @@ class SettingsController extends Controller
                 'cf_account_id' => '0123456789abcdef0123456789abcdef',
                 'cf_ai_token_set' => true,
                 'brand_name' => '',
-                'brand_logo' => null,
+                'brand_primary' => Brand::DEFAULT_PRIMARY,
+                'brand_secondary' => Brand::DEFAULT_SECONDARY,
+                'brand_colors_custom' => false,
+                'brand_assets' => array_fill_keys(array_keys(Brand::ASSETS), null),
             ]);
         }
 
@@ -56,7 +59,10 @@ class SettingsController extends Controller
             'cf_account_id' => Setting::get('cf_account_id'),
             'cf_ai_token_set' => (bool) Setting::get('cf_ai_token'),
             'brand_name' => (string) Setting::get('brand_name'),
-            'brand_logo' => Brand::logoPath(),
+            'brand_primary' => Brand::primary(),
+            'brand_secondary' => Brand::secondary(),
+            'brand_colors_custom' => Brand::hasCustomColors(),
+            'brand_assets' => array_combine(array_keys(Brand::ASSETS), array_map(fn ($a) => Brand::assetUrl($a), array_keys(Brand::ASSETS))),
         ]);
     }
 
@@ -100,20 +106,47 @@ class SettingsController extends Controller
         return redirect()->route('admin.settings')->with('status', __('admin.settingsSaved'));
     }
 
-    /** Settings → General: the name and logo this install shows instead of OpenMeru Mail. */
+    /** Settings → General: name, logo, icon, favicon, sign-in background and colours. */
     public function brand(Request $request): RedirectResponse
     {
-        $data = $request->validate([
+        $rules = [
             'brand_name' => ['nullable', 'string', 'max:60'],
-            'logo' => ['nullable', 'file', 'mimes:png,jpg,jpeg,webp,svg', 'max:1024'],
-        ]);
+            'brand_primary' => ['nullable', 'regex:/^#[0-9a-f]{6}$/i'],
+            'brand_secondary' => ['nullable', 'regex:/^#[0-9a-f]{6}$/i'],
+        ];
+        foreach (Brand::ASSETS as $asset => $spec) {
+            $rules[$asset] = ['nullable', 'file', 'mimes:'.$spec['mimes'], 'max:'.$spec['max']];
+        }
+        $data = $request->validate($rules);
+
         Setting::put('brand_name', trim((string) ($data['brand_name'] ?? '')));
-        if ($request->hasFile('logo')) {
-            $old = Setting::get('brand_logo');
-            $path = $request->file('logo')->storeAs('branding', 'logo-'.time().'.'.strtolower($request->file('logo')->getClientOriginalExtension()), 'local');
-            Setting::put('brand_logo', $path);
-            if ($old && $old !== $path) {
-                Storage::disk('local')->delete($old);
+
+        if ($request->boolean('reset_colors')) {
+            Setting::put('brand_primary', '');
+            Setting::put('brand_secondary', '');
+        } else {
+            // The pickers always post a value; the defaults mean "not customised".
+            $primary = strtolower((string) ($data['brand_primary'] ?? ''));
+            $secondary = strtolower((string) ($data['brand_secondary'] ?? ''));
+            $custom = $primary !== Brand::DEFAULT_PRIMARY || $secondary !== Brand::DEFAULT_SECONDARY;
+            Setting::put('brand_primary', $custom ? $primary : '');
+            Setting::put('brand_secondary', $custom ? $secondary : '');
+        }
+
+        foreach (array_keys(Brand::ASSETS) as $asset) {
+            $old = (string) Setting::get('brand_'.$asset);
+            if ($request->boolean('remove_'.$asset)) {
+                Setting::put('brand_'.$asset, '');
+                if ($old) {
+                    Storage::disk('local')->delete($old);
+                }
+            } elseif ($request->hasFile($asset)) {
+                $file = $request->file($asset);
+                $path = $file->storeAs('branding', $asset.'-'.time().'.'.strtolower($file->getClientOriginalExtension()), 'local');
+                Setting::put('brand_'.$asset, $path);
+                if ($old && $old !== $path) {
+                    Storage::disk('local')->delete($old);
+                }
             }
         }
         Brand::forget();
@@ -121,22 +154,12 @@ class SettingsController extends Controller
         return redirect()->route('admin.settings', ['#general'])->with('status', __('admin.brandSaved'));
     }
 
-    public function removeLogo(): RedirectResponse
+    /** The uploaded brand files, public: they are on the sign-in page and in the browser tab. */
+    public function asset(string $asset): StreamedResponse
     {
-        if ($old = Setting::get('brand_logo')) {
-            Storage::disk('local')->delete($old);
-        }
-        Setting::put('brand_logo', '');
-        Brand::forget();
-
-        return redirect()->route('admin.settings', ['#general'])->with('status', __('admin.brandLogoRemoved'));
-    }
-
-    /** The uploaded logo, public: it is on the sign-in page. */
-    public function logo(): StreamedResponse
-    {
-        $path = Brand::logoPath();
-        abort_unless($path && Storage::disk('local')->exists($path), 404);
+        abort_unless(isset(Brand::ASSETS[$asset]), 404);
+        $path = Brand::assetPath($asset);
+        abort_unless($path, 404);
 
         return Storage::disk('local')->response($path, null, ['Cache-Control' => 'public, max-age=86400']);
     }

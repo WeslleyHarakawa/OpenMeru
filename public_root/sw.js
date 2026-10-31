@@ -8,8 +8,8 @@ self.addEventListener("push", (event) => {
   event.waitUntil(Promise.all([
     self.registration.showNotification(data.title || "OpenMeru Mail", {
       body: data.body || "",
-      icon: "/assets/icon-192.png",
-      badge: "/assets/icon-192.png",
+      icon: data.icon || "/assets/icon-192.png",
+      badge: data.icon || "/assets/icon-192.png",
       tag: data.tag || "openmeru-mail",
       data: { url: data.url || "/" }
     }),

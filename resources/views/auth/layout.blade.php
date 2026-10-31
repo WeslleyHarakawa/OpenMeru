@@ -2,12 +2,12 @@
 <html lang="{{ \App\Support\Locales::tag(app()->getLocale()) }}" data-theme="light">
 <head>
   @include('partials.head')
-  <meta name="theme-color" content="#2f6bff">
+  <meta name="theme-color" content="{{ \App\Support\Brand::primary() }}">
   <title>{{ \App\Support\Brand::name() }}</title>
 </head>
 <body data-page="@yield('page')">
   <div class="auth">
-    <section class="brand" aria-hidden="true">
+    <section class="brand{{ \App\Support\Brand::backgroundUrl() ? ' has-bg' : '' }}" aria-hidden="true"@if ($bg = \App\Support\Brand::backgroundUrl()) style="--brand-bg:url('{{ $bg }}')"@endif>
       <svg class="brand-waves" viewBox="0 0 800 1200" preserveAspectRatio="xMidYMid slice">
         <path fill="rgba(255,255,255,.12)" d="M0 220C160 80 280 340 520 180C680 80 740 240 800 150V0H0Z"/>
         <path fill="rgba(255,255,255,.08)" d="M-80 700C80 540 220 860 460 700C680 560 760 820 900 680L900 980C640 820 420 1040 180 860C0 740-40 860-80 800Z"/>

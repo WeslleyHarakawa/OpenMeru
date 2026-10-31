@@ -340,5 +340,18 @@
   "admin.chooseFile": "选择文件…",
   "admin.noFileChosen": "未选择文件",
   "admin.pillAdmin": "管理员",
-  "pushTestBody": "通知正常工作。"
+  "pushTestBody": "通知正常工作。",
+  "admin.brandColors": "颜色",
+  "admin.primaryColor": "主色",
+  "admin.secondaryColor": "辅色",
+  "admin.colorsHint": "主色用于按钮、链接和高亮；辅色用于悬停状态和渐变。",
+  "admin.resetColors": "重置颜色",
+  "admin.loginBackground": "登录页背景",
+  "admin.loginBackgroundHint": "PNG、JPG 或 WebP，不超过 4 MB，显示在登录页品牌面板后面。",
+  "admin.removeBackground": "移除背景",
+  "admin.brandIcon": "图标",
+  "admin.brandIconHint": "用于侧栏、管理后台页眉和手机应用图标的小方形标志。PNG、JPG、WebP 或 SVG，不超过 1 MB。未设置时使用徽标。",
+  "admin.brandFavicon": "网站图标",
+  "admin.brandFaviconHint": "浏览器标签页图标。ICO、PNG 或 SVG，不超过 512 KB。未设置时使用图标。",
+  "admin.remove": "移除"
 }

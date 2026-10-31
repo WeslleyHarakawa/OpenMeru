@@ -24,28 +24,42 @@
         <label class="form-label" for="brand_name">{{ __('admin.brandName') }}</label>
         <input class="form-control" id="brand_name" name="brand_name" maxlength="60" value="{{ old('brand_name', $brand_name) }}" placeholder="{{ __('admin.brandNamePh') }}">
       </div>
+      @foreach (['logo' => ['admin.brandLogo', 'admin.brandLogoHint', 'image/png,image/jpeg,image/webp,image/svg+xml'], 'icon' => ['admin.brandIcon', 'admin.brandIconHint', 'image/png,image/jpeg,image/webp,image/svg+xml'], 'favicon' => ['admin.brandFavicon', 'admin.brandFaviconHint', 'image/x-icon,image/vnd.microsoft.icon,image/png,image/svg+xml'], 'background' => ['admin.loginBackground', 'admin.loginBackgroundHint', 'image/png,image/jpeg,image/webp']] as $asset => [$label, $hint, $accept])
       <div class="col-md-6">
-        <label class="form-label" for="logo">{{ __('admin.brandLogo') }}</label>
-        <div class="d-flex align-items-center gap-3">
-          @include('partials.logo', ['class' => 'sm'])
-          <label class="file-pick" for="logo">
-            <input id="logo" name="logo" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" hidden>
+        <label class="form-label" for="{{ $asset }}">{{ __($label) }}</label>
+        <div class="d-flex align-items-center gap-3 flex-wrap">
+          @if ($brand_assets[$asset])
+            <img class="asset-thumb {{ $asset }}" src="{{ $brand_assets[$asset] }}" alt="">
+          @elseif ($asset !== 'background')
+            @include('partials.logo', ['class' => 'sm'])
+          @endif
+          <label class="file-pick" for="{{ $asset }}">
+            <input id="{{ $asset }}" name="{{ $asset }}" type="file" accept="{{ $accept }}" hidden>
             <span class="btn btn-outline-secondary"><i class="bi bi-upload"></i> {{ __('admin.chooseFile') }}</span>
             <span class="file-name hint" data-empty="{{ __('admin.noFileChosen') }}">{{ __('admin.noFileChosen') }}</span>
           </label>
+          @if ($brand_assets[$asset])
+            <button class="btn btn-outline-secondary btn-sm" type="submit" name="remove_{{ $asset }}" value="1"><i class="bi bi-x-circle"></i> {{ __('admin.remove') }}</button>
+          @endif
         </div>
-        <div class="hint mt-1">{{ __('admin.brandLogoHint') }}</div>
+        <div class="hint mt-1">{{ __($hint) }}</div>
+      </div>
+      @endforeach
+      <div class="col-md-6">
+        <label class="form-label">{{ __('admin.brandColors') }}</label>
+        <div class="d-flex align-items-center gap-3 flex-wrap">
+          <label class="color-pick"><input type="color" name="brand_primary" value="{{ old('brand_primary', $brand_primary) }}"> <span>{{ __('admin.primaryColor') }}</span></label>
+          <label class="color-pick"><input type="color" name="brand_secondary" value="{{ old('brand_secondary', $brand_secondary) }}"> <span>{{ __('admin.secondaryColor') }}</span></label>
+        </div>
+        <div class="hint mt-1">{{ __('admin.colorsHint') }}</div>
       </div>
       <div class="col-12 d-flex align-items-center gap-2 flex-wrap">
         <button class="btn btn-primary" type="submit"><i class="bi bi-check-lg"></i> {{ __('admin.brandSave') }}</button>
+        @if ($brand_colors_custom)
+          <button class="btn btn-outline-secondary" type="submit" name="reset_colors" value="1"><i class="bi bi-arrow-counterclockwise"></i> {{ __('admin.resetColors') }}</button>
+        @endif
       </div>
     </form>
-    @if ($brand_logo)
-      <form method="POST" action="{{ route('admin.settings.brand.logo.remove') }}" class="mt-2">
-        @csrf @method('DELETE')
-        <button class="btn btn-outline-secondary btn-sm" type="submit"><i class="bi bi-x-circle"></i> {{ __('admin.removeLogo') }}</button>
-      </form>
-    @endif
   </section>
 
   <section class="panel" data-pane="smtp">
