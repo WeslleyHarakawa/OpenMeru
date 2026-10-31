@@ -1,7 +1,9 @@
 {{-- The product mark: the uploaded icon (small sizes) or logo when there is one, else the OpenMeru envelope. --}}
 @php($class = $class ?? '')
+{{-- 'product' forces the OpenMeru mark whatever the client's branding (the admin header is always OpenMeru). --}}
+@php($product = $product ?? false)
 @php($gid = 'logo'.substr(md5($class.uniqid('', true)), 0, 6))
-@php($url = str_contains($class, 'sm') ? \App\Support\Brand::iconUrl() : (\App\Support\Brand::logoUrl() ?: \App\Support\Brand::iconUrl()))
+@php($url = $product ? null : (str_contains($class, 'sm') ? \App\Support\Brand::iconUrl() : (\App\Support\Brand::logoUrl() ?: \App\Support\Brand::iconUrl())))
 @if ($url)
   <img class="logo-mark {{ $class }}" src="{{ $url }}" alt="{{ \App\Support\Brand::name() }}">
 @else

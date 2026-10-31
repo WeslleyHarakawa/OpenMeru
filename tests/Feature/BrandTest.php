@@ -182,8 +182,9 @@ class BrandTest extends TestCase
         ]);
         Brand::forget();
 
-        // The admin header uses the small mark: the icon.
-        $this->actingAs($admin)->withSession($session)->get('/admin')->assertOk()->assertSee('/brand/icon', false);
+        // The admin header is always OpenMeru's own mark; the client's icon shows in Settings → General.
+        $this->actingAs($admin)->withSession($session)->get('/admin')->assertOk()->assertSee('<svg class="logo-mark', false)->assertDontSee('<img class="logo-mark', false);
+        $this->actingAs($admin)->withSession($session)->get('/admin/settings')->assertOk()->assertSee('/brand/icon', false);
         // The sign-in card uses the big mark: the logo.
         auth()->logout();
         $this->get('/')->assertOk()->assertSee('/brand/logo', false);

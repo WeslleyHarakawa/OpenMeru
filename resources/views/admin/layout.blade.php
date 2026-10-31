@@ -56,7 +56,7 @@
   @include('partials.demo-bar')
   <header class="admin-top">
     <a class="brand-mini" href="/admin">
-      @include('partials.logo', ['class' => 'sm'])
+      @include('partials.logo', ['class' => 'sm', 'product' => true])
       <span class="brand-text"><span>OpenMeru Admin</span><span class="ver" title="OpenMeru Mail {{ \App\Support\Version::current() }}">v{{ \App\Support\Version::current() }}</span></span>
     </a>
     <nav>
