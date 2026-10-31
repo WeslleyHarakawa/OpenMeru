@@ -14,4 +14,7 @@ return [
 
     // How long a check result is kept before asking again.
     'ttl_hours' => 24,
+
+    // The release package, for installs where PHP cannot run git (no git, short PATH, zip install).
+    'tarball' => env('OPENMERU_UPDATE_TARBALL', 'https://github.com/WeslleyHarakawa/OpenMeru/archive/refs/heads/main.tar.gz'),
 ];

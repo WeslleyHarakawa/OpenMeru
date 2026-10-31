@@ -47,6 +47,7 @@ Route::middleware('source.only')->group(function () {
         'released_at' => \App\Support\Version::releasedAt(),
         'repo' => 'https://github.com/WeslleyHarakawa/OpenMeru',
         'url' => 'https://github.com/WeslleyHarakawa/OpenMeru/commits/main',
+        'tarball' => 'https://github.com/WeslleyHarakawa/OpenMeru/archive/refs/heads/main.tar.gz',
         'install' => url('/install'),
     ])->header('Cache-Control', 'public, max-age=300'))->name('version');
     Route::get('/demo', [DemoController::class, 'mailbox'])->middleware('throttle:30,1')->name('demo');
@@ -121,6 +122,7 @@ Route::prefix('admin')->middleware('admin.area')->name('admin.')->group(function
     Route::post('/settings/vapid', [SettingsController::class, 'generateVapid'])->name('settings.vapid');
     Route::put('/settings/brand', [SettingsController::class, 'brand'])->name('settings.brand');
     Route::put('/settings/security', [SettingsController::class, 'security'])->name('settings.security');
+    Route::put('/settings/updates', [SettingsController::class, 'updates'])->name('settings.updates');
     Route::post('/accounts/{account}/two-factor/reset', [AccountController::class, 'resetTwoFactor'])->name('accounts.2fa.reset');
     Route::get('/update', [UpdateController::class, 'status'])->name('update.status');
     Route::post('/update', [UpdateController::class, 'start'])->name('update.start');

@@ -306,7 +306,7 @@
   "admin.updateWhatsNew": "Nouveautés",
   "admin.updateNow": "Mettre à jour",
   "admin.updateOrTerminal": "Ou lancez ceci sur le serveur, avec l'utilisateur du site :",
-  "admin.updateTerminalOnly": "Cette installation n'est pas un dépôt git ; mettez-la à jour depuis le terminal, avec l'utilisateur du site :",
+  "admin.updateTerminalOnly": "Cette installation ne peut pas se mettre à jour seule ; mettez-la à jour depuis le terminal, avec l'utilisateur du site :",
   "admin.updating": "Mise à jour…",
   "admin.updatingHint": "Sauvegarde de la base, récupération du code, installation des dépendances, migration. Gardez cette page ouverte.",
   "admin.updateFailed": "La mise à jour a échoué",
@@ -401,5 +401,8 @@
   "admin.twoFactorResetConfirm": "Réinitialiser l'authentification à deux facteurs de :email ? La connexion se fera avec le seul mot de passe jusqu'à une nouvelle configuration.",
   "admin.provider": "Fournisseur",
   "admin.providerCustom": "Autre serveur SMTP",
-  "admin.providerHint": "Choisissez votre relais : le serveur et le port se remplissent ; collez ensuite l'identifiant et la clé fournis."
+  "admin.providerHint": "Choisissez votre relais : le serveur et le port se remplissent ; collez ensuite l'identifiant et la clé fournis.",
+  "admin.autoUpdate": "Mettre à jour automatiquement",
+  "admin.autoUpdateHint": "Quand une nouvelle version sort, cette installation se met à jour seule en moins d'un jour : sauvegarde de la base, nouveau code, dépendances et migrations. Désactivé, /admin affiche un bouton Mettre à jour.",
+  "admin.updatesSaved": "Réglages de mise à jour enregistrés."
 }

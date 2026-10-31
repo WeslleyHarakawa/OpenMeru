@@ -44,6 +44,7 @@ class SettingsController extends Controller
                 'brand_assets' => array_fill_keys(array_keys(Brand::ASSETS), null),
                 'allow_signup' => false,
                 'require_2fa' => false,
+                'auto_update' => true,
             ]);
         }
 
@@ -69,6 +70,7 @@ class SettingsController extends Controller
             'brand_assets' => array_combine(array_keys(Brand::ASSETS), array_map(fn ($a) => Brand::assetUrl($a), array_keys(Brand::ASSETS))),
             'allow_signup' => Setting::get('allow_signup') === '1',
             'require_2fa' => \App\Support\TwoFactor::required(),
+            'auto_update' => \App\Support\Updates::autoEnabled(),
         ]);
     }
 
@@ -121,6 +123,14 @@ class SettingsController extends Controller
         \App\Support\TwoFactor::setRequired($request->boolean('require_2fa'));
 
         return redirect()->route('admin.settings', ['#security'])->with('status', __('admin.securitySaved'));
+    }
+
+    /** Settings → Updates: whether a new version installs itself. */
+    public function updates(Request $request): RedirectResponse
+    {
+        \App\Support\Updates::setAutoEnabled($request->boolean('auto_update'));
+
+        return redirect()->route('admin.settings', ['#updates'])->with('status', __('admin.updatesSaved'));
     }
 
     /** Settings → General: name, logo, icon, favicon, sign-in background and colours. */

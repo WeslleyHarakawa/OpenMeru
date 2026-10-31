@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Models\Setting;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -11,8 +12,9 @@ use Throwable;
 
 /**
  * Knows whether a newer OpenMeru is out, and runs the update in the background
- * (same steps as install.sh: pull, composer, migrate, caches) while /admin
- * watches the log.
+ * (same steps as install.sh: new code, composer, migrate, caches) while /admin
+ * watches the log. With automatic updates on (the default) it starts the run
+ * itself the first time it sees a newer version.
  */
 class Updates
 {
@@ -21,11 +23,14 @@ class Updates
 
     public const CACHE_KEY = 'openmeru:update-check';
 
-    /** @return array{current: string, latest: ?string, available: bool, url: ?string, checked_at: ?string, error: ?string} */
+    /** Everything the package update must leave alone: this install's own data. */
+    public const KEEP = ['.env', '.git', 'storage', 'vendor', 'node_modules', 'bootstrap/cache', 'public_root/storage'];
+
+    /** @return array{current: string, latest: ?string, available: bool, url: ?string, tarball: ?string, checked_at: ?string, error: ?string} */
     public static function check(bool $force = false): array
     {
         $current = Version::current();
-        $empty = ['current' => $current, 'latest' => null, 'available' => false, 'url' => null, 'checked_at' => null, 'error' => null];
+        $empty = ['current' => $current, 'latest' => null, 'available' => false, 'url' => null, 'tarball' => null, 'checked_at' => null, 'error' => null];
         if (! config('updates.check') || ! config('updates.url')) {
             return $empty;
         }
@@ -46,6 +51,7 @@ class Updates
                     'latest' => Version::normalize($latest),
                     'available' => Version::newerAvailable($latest),
                     'url' => $response->json('url') ?: $response->json('repo'),
+                    'tarball' => $response->json('tarball') ?: null,
                     'checked_at' => now()->toIso8601String(),
                     'error' => null,
                 ];
@@ -55,10 +61,16 @@ class Updates
         });
     }
 
-    /** The "Update now" button only works on a git checkout, where pulling is safe. */
+    /** The package every install can fall back to when git is not usable from PHP. */
+    public static function tarballUrl(): string
+    {
+        return (string) (self::check()['tarball'] ?: config('updates.tarball'));
+    }
+
+    /** Whether "Update now" (and the automatic run) can do the work from inside the app. */
     public static function canSelfUpdate(): bool
     {
-        return Version::isGitCheckout() && is_file(base_path('install.sh')) && ! app()->environment('testing');
+        return is_file(base_path('install.sh')) && is_file(base_path('artisan')) && ! app()->environment('testing');
     }
 
     public static function installCommand(): string
@@ -69,6 +81,37 @@ class Updates
         return 'curl -fsSL '.$base.'/install | bash';
     }
 
+    /** Settings → Updates: on unless the admin turned it off (or there is no database yet). */
+    public static function autoEnabled(): bool
+    {
+        try {
+            return Setting::get('auto_update', '1') !== '0';
+        } catch (Throwable) {
+            return false;
+        }
+    }
+
+    public static function setAutoEnabled(bool $on): void
+    {
+        Setting::put('auto_update', $on ? '1' : '0');
+    }
+
+    /**
+     * Starts the update by itself when one is out and nothing is in the way. A failed run
+     * stays on screen until the admin closes it, so a broken server is not retried forever.
+     */
+    public static function maybeAutoStart(): bool
+    {
+        if (! self::autoEnabled() || ! self::canSelfUpdate() || self::status()['state'] !== 'idle') {
+            return false;
+        }
+        if (! self::check()['available']) {
+            return false;
+        }
+
+        return self::start();
+    }
+
     /** @return array{state: string, log: string, started_at: ?string, finished_at: ?string, from: ?string, to: ?string} */
     public static function status(): array
     {
@@ -77,13 +120,25 @@ class Updates
             return $idle;
         }
         $data = json_decode((string) Storage::disk('local')->get(self::STATUS_FILE), true);
+        if (! is_array($data)) {
+            return $idle;
+        }
+        $data += $idle;
+        // A run that never finished and is older than an hour is a crash, not a run.
+        if ($data['state'] === 'running' && ! ($data['started_at'] && Carbon::parse($data['started_at'])->diffInMinutes(now()) < 60)) {
+            $data['state'] = 'failed';
+            $data['log'] .= "\nFAILED: the update stopped without finishing.";
+        }
 
-        return is_array($data) ? $data + $idle : $idle;
+        return $data;
     }
 
     public static function writeStatus(array $status): void
     {
-        Storage::disk('local')->put(self::STATUS_FILE, json_encode($status + self::status(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        $current = Storage::disk('local')->exists(self::STATUS_FILE)
+            ? (json_decode((string) Storage::disk('local')->get(self::STATUS_FILE), true) ?: [])
+            : [];
+        Storage::disk('local')->put(self::STATUS_FILE, json_encode($status + $current, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
     }
 
     public static function clearStatus(): void
@@ -93,10 +148,7 @@ class Updates
 
     public static function isRunning(): bool
     {
-        $status = self::status();
-        // A run that never finished and is older than an hour is a crash, not a run.
-        return $status['state'] === 'running'
-            && $status['started_at'] && Carbon::parse($status['started_at'])->diffInMinutes(now()) < 60;
+        return self::status()['state'] === 'running';
     }
 
     /** Starts `php artisan openmeru:update` detached; the status file tells how it goes. */
@@ -113,5 +165,58 @@ class Updates
         $process->run();
 
         return $process->isSuccessful();
+    }
+
+    /**
+     * Copies a downloaded release over this install, leaving the install's own data
+     * (KEEP) untouched. Returns how many files were written.
+     */
+    public static function applyTree(string $from, string $to): int
+    {
+        $from = rtrim($from, '/\\');
+        $to = rtrim($to, '/\\');
+        $written = 0;
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($from, \FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::SELF_FIRST
+        );
+        foreach ($iterator as $item) {
+            /** @var \SplFileInfo $item */
+            $relative = str_replace('\\', '/', substr($item->getPathname(), strlen($from) + 1));
+            if (self::kept($relative)) {
+                continue;
+            }
+            $target = $to.'/'.$relative;
+            if ($item->isDir()) {
+                if (! is_dir($target)) {
+                    mkdir($target, 0755, true);
+                }
+
+                continue;
+            }
+            if (is_file($target) && file_get_contents($target) === file_get_contents($item->getPathname())) {
+                continue;
+            }
+            if (! copy($item->getPathname(), $target)) {
+                throw new \RuntimeException('Could not write '.$relative);
+            }
+            if ($item->isExecutable()) {
+                @chmod($target, 0755);
+            }
+            $written++;
+        }
+
+        return $written;
+    }
+
+    private static function kept(string $relative): bool
+    {
+        foreach (self::KEEP as $keep) {
+            if ($relative === $keep || str_starts_with($relative, $keep.'/')) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

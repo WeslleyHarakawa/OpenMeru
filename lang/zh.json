@@ -306,7 +306,7 @@
   "admin.updateWhatsNew": "更新内容",
   "admin.updateNow": "立即更新",
   "admin.updateOrTerminal": "或以站点用户身份在服务器上运行：",
-  "admin.updateTerminalOnly": "此安装不是 git 检出，请以站点用户身份在终端中更新：",
+  "admin.updateTerminalOnly": "此安装无法自行更新，请以站点用户身份在终端中更新：",
   "admin.updating": "正在更新…",
   "admin.updatingHint": "正在备份数据库、获取代码、安装依赖并迁移。请保持此页面打开。",
   "admin.updateFailed": "更新失败",
@@ -401,5 +401,8 @@
   "admin.twoFactorResetConfirm": "重置 :email 的两步验证？在重新设置前，该用户仅凭密码登录。",
   "admin.provider": "服务商",
   "admin.providerCustom": "其他 SMTP 服务器",
-  "admin.providerHint": "选择中继服务商后服务器和端口会自动填写；然后粘贴服务商提供的登录名和密钥。"
+  "admin.providerHint": "选择中继服务商后服务器和端口会自动填写；然后粘贴服务商提供的登录名和密钥。",
+  "admin.autoUpdate": "自动更新",
+  "admin.autoUpdateHint": "有新版本时，此安装会在一天内自行更新：备份数据库、更新代码、安装依赖并执行迁移。关闭后，/admin 会显示“立即更新”按钮。",
+  "admin.updatesSaved": "更新设置已保存。"
 }

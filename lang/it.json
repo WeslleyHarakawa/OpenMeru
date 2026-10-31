@@ -306,7 +306,7 @@
   "admin.updateWhatsNew": "Novità",
   "admin.updateNow": "Aggiorna ora",
   "admin.updateOrTerminal": "Oppure esegui questo sul server, come utente del sito:",
-  "admin.updateTerminalOnly": "Questa installazione non è un checkout git; aggiornala dal terminale, come utente del sito:",
+  "admin.updateTerminalOnly": "Questa installazione non può aggiornarsi da sola; aggiornala dal terminale, come utente del sito:",
   "admin.updating": "Aggiornamento…",
   "admin.updatingHint": "Backup del database, download del codice, installazione delle dipendenze, migrazione. Tieni aperta questa pagina.",
   "admin.updateFailed": "Aggiornamento non riuscito",
@@ -401,5 +401,8 @@
   "admin.twoFactorResetConfirm": "Azzerare l'autenticazione a due fattori di :email? Accederà solo con la password finché non la riconfigura.",
   "admin.provider": "Fornitore",
   "admin.providerCustom": "Altro server SMTP",
-  "admin.providerHint": "Scegli il relay e server e porta si compilano; poi incolla login e chiave forniti dal fornitore."
+  "admin.providerHint": "Scegli il relay e server e porta si compilano; poi incolla login e chiave forniti dal fornitore.",
+  "admin.autoUpdate": "Aggiorna automaticamente",
+  "admin.autoUpdateHint": "Quando esce una nuova versione, questa installazione si aggiorna da sola entro un giorno: backup del database, nuovo codice, dipendenze e migrazioni. Disattivato, /admin mostra un pulsante Aggiorna ora.",
+  "admin.updatesSaved": "Impostazioni di aggiornamento salvate."
 }

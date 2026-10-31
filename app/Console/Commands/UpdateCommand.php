@@ -7,16 +7,23 @@ use App\Support\Updates;
 use App\Support\Version;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Symfony\Component\Process\Process;
 use Throwable;
 
 /**
- * Updates a git checkout in place: database backup, git pull, composer install,
- * migrations, caches. Progress goes to the status file that /admin watches.
+ * Updates this install in place: database backup, new code, composer install,
+ * migrations, caches. The code comes from git when this user can run it, and
+ * from the release package (a tarball) otherwise, so a zip install or a PHP-FPM
+ * without git in its PATH updates all the same. Progress goes to the status
+ * file that /admin watches.
  */
 class UpdateCommand extends Command
 {
-    protected $signature = 'openmeru:update {--no-backup : Skip the database dump}';
+    protected $signature = 'openmeru:update
+        {--no-backup : Skip the database dump}
+        {--package : Download the release package even when git is available}
+        {--auto : Only run when automatic updates are on and a newer version is out}';
 
     protected $description = 'Update this install to the latest published version';
 
@@ -24,31 +31,52 @@ class UpdateCommand extends Command
 
     public function handle(): int
     {
-        if (! Version::isGitCheckout()) {
-            $this->components->error('Not a git checkout. Update with: '.Updates::installCommand());
+        if ($this->option('auto')) {
+            if (! Updates::autoEnabled()) {
+                $this->line('Automatic updates are off (Settings → Updates).');
 
-            return self::FAILURE;
+                return self::SUCCESS;
+            }
+            $status = Updates::status()['state'];
+            if ($status !== 'idle') {
+                $this->line('An update is '.$status.'; nothing started.');
+
+                return self::SUCCESS;
+            }
+            if (! Updates::check(force: true)['available']) {
+                $this->line('Up to date ('.Version::current().').');
+
+                return self::SUCCESS;
+            }
         }
 
         $from = Version::current();
         Updates::writeStatus(['state' => 'running', 'log' => '', 'started_at' => now()->toIso8601String(), 'finished_at' => null, 'from' => $from, 'to' => null]);
 
         try {
-            $this->step('Checking the working tree');
-            $dirty = trim($this->sh(Git::command('status --porcelain --untracked-files=no')));
-            if ($dirty !== '') {
-                throw new \RuntimeException("Local changes would be overwritten by the update:\n".$dirty."\nCommit them (php artisan openmeru:publish) or discard them (git checkout -- .) first.");
+            $useGit = ! $this->option('package') && Git::available();
+
+            if ($useGit) {
+                $this->step('Checking the working tree');
+                $dirty = trim($this->sh(Git::command('status --porcelain --untracked-files=no')));
+                if ($dirty !== '') {
+                    throw new \RuntimeException("Local changes would be overwritten by the update:\n".$dirty."\nCommit them (php artisan openmeru:publish) or discard them (git checkout -- .) first.");
+                }
             }
 
             if (! $this->option('no-backup')) {
                 $this->backup();
             }
 
-            $this->step('Fetching the latest code');
-            $this->sh(Git::command('fetch --quiet origin'));
-            $branch = trim($this->sh(Git::command('rev-parse --abbrev-ref HEAD')));
-            $this->clearUntrackedCopies('origin/'.$branch);
-            $this->sh(Git::command('pull --ff-only --quiet origin '.escapeshellarg($branch)));
+            if ($useGit) {
+                $this->step('Fetching the latest code');
+                $this->sh(Git::command('fetch --quiet origin'));
+                $branch = trim($this->sh(Git::command('rev-parse --abbrev-ref HEAD')));
+                $this->clearUntrackedCopies('origin/'.$branch);
+                $this->sh(Git::command('pull --ff-only --quiet origin '.escapeshellarg($branch)));
+            } else {
+                $this->package();
+            }
 
             $this->step('Installing PHP dependencies');
             $composer = $this->composer();
@@ -75,6 +103,63 @@ class UpdateCommand extends Command
 
             return self::FAILURE;
         }
+    }
+
+    /** Downloads the release package and copies it over this install, keeping its own data. */
+    private function package(): void
+    {
+        $url = Updates::tarballUrl();
+        $this->step('Downloading the package');
+        if (Git::binary() === null) {
+            $this->note('git is not available to this user, so the release package is used instead.');
+        }
+        $work = storage_path('app/private/update');
+        $this->removeDir($work);
+        mkdir($work, 0750, true);
+        $archive = $work.'/release.tar.gz';
+        $response = Http::timeout(600)->withOptions(['sink' => $archive])->get($url);
+        if (! $response->successful() || ! is_file($archive) || filesize($archive) < 1024) {
+            throw new \RuntimeException('Download failed ('.$response->status().'): '.$url);
+        }
+        $this->note('Downloaded '.$url);
+
+        $this->step('Unpacking');
+        $extracted = $work.'/tree';
+        mkdir($extracted, 0750, true);
+        $tar = trim($this->sh('command -v tar || true'));
+        if ($tar !== '') {
+            $this->sh(escapeshellarg($tar).' -xzf '.escapeshellarg($archive).' -C '.escapeshellarg($extracted));
+        } else {
+            $phar = new \PharData($archive);
+            $plain = $phar->decompress();
+            $plain->extractTo($extracted, null, true);
+        }
+        $roots = array_values(array_filter(glob($extracted.'/*') ?: [], 'is_dir'));
+        $root = count($roots) === 1 ? $roots[0] : $extracted;
+        if (! is_file($root.'/artisan') || ! is_file($root.'/VERSION')) {
+            throw new \RuntimeException('The package does not look like OpenMeru (no artisan/VERSION).');
+        }
+        $incoming = trim((string) file_get_contents($root.'/VERSION'));
+
+        $this->step('Copying the new files');
+        $written = Updates::applyTree($root, base_path());
+        $this->note($written.' files written (version '.$incoming.').');
+        $this->removeDir($work);
+    }
+
+    private function removeDir(string $dir): void
+    {
+        if (! is_dir($dir)) {
+            return;
+        }
+        $items = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
+        foreach ($items as $item) {
+            $item->isDir() ? @rmdir($item->getPathname()) : @unlink($item->getPathname());
+        }
+        @rmdir($dir);
     }
 
     /**

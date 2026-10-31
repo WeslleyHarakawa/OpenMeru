@@ -306,7 +306,7 @@
   "admin.updateWhatsNew": "Wat is er nieuw",
   "admin.updateNow": "Nu bijwerken",
   "admin.updateOrTerminal": "Of voer dit uit op de server, als de sitegebruiker:",
-  "admin.updateTerminalOnly": "Deze installatie is geen git-checkout; werk bij vanuit de terminal, als de sitegebruiker:",
+  "admin.updateTerminalOnly": "Deze installatie kan zichzelf niet bijwerken; werk bij vanuit de terminal, als de sitegebruiker:",
   "admin.updating": "Bijwerken…",
   "admin.updatingHint": "Database back-uppen, code ophalen, afhankelijkheden installeren, migreren. Houd deze pagina open.",
   "admin.updateFailed": "De update is mislukt",
@@ -401,5 +401,8 @@
   "admin.twoFactorResetConfirm": "Tweestapsverificatie van :email resetten? Inloggen gaat dan alleen met wachtwoord tot het opnieuw is ingesteld.",
   "admin.provider": "Provider",
   "admin.providerCustom": "Andere SMTP-server",
-  "admin.providerHint": "Kies je relay; server en poort worden ingevuld. Plak daarna de login en sleutel van je provider."
+  "admin.providerHint": "Kies je relay; server en poort worden ingevuld. Plak daarna de login en sleutel van je provider.",
+  "admin.autoUpdate": "Automatisch bijwerken",
+  "admin.autoUpdateHint": "Als er een nieuwe versie uit is, werkt deze installatie zichzelf binnen een dag bij: databaseback-up, nieuwe code, afhankelijkheden en migraties. Uit, dan toont /admin een knop Nu bijwerken.",
+  "admin.updatesSaved": "Update-instellingen opgeslagen."
 }

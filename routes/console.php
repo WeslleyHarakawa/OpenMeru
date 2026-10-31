@@ -5,6 +5,11 @@ use App\Models\User;
 use App\Support\EnvFile;
 use App\Support\MailDomain;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
+
+// Where the scheduler runs (cron: * * * * * php artisan schedule:run), installs update at night
+// even when nobody opens the site. Without cron, the web requests do the same during the day.
+Schedule::command('openmeru:update --auto')->dailyAt('04:30')->withoutOverlapping();
 
 // The password can be left out: it is then asked for without echo, so it never lands in the
 // shell history or in the process list (a password given as an argument does).

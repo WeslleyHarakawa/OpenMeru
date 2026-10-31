@@ -306,7 +306,7 @@
   "admin.updateWhatsNew": "What changed",
   "admin.updateNow": "Update now",
   "admin.updateOrTerminal": "Or run this on the server, as the site user:",
-  "admin.updateTerminalOnly": "This install is not a git checkout, so update it from the terminal, as the site user:",
+  "admin.updateTerminalOnly": "This install cannot update itself; update it from the terminal, as the site user:",
   "admin.updating": "Updating…",
   "admin.updatingHint": "Backing up the database, fetching the code, installing dependencies, migrating. Keep this page open.",
   "admin.updateFailed": "The update failed",
@@ -401,5 +401,8 @@
   "admin.twoFactorResetConfirm": "Reset two-factor authentication for :email? They will sign in with the password only until they set it up again.",
   "admin.provider": "Provider",
   "admin.providerCustom": "Other SMTP server",
-  "admin.providerHint": "Pick your relay and the server and port fill in; then paste the login and the key your provider gave you."
+  "admin.providerHint": "Pick your relay and the server and port fill in; then paste the login and the key your provider gave you.",
+  "admin.autoUpdate": "Update automatically",
+  "admin.autoUpdateHint": "When a new version is out, this install updates itself within a day: database backup, new code, dependencies and migrations. Off, /admin shows an Update now button instead.",
+  "admin.updatesSaved": "Update settings saved."
 }

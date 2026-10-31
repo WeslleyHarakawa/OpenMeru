@@ -1,4 +1,5 @@
 @php
+  \App\Support\Updates::maybeAutoStart();
   $check = \App\Support\Updates::check();
   $status = \App\Support\Updates::status();
   $canSelf = \App\Support\Updates::canSelfUpdate();

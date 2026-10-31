@@ -306,7 +306,7 @@
   "admin.updateWhatsNew": "O que mudou",
   "admin.updateNow": "Atualizar agora",
   "admin.updateOrTerminal": "Ou corra isto no servidor, como o utilizador do site:",
-  "admin.updateTerminalOnly": "Esta instalação não é um checkout git; atualize pelo terminal, como o utilizador do site:",
+  "admin.updateTerminalOnly": "Esta instalação não consegue atualizar-se sozinha; atualize pelo terminal, como o utilizador do site:",
   "admin.updating": "A atualizar…",
   "admin.updatingHint": "A fazer cópia da base de dados, obter o código, instalar dependências e migrar. Mantenha esta página aberta.",
   "admin.updateFailed": "A atualização falhou",
@@ -401,5 +401,8 @@
   "admin.twoFactorResetConfirm": "Repor a autenticação de dois fatores de :email? Entrará só com a palavra-passe até a configurar de novo.",
   "admin.provider": "Fornecedor",
   "admin.providerCustom": "Outro servidor SMTP",
-  "admin.providerHint": "Escolha o relay e o servidor e a porta preenchem-se; depois cole o login e a chave que o fornecedor lhe deu."
+  "admin.providerHint": "Escolha o relay e o servidor e a porta preenchem-se; depois cole o login e a chave que o fornecedor lhe deu.",
+  "admin.autoUpdate": "Atualizar automaticamente",
+  "admin.autoUpdateHint": "Quando sai uma versão nova, esta instalação atualiza-se sozinha em menos de um dia: cópia da base de dados, código novo, dependências e migrações. Desligado, o /admin mostra um botão Atualizar agora.",
+  "admin.updatesSaved": "Definições de atualização guardadas."
 }

@@ -306,7 +306,7 @@
   "admin.updateWhatsNew": "Was ist neu",
   "admin.updateNow": "Jetzt aktualisieren",
   "admin.updateOrTerminal": "Oder auf dem Server als Site-Benutzer ausführen:",
-  "admin.updateTerminalOnly": "Diese Installation ist kein Git-Checkout; aktualisieren Sie im Terminal als Site-Benutzer:",
+  "admin.updateTerminalOnly": "Diese Installation kann sich nicht selbst aktualisieren; aktualisieren Sie im Terminal als Site-Benutzer:",
   "admin.updating": "Wird aktualisiert…",
   "admin.updatingHint": "Datenbank sichern, Code holen, Abhängigkeiten installieren, migrieren. Lassen Sie diese Seite offen.",
   "admin.updateFailed": "Das Update ist fehlgeschlagen",
@@ -401,5 +401,8 @@
   "admin.twoFactorResetConfirm": "Zwei-Faktor-Authentifizierung von :email zurücksetzen? Die Anmeldung erfolgt nur mit Passwort, bis sie neu eingerichtet ist.",
   "admin.provider": "Anbieter",
   "admin.providerCustom": "Anderer SMTP-Server",
-  "admin.providerHint": "Wählen Sie Ihr Relay; Server und Port werden ausgefüllt. Dann Login und Schlüssel des Anbieters einfügen."
+  "admin.providerHint": "Wählen Sie Ihr Relay; Server und Port werden ausgefüllt. Dann Login und Schlüssel des Anbieters einfügen.",
+  "admin.autoUpdate": "Automatisch aktualisieren",
+  "admin.autoUpdateHint": "Erscheint eine neue Version, aktualisiert sich diese Installation innerhalb eines Tages selbst: Datenbank-Backup, neuer Code, Abhängigkeiten und Migrationen. Aus, zeigt /admin stattdessen einen Button Jetzt aktualisieren.",
+  "admin.updatesSaved": "Update-Einstellungen gespeichert."
 }

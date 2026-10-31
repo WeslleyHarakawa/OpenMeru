@@ -75,25 +75,53 @@ COMPOSER="$(command -v composer 2>/dev/null || true)"
 [ -n "$COMPOSER" ] || die "composer is not installed. See https://getcomposer.org/download/ (then run this script again)."
 ok "Composer $("$PHP" "$COMPOSER" --version 2>/dev/null | awk '{print $3}')"
 
-command -v git >/dev/null 2>&1 || die "git is not installed (sudo apt install git)."
-ok "git"
+# git is the nicest way to get and update the code, but not required: without it the
+# release package (a tarball from the same repository) is downloaded instead.
+GIT="$(command -v git 2>/dev/null || true)"
+[ -n "$GIT" ] && ok "git" || ok "git not installed: using the release package"
+TARBALL="${OPENMERU_TARBALL:-${REPO%.git}/archive/refs/heads/$BRANCH.tar.gz}"
+
+# Downloads the package and copies it over $DIR, keeping this install's own files
+# (.env, storage, vendor). A fresh $DIR simply gets everything.
+unpack_release() {
+  local work; work="$(mktemp -d)"
+  curl -fsSL "$TARBALL" -o "$work/release.tar.gz" || die "Could not download $TARBALL"
+  mkdir -p "$work/tree"
+  tar -xzf "$work/release.tar.gz" -C "$work/tree"
+  local root; root="$(find "$work/tree" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
+  [ -f "$root/artisan" ] || die "The package does not look like OpenMeru."
+  mkdir -p "$DIR"
+  if command -v rsync >/dev/null 2>&1; then
+    rsync -a --exclude .env --exclude .git --exclude storage --exclude vendor --exclude node_modules --exclude bootstrap/cache "$root/" "$DIR/"
+  else
+    (cd "$root" && find . -type d ! -path './storage*' ! -path './vendor*' ! -path './.git*' -exec mkdir -p "$DIR/{}" \; \
+      && find . -type f ! -name .env ! -path './storage/*' ! -path './vendor/*' ! -path './.git/*' -exec cp -p "{}" "$DIR/{}" \;)
+  fi
+  rm -rf "$work"
+}
 
 # ---- 2. code ---------------------------------------------------------------
 echo
 if [ -f "$DIR/artisan" ]; then
   bold "Updating $DIR"
-  if [ -d "$DIR/.git" ]; then
-    git -C "$DIR" fetch -q origin "$BRANCH"
-    git -C "$DIR" checkout -q "$BRANCH"
-    git -C "$DIR" pull -q --ff-only origin "$BRANCH"
+  if [ -d "$DIR/.git" ] && [ -n "$GIT" ]; then
+    "$GIT" -C "$DIR" fetch -q origin "$BRANCH"
+    "$GIT" -C "$DIR" checkout -q "$BRANCH"
+    "$GIT" -C "$DIR" pull -q --ff-only origin "$BRANCH"
     ok "Code updated (branch $BRANCH)"
   else
-    ok "Not a git checkout, code left as is"
+    unpack_release
+    ok "Code updated from the release package (branch $BRANCH)"
   fi
 else
   bold "Downloading to $DIR"
-  git clone -q --depth 1 --branch "$BRANCH" "$REPO" "$DIR"
-  ok "Cloned $REPO"
+  if [ -n "$GIT" ]; then
+    "$GIT" clone -q --depth 1 --branch "$BRANCH" "$REPO" "$DIR"
+    ok "Cloned $REPO"
+  else
+    unpack_release
+    ok "Downloaded $TARBALL"
+  fi
 fi
 cd "$DIR"
 

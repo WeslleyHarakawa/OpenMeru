@@ -194,6 +194,14 @@
 
   <section class="panel" data-pane="updates">
     <h2><i class="bi bi-arrow-repeat"></i> {{ __('admin.menuUpdates') }} <span class="pill admin">v{{ \App\Support\Version::current() }}</span></h2>
+    <form method="POST" action="{{ route('admin.settings.updates') }}" class="d-flex flex-column gap-3 mb-3">
+      @csrf @method('PUT')
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="auto_update" name="auto_update" value="1" @checked($auto_update)>
+        <label class="form-check-label" for="auto_update"><strong>{{ __('admin.autoUpdate') }}</strong><div class="hint">{{ __('admin.autoUpdateHint') }}</div></label>
+      </div>
+      <div><button class="btn btn-primary" type="submit"><i class="bi bi-check-lg"></i> {{ __('admin.saveSettings') }}</button></div>
+    </form>
     <form method="POST" action="{{ route('admin.update.check') }}" class="d-flex align-items-center gap-3 flex-wrap">
       @csrf
       <button class="btn btn-outline-primary" type="submit"><i class="bi bi-cloud-arrow-down"></i> {{ __('admin.checkUpdates') }}</button>
