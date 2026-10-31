@@ -1,0 +1,11 @@
+# OpenMeru: Apache front controller and PHP limits (mod_php reads these; PHP-FPM reads .user.ini).
+<IfModule mod_php.c>
+    php_value upload_max_filesize 30M
+    php_value post_max_size 64M
+</IfModule>
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>

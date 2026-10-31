@@ -21,10 +21,10 @@ class Brand
 
     /** Uploadable files, with the types each accepts and its size limit in KB. */
     public const ASSETS = [
-        'logo' => ['mimes' => 'png,jpg,jpeg,webp,svg', 'max' => 1024],
-        'icon' => ['mimes' => 'png,jpg,jpeg,webp,svg', 'max' => 1024],
-        'favicon' => ['mimes' => 'ico,png,svg', 'max' => 512],
-        'background' => ['mimes' => 'png,jpg,jpeg,webp', 'max' => 4096],
+        'logo' => ['mimes' => 'png,jpg,jpeg,webp,svg', 'max' => 5120],
+        'icon' => ['mimes' => 'png,jpg,jpeg,webp,svg', 'max' => 5120],
+        'favicon' => ['mimes' => 'ico,png,svg', 'max' => 2048],
+        'background' => ['mimes' => 'png,jpg,jpeg,webp', 'max' => 10240],
     ];
 
     private static ?array $cache = null;
