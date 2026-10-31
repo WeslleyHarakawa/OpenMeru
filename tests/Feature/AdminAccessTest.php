@@ -265,4 +265,21 @@ class AdminAccessTest extends TestCase
         $this->assertFalse($bob->fresh()->is_active);
         $this->assertSame(0, DB::table('sessions')->where('user_id', $bob->id)->count());
     }
+
+    public function test_the_system_sender_must_be_on_the_mail_domain(): void
+    {
+        $admin = $this->admin();
+        $session = ['admin_verified' => $admin->id];
+        $base = ['smtp_host' => 'smtp-relay.brevo.com', 'smtp_port' => 587, 'smtp_username' => 'login@smtp-brevo.com'];
+
+        $this->actingAs($admin)->withSession($session)->from('/admin/settings')
+            ->put('/admin/settings', $base + ['system_from' => 'someone@gmail.com'])
+            ->assertSessionHasErrors('system_from');
+        $this->assertNull(\App\Models\Setting::get('system_from'));
+
+        $this->actingAs($admin)->withSession($session)
+            ->put('/admin/settings', $base + ['system_from' => 'info@example.test'])
+            ->assertSessionHasNoErrors();
+        $this->assertSame('info@example.test', \App\Models\Setting::get('system_from'));
+    }
 }

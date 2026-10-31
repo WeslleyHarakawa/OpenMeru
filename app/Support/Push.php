@@ -42,7 +42,7 @@ class Push
         self::send($user, [
             'title' => $title,
             'body' => $message->subject ?: __('noSubject', [], Locales::supported($user->locale) ? $user->locale : 'en'),
-            'url' => '/mail?open='.$message->id,
+            'url' => (parse_url(route('login'), PHP_URL_PATH) ?: '/').'?open='.$message->id,
             'tag' => 'mail-'.$message->id,
         ]);
     }

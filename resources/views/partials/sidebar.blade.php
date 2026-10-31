@@ -1,5 +1,5 @@
 <aside class="sidebar">
-  <a class="side-brand" href="/mail">
+  <a class="side-brand" href="{{ route('login') }}">
     <svg class="logo-mark sm" viewBox="0 0 64 64" aria-hidden="true">
       <defs>
         <linearGradient id="logoS" x1="0" y1="0" x2="0" y2="1">
@@ -18,7 +18,7 @@
     <button class="compose" type="button" data-action="compose"><i class="bi bi-pencil-square"></i> <span data-i18n="compose">{{ __('compose') }}</span></button>
     <div class="nav-scroll" id="nav"></div>
   @else
-    <a class="compose" href="/mail" style="text-decoration:none"><i class="bi bi-arrow-left"></i> <span data-i18n="backToInbox">{{ __('backToInbox') }}</span></a>
+    <a class="compose" href="{{ route('login') }}" style="text-decoration:none"><i class="bi bi-arrow-left"></i> <span data-i18n="backToInbox">{{ __('backToInbox') }}</span></a>
     <div class="nav-scroll"></div>
   @endif
   <div class="side-bottom">

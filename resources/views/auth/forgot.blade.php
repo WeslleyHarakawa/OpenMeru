@@ -18,13 +18,13 @@
       </label>
       <p id="formError" class="form-error" role="alert"></p>
       <button class="btn-go" type="submit"><span data-i18n="sendLink">{{ __('sendLink') }}</span> <i class="bi bi-arrow-right"></i></button>
-      <a class="forgot" href="/mail" style="justify-self:center;margin-top:4px" data-i18n="backLogin">{{ __('backLogin') }}</a>
+      <a class="forgot" href="{{ route('login') }}" style="justify-self:center;margin-top:4px" data-i18n="backLogin">{{ __('backLogin') }}</a>
     </form>
   </div>
   <div id="resetDone" class="done" hidden>
     <div class="done-icon"><i class="bi bi-envelope-check"></i></div>
     <h2 data-i18n="sentTitle">{{ __('sentTitle') }}</h2>
     <p data-i18n="sentLead">{{ __('sentLead') }}</p>
-    <a href="/mail" data-i18n="backLogin">{{ __('backLogin') }}</a>
+    <a href="{{ route('login') }}" data-i18n="backLogin">{{ __('backLogin') }}</a>
   </div>
 @endsection

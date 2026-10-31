@@ -315,5 +315,6 @@
   "admin.updateFound": "Update :version is available.",
   "admin.upToDate": "You are on the latest version (:version).",
   "admin.checkUpdates": "Check for updates",
-  "admin.close": "Close"
+  "admin.close": "Close",
+  "admin.fromMustBeDomain": "The sender must be an address on :domain (Brevo only sends from your authenticated domain)."
 }

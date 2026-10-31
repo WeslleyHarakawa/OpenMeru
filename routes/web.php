@@ -22,10 +22,16 @@ Route::middleware('guest')->group(function () {
     Route::post('/reset', [AuthController::class, 'reset'])->middleware('throttle:5,1')->name('password.update');
 });
 
-// Every install is somebody's webmail: the root is the sign-in page and nothing about the
-// project shows. Only openmeru.com itself (config updates.source) has the landing page, the
-// demo, the installer and the version feed.
-Route::get('/', fn () => config('updates.source') ? view('landing') : redirect('/mail'))->name('home');
+// Every install is somebody's webmail: the sign-in page IS the root and nothing about the
+// project shows. Only openmeru.com itself (config updates.source) keeps the landing page at
+// the root, the webmail under /mail, the demo, the installer and the version feed.
+$webmail = config('updates.source') ? '/mail' : '/';
+Route::get($webmail, [MailboxController::class, 'entry'])->name('login');
+if (config('updates.source')) {
+    Route::view('/', 'landing')->name('home');
+} else {
+    Route::redirect('/mail', '/', 301)->name('home');
+}
 Route::middleware('source.only')->group(function () {
     // One-line installer: curl -fsSL https://openmeru.com/install | bash
     Route::get('/install', fn () => response(file_get_contents(base_path('install.sh')), 200, [
@@ -44,14 +50,13 @@ Route::middleware('source.only')->group(function () {
     Route::get('/demo', [DemoController::class, 'mailbox'])->middleware('throttle:30,1')->name('demo');
     Route::get('/demo/admin', [DemoController::class, 'admin'])->middleware('throttle:30,1')->name('demo.admin');
 });
-Route::get('/mail', [MailboxController::class, 'entry'])->name('login');
 Route::view('/privacy', 'legal.privacy')->name('privacy');
 Route::view('/terms', 'legal.terms')->name('terms');
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:10,1')->name('login.attempt');
 
 // Usual webmail addresses lead to the sign-in page.
 foreach (['webmail', 'email'] as $alias) {
-    Route::redirect('/'.$alias, '/mail', 301);
+    Route::redirect('/'.$alias, $webmail, 301);
 }
 
 Route::middleware(['auth', 'mailbox.active'])->group(function () {

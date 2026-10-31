@@ -170,7 +170,7 @@ class AccountSettingsController extends Controller
         $sent = Push::send($request->user(), [
             'title' => 'OpenMeru Mail',
             'body' => 'As notificações estão funcionando.',
-            'url' => '/mail',
+            'url' => parse_url(route('login'), PHP_URL_PATH) ?: '/',
             'tag' => 'test',
         ]);
 

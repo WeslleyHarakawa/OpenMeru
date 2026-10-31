@@ -11,7 +11,7 @@ self.addEventListener("push", (event) => {
       icon: "/assets/icon-192.png",
       badge: "/assets/icon-192.png",
       tag: data.tag || "openmeru-mail",
-      data: { url: data.url || "/mail" }
+      data: { url: data.url || "/" }
     }),
     // Open OpenMeru Mail tabs refresh their list right away.
     self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((list) => {
@@ -22,11 +22,11 @@ self.addEventListener("push", (event) => {
 
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-  const url = new URL((event.notification.data && event.notification.data.url) || "/mail", self.location.origin).href;
+  const url = new URL((event.notification.data && event.notification.data.url) || "/", self.location.origin).href;
   event.waitUntil(
     self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((list) => {
       for (const client of list) {
-        if (client.url.startsWith(self.location.origin + "/mail") && "focus" in client) {
+        if (client.url.startsWith(self.location.origin + "/") && "focus" in client) {
           client.postMessage({ type: "open", url });
           return client.focus();
         }

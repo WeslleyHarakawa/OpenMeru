@@ -42,7 +42,7 @@
     <nav>
       <a href="{{ route('admin.accounts') }}" class="{{ request()->routeIs('admin.accounts') ? 'active' : '' }}"><i class="bi bi-people"></i> {{ __('admin.accounts') }}</a>
       <a href="{{ route('admin.settings') }}" class="{{ request()->routeIs('admin.settings') ? 'active' : '' }}"><i class="bi bi-gear"></i> {{ __('admin.smtp') }}</a>
-      <a href="/mail"><i class="bi bi-envelope"></i> {{ __('admin.myMailbox') }}</a>
+      <a href="{{ route('login') }}"><i class="bi bi-envelope"></i> {{ __('admin.myMailbox') }}</a>
     </nav>
     <span class="spacer"></span>
     <span class="hint" style="color:var(--muted)" title="OpenMeru Mail {{ \App\Support\Version::current() }}">{{ auth()->user()->email }} · v{{ \App\Support\Version::current() }}</span>

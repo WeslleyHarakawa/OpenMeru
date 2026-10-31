@@ -12,30 +12,34 @@ class ExampleTest extends TestCase
 {
     public function test_an_install_opens_on_the_sign_in_page(): void
     {
-        config(['updates.source' => false]);
-
-        $this->get('/')->assertRedirect('/mail');
-        $this->get('/mail')->assertOk()->assertSee('Sign in');
+        // Routes are registered at boot: the suite runs as a normal install (MAIL_DOMAIN=example.test).
+        $this->get('/')->assertOk()->assertSee('Sign in');
+        $this->get('/mail')->assertRedirect('/');
+        $this->get('/webmail')->assertRedirect('/');
+        $this->assertSame(url('/'), route('login'));
         foreach (['/install', '/version', '/demo', '/demo/admin'] as $projectPage) {
             $this->get($projectPage)->assertNotFound();
         }
     }
 
+    public function test_signed_out_visitors_are_sent_to_the_root(): void
+    {
+        $this->get('/settings')->assertRedirect('/');
+    }
+
     public function test_the_sign_in_page_does_not_advertise_the_project(): void
     {
-        config(['updates.source' => false]);
-
-        $this->get('/mail')->assertOk()
+        $this->get('/')->assertOk()
             ->assertDontSee('Open source')
             ->assertDontSee('openmeru.com/install')
             ->assertDontSee('Try the live demo');
     }
 
-    public function test_openmeru_com_itself_shows_the_project_site(): void
+    public function test_openmeru_com_itself_keeps_the_project_pages(): void
     {
+        // The root route is decided at boot, so only the source-only pages can be flipped here.
         config(['updates.source' => true]);
 
-        $this->get('/')->assertOk()->assertSee('curl -fsSL https://openmeru.com/install | bash');
         $this->get('/install')->assertOk()->assertHeader('Content-Type', 'text/plain; charset=utf-8');
         $this->get('/version')->assertOk()->assertJsonStructure(['version']);
     }

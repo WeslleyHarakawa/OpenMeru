@@ -68,6 +68,8 @@
   applyChrome();
 
   const csrf = (document.querySelector("meta[name='csrf-token']") || {}).content;
+  // Where the webmail lives: "/" on a normal install, "/mail" on openmeru.com.
+  const WEBMAIL = (document.querySelector("meta[name='webmail']") || {}).content || "/mail";
 
   async function api(method, url, body) {
     const headers = { Accept: "application/json", "X-CSRF-TOKEN": csrf, "X-Requested-With": "XMLHttpRequest" };
@@ -78,7 +80,7 @@
     }
     const res = await fetch(url, { method, headers, body: payload, credentials: "same-origin" });
     if ((res.status === 401 || res.status === 419) && page === "inbox") {
-      location.href = "/mail";
+      location.href = WEBMAIL;
       throw new Error("auth");
     }
     let data = null;
@@ -131,7 +133,7 @@
       try {
         const next = form.querySelector("input[name='next']");
         const data = await api("POST", "/login", { email, password, remember: true, next: next ? next.value : null });
-        location.href = data.redirect || "/mail";
+        location.href = data.redirect || WEBMAIL;
       } catch (e) {
         error.textContent = e.status === 429 ? t("tooMany") : t("invalidLogin");
         btn.disabled = false;
@@ -174,7 +176,7 @@
       if (body.password !== body.password_confirmation) return (error.textContent = t("pwMismatch"));
       try {
         const data = await api("POST", "/reset", body);
-        location.href = data.redirect || "/mail";
+        location.href = data.redirect || WEBMAIL;
       } catch (e) {
         error.textContent = t("resetFailed");
       }
@@ -1015,7 +1017,7 @@
   const opening = Number(new URLSearchParams(location.search).get("open"));
   loadList().then(() => {
     if (opening) {
-      history.replaceState(null, "", "/mail");
+      history.replaceState(null, "", WEBMAIL);
       openMessage(opening);
     }
   });
@@ -1288,7 +1290,7 @@
         if (!window.confirm(t("deleteWarning"))) return;
         try {
           const data = await api("DELETE", "/api/account", { password: deleteForm.password.value });
-          location.href = data.redirect || "/mail";
+          location.href = data.redirect || WEBMAIL;
         } catch (e) {
           errorEl.textContent = errorText(e);
         }

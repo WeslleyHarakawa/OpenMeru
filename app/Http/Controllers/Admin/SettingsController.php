@@ -76,8 +76,9 @@ class SettingsController extends Controller
             'smtp_username' => ['required', 'string', 'max:255'],
             'smtp_password' => ['nullable', 'string', 'max:500'],
             'brevo_api_key' => ['nullable', 'string', 'max:500'],
-            'system_from' => ['required', 'email', 'max:255'],
-        ]);
+            // The relay only sends from the authenticated domain: a Gmail or other outside sender is silently dropped.
+            'system_from' => ['required', 'email', 'max:255', 'regex:/@'.preg_quote((string) config('inbound.domain'), '/').'$/i'],
+        ], ['system_from.regex' => __('admin.fromMustBeDomain', ['domain' => config('inbound.domain')])]);
 
         foreach (['smtp_host', 'smtp_port', 'smtp_username', 'system_from'] as $key) {
             Setting::put($key, trim((string) $data[$key]));
