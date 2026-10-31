@@ -229,3 +229,5 @@ MIT © Weslley Harakawa
 
 - LinkedIn: <https://www.linkedin.com/in/weslleyharakawa>
 - GitHub: <https://github.com/WeslleyHarakawa>
+
+If OpenMeru is useful to you, you can [buy me a coffee](https://buymeacoffee.com/weslleyharakawa). ☕
