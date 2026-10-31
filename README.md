@@ -1,15 +1,29 @@
+<p align="center">
+  <a href="https://openmeru.com"><picture>
+    <source media="(prefers-color-scheme: dark)" srcset="public_root/assets/brand/logo-dark.png">
+    <img src="public_root/assets/brand/logo-light.png" alt="OpenMeru" width="420">
+  </picture></a>
+</p>
+
 # OpenMeru Mail
 
 Open-source webmail for your own domain. Create `you@yourdomain.com` mailboxes from an admin panel, send through **Brevo**, receive through **Cloudflare Email Routing**, and keep a backup copy of every message in **Gmail**.
 
 - Admin panel at `/admin` (create, search, open and delete mailboxes, with a 6-digit sign-in code sent by email)
-- Webmail at `/mail`, where each mailbox sees only its own mail
+- Webmail at the root of your domain, where each mailbox sees only its own mail
 - Rich-text editor, attachments, Cc/Bcc, drafts, stars, spam, trash and search
-- Push notifications, profile photo, signature and auto-forwarding
+- Two-factor authentication (TOTP), push notifications, profile photo, signature and auto-forwarding
+- Your name, logo, icon and colours on every screen; self-updating from openmeru.com
 - 10 languages: English, Português (BR and PT), Español, Français, Deutsch, Italiano, Nederlands, Русский and 中文
 - Light and dark themes, built for mobile
 
 Website: <https://openmeru.com>. Live demo (read-only): [mailbox](https://openmeru.com/demo) and [admin](https://openmeru.com/demo/admin).
+
+## Screenshots
+
+| Webmail | Admin |
+|---|---|
+| [![The inbox, with a message open](docs/screenshots/inbox.png)](https://openmeru.com/demo) | [![The admin panel: mailboxes and settings](docs/screenshots/admin.png)](https://openmeru.com/demo/admin) |
 
 ---
 
