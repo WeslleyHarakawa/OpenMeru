@@ -5,6 +5,13 @@
   </picture></a>
 </p>
 
+<p align="center">
+  <a href="https://buymeacoffee.com/weslleyharakawa"><img src="https://img.shields.io/badge/Donate-Buy%20me%20a%20coffee-d2151a?logo=buymeacoffee&logoColor=white" alt="Donate: buy me a coffee"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-111?logo=opensourceinitiative&logoColor=white" alt="MIT license"></a>
+  <a href="https://openmeru.com/version"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fopenmeru.com%2Fversion&query=%24.version&label=version&color=d2151a" alt="Latest version"></a>
+  <a href="https://openmeru.com/demo"><img src="https://img.shields.io/badge/demo-live-111" alt="Live demo"></a>
+</p>
+
 # OpenMeru Mail
 
 Open-source webmail for your own domain. Create `you@yourdomain.com` mailboxes from an admin panel, send through **Brevo**, receive through **Cloudflare Email Routing**, and keep a backup copy of every message in **Gmail**.
