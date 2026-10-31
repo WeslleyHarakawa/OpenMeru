@@ -8,6 +8,7 @@ use App\Models\Setting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
@@ -60,18 +61,27 @@ class VerifyController extends Controller
             return redirect('/admin')->with('otp_error', __('admin.codeExpired'));
         }
 
+        // Counted per admin in the cache, not in the session: signing in again gives a fresh
+        // session but must not give a fresh set of guesses.
+        $lockKey = 'admin-otp:'.$request->user()->id;
+        if (RateLimiter::tooManyAttempts($lockKey, self::MAX_ATTEMPTS)) {
+            $request->session()->forget('admin_otp');
+
+            return redirect('/admin')->with('otp_error', __('admin.tooManyWrong'));
+        }
+
         if (! Hash::check($code, $pending['hash'])) {
-            $pending['attempts']++;
-            if ($pending['attempts'] >= self::MAX_ATTEMPTS) {
+            RateLimiter::hit($lockKey, self::TTL_MINUTES * 60);
+            if (RateLimiter::tooManyAttempts($lockKey, self::MAX_ATTEMPTS)) {
                 $request->session()->forget('admin_otp');
 
                 return redirect('/admin')->with('otp_error', __('admin.tooManyWrong'));
             }
-            $request->session()->put('admin_otp', $pending);
 
             return redirect('/admin')->with('otp_error', __('admin.wrongCode'));
         }
 
+        RateLimiter::clear($lockKey);
         $request->session()->forget('admin_otp');
         $request->session()->regenerate();
         $request->session()->put('admin_verified', $request->user()->id);

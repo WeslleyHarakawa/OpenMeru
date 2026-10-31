@@ -23,6 +23,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'mailbox.active' => \App\Http\Middleware\EnsureMailboxActive::class,
             'admin.area' => \App\Http\Middleware\AdminArea::class,
         ]);
+        // Check who is asking before resolving /admin/accounts/{account}: otherwise a visitor
+        // can tell which account ids exist (404 for a missing one, 401 for a real one).
+        $middleware->prependToPriorityList(
+            before: \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            prepend: \App\Http\Middleware\AdminArea::class,
+        );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
