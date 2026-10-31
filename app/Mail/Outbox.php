@@ -24,13 +24,13 @@ class Outbox
 {
     /** SMTP relays the admin can pick in Settings → Sending; "custom" is any other SMTP server. */
     public const PROVIDERS = [
-        'brevo' => ['name' => 'Brevo', 'host' => 'smtp-relay.brevo.com', 'port' => 587, 'api' => true],
-        'smtp2go' => ['name' => 'SMTP2GO', 'host' => 'mail.smtp2go.com', 'port' => 587, 'api' => false],
-        'mailgun' => ['name' => 'Mailgun', 'host' => 'smtp.mailgun.org', 'port' => 587, 'api' => false],
-        'postmark' => ['name' => 'Postmark', 'host' => 'smtp.postmarkapp.com', 'port' => 587, 'api' => false],
-        'sendgrid' => ['name' => 'SendGrid', 'host' => 'smtp.sendgrid.net', 'port' => 587, 'login' => 'apikey', 'api' => false],
-        'ses' => ['name' => 'Amazon SES', 'host' => 'email-smtp.eu-west-1.amazonaws.com', 'port' => 587, 'api' => false],
-        'resend' => ['name' => 'Resend', 'host' => 'smtp.resend.com', 'port' => 465, 'login' => 'resend', 'api' => false],
+        'brevo' => ['name' => 'Brevo', 'host' => 'smtp-relay.brevo.com', 'port' => 587, 'api' => true, 'url' => 'https://app.brevo.com/settings/keys/smtp'],
+        'smtp2go' => ['name' => 'SMTP2GO', 'host' => 'mail.smtp2go.com', 'port' => 587, 'api' => false, 'url' => 'https://app.smtp2go.com/settings/users/'],
+        'mailgun' => ['name' => 'Mailgun', 'host' => 'smtp.mailgun.org', 'port' => 587, 'api' => false, 'url' => 'https://app.mailgun.com/'],
+        'postmark' => ['name' => 'Postmark', 'host' => 'smtp.postmarkapp.com', 'port' => 587, 'api' => false, 'url' => 'https://account.postmarkapp.com/servers'],
+        'sendgrid' => ['name' => 'SendGrid', 'host' => 'smtp.sendgrid.net', 'port' => 587, 'login' => 'apikey', 'api' => false, 'url' => 'https://app.sendgrid.com/settings/api_keys'],
+        'ses' => ['name' => 'Amazon SES', 'host' => 'email-smtp.eu-west-1.amazonaws.com', 'port' => 587, 'api' => false, 'url' => 'https://console.aws.amazon.com/ses/home#/smtp'],
+        'resend' => ['name' => 'Resend', 'host' => 'smtp.resend.com', 'port' => 465, 'login' => 'resend', 'api' => false, 'url' => 'https://resend.com/api-keys'],
         'custom' => ['name' => 'SMTP', 'host' => '', 'port' => 587, 'api' => false],
     ];
 

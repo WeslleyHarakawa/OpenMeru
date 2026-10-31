@@ -24,7 +24,9 @@
     .panel { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px; margin-bottom:22px; }
     .panel h2 { font-size:18px; font-weight:600; margin:0 0 16px; }
     .panel .hint { color:var(--muted); font-size:13px; }
-    .form-control, .form-select { background:var(--surface); color:var(--ink); border-color:var(--line); border-radius:10px; }
+    .form-control, .form-select { background-color:var(--surface); color:var(--ink); border-color:var(--line); border-radius:10px; }
+    /* Keep Bootstrap's chevron on selects, visible in both themes. */
+    .form-select { background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"); background-repeat:no-repeat; background-position:right .75rem center; background-size:16px 12px; padding-right:2.25rem; appearance:none; }
     .form-label { font-size:13px; color:var(--muted); font-weight:500; }
     .btn-primary { background:var(--brand); border-color:var(--brand); border-radius:10px; }
     .btn-primary:hover { background:var(--brand-dark); border-color:var(--brand-dark); }

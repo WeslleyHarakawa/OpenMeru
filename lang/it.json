@@ -523,5 +523,7 @@
   "landing.footerWebmail": "Webmail",
   "landing.footerPrivacy": "Privacy",
   "landing.footerTerms": "Termini",
-  "landing.language": "Lingua"
+  "landing.language": "Lingua",
+  "admin.providerDefault": ":name (predefinito)",
+  "admin.providerSite": "Ottieni login e chiave su :name →"
 }

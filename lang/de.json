@@ -523,5 +523,7 @@
   "landing.footerWebmail": "Webmail",
   "landing.footerPrivacy": "Datenschutz",
   "landing.footerTerms": "Bedingungen",
-  "landing.language": "Sprache"
+  "landing.language": "Sprache",
+  "admin.providerDefault": ":name (Standard)",
+  "admin.providerSite": "Login und Schlüssel bei :name holen →"
 }

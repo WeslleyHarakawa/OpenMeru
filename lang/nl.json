@@ -523,5 +523,7 @@
   "landing.footerWebmail": "Webmail",
   "landing.footerPrivacy": "Privacy",
   "landing.footerTerms": "Voorwaarden",
-  "landing.language": "Taal"
+  "landing.language": "Taal",
+  "admin.providerDefault": ":name (standaard)",
+  "admin.providerSite": "Haal je login en sleutel op bij :name →"
 }

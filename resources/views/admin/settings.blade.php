@@ -72,10 +72,10 @@
         <label class="form-label" for="smtp_provider">{{ __('admin.provider') }}</label>
         <select class="form-select" id="smtp_provider" name="smtp_provider">
           @foreach (\App\Mail\Outbox::PROVIDERS as $key => $preset)
-            <option value="{{ $key }}" data-host="{{ $preset['host'] }}" data-port="{{ $preset['port'] }}" data-login="{{ $preset['login'] ?? '' }}" data-api="{{ $preset['api'] ? 1 : 0 }}" @selected(old('smtp_provider', $smtp_provider) === $key)>{{ $key === 'custom' ? __('admin.providerCustom') : $preset['name'] }}</option>
+            <option value="{{ $key }}" data-host="{{ $preset['host'] }}" data-port="{{ $preset['port'] }}" data-login="{{ $preset['login'] ?? '' }}" data-api="{{ $preset['api'] ? 1 : 0 }}" data-url="{{ $preset['url'] ?? '' }}" @selected(old('smtp_provider', $smtp_provider) === $key)>{{ $key === 'custom' ? __('admin.providerCustom') : ($key === 'brevo' ? __('admin.providerDefault', ['name' => $preset['name']]) : $preset['name']) }}</option>
           @endforeach
         </select>
-        <div class="hint mt-1" id="providerHint">{{ __('admin.providerHint') }}</div>
+        <div class="hint mt-1" id="providerHint">{{ __('admin.providerHint') }} <a id="providerLink" href="#" target="_blank" rel="noopener" hidden></a></div>
       </div>
       <div class="col-md-6"></div>
       <div class="col-md-6">
@@ -221,6 +221,8 @@
         if (fill && o.dataset.host) { host.value = o.dataset.host; port.value = o.dataset.port; if (o.dataset.login) login.value = o.dataset.login; }
         host.readOnly = !!o.dataset.host && o.value !== "custom" && o.value !== "ses";
         document.getElementById("brevoApiField").hidden = o.dataset.api !== "1";
+        var link = document.getElementById("providerLink");
+        link.hidden = !o.dataset.url; link.href = o.dataset.url || "#"; link.textContent = o.dataset.url ? @json(__('admin.providerSite')).replace(":name", o.textContent.replace(/\s*\(.*\)$/, "")) : "";
       };
       provider.addEventListener("change", function () { apply(true); });
       apply(false);

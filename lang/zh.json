@@ -523,5 +523,7 @@
   "landing.footerWebmail": "网页邮箱",
   "landing.footerPrivacy": "隐私",
   "landing.footerTerms": "条款",
-  "landing.language": "语言"
+  "landing.language": "语言",
+  "admin.providerDefault": ":name（默认）",
+  "admin.providerSite": "在 :name 获取登录名和密钥 →"
 }

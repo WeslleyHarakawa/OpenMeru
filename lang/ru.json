@@ -523,5 +523,7 @@
   "landing.footerWebmail": "Веб-почта",
   "landing.footerPrivacy": "Конфиденциальность",
   "landing.footerTerms": "Условия",
-  "landing.language": "Язык"
+  "landing.language": "Язык",
+  "admin.providerDefault": ":name (по умолчанию)",
+  "admin.providerSite": "Получите логин и ключ на :name →"
 }

@@ -523,5 +523,7 @@
   "landing.footerWebmail": "Webmail",
   "landing.footerPrivacy": "Privacy",
   "landing.footerTerms": "Terms",
-  "landing.language": "Language"
+  "landing.language": "Language",
+  "admin.providerDefault": ":name (default)",
+  "admin.providerSite": "Get your login and key at :name →"
 }

@@ -523,5 +523,7 @@
   "landing.footerWebmail": "Webmail",
   "landing.footerPrivacy": "Confidentialité",
   "landing.footerTerms": "Conditions",
-  "landing.language": "Langue"
+  "landing.language": "Langue",
+  "admin.providerDefault": ":name (par défaut)",
+  "admin.providerSite": "Récupérez le login et la clé chez :name →"
 }

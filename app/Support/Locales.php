@@ -15,9 +15,9 @@ class Locales
     /** code => [native name, BCP 47 tag] */
     public const ALL = [
         'en' => ['English', 'en-GB'],
+        'es' => ['Español', 'es-ES'],
         'pt' => ['Português', 'pt-PT'],
         'pt_BR' => ['Português (Brasil)', 'pt-BR'],
-        'es' => ['Español', 'es-ES'],
         'fr' => ['Français', 'fr-FR'],
         'de' => ['Deutsch', 'de-DE'],
         'it' => ['Italiano', 'it-IT'],
