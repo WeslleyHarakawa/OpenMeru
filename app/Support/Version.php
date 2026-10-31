@@ -54,20 +54,42 @@ class Version
         return version_compare(self::normalize($latest), self::normalize(self::current()), '>');
     }
 
-    /** 1.2.3 -> 1.2.4 (patch), 1.3.0 (minor) or 2.0.0 (major). */
+    /**
+     * Versions read X.XX.XX like a counter: the last number goes up on every release and
+     * rolls over into the middle one at 99 (1.01.99 -> 1.02.00), which rolls over into the
+     * first at 99 (1.99.99 -> 2.00.00). --minor and --major move the bigger number at once.
+     */
     public static function bump(string $version, string $level = 'patch'): string
     {
         [$major, $minor, $patch] = array_map('intval', array_pad(explode('.', self::normalize($version)), 3, 0));
 
-        return match ($level) {
-            'major' => ($major + 1).'.0.0',
-            'minor' => $major.'.'.($minor + 1).'.0',
-            default => $major.'.'.$minor.'.'.($patch + 1),
+        [$major, $minor, $patch] = match ($level) {
+            'major' => [$major + 1, 0, 0],
+            'minor' => [$major, $minor + 1, 0],
+            default => [$major, $minor, $patch + 1],
         };
+        if ($patch > 99) {
+            $patch = 0;
+            $minor++;
+        }
+        if ($minor > 99) {
+            $minor = 0;
+            $major++;
+        }
+
+        return self::format($major, $minor, $patch);
     }
 
+    public static function format(int $major, int $minor, int $patch): string
+    {
+        return sprintf('%d.%02d.%02d', $major, $minor, $patch);
+    }
+
+    /** Comparable form: no "v", no zero padding (version_compare reads 1.01.010 as 1.1.10 anyway). */
     public static function normalize(string $version): string
     {
-        return ltrim(trim($version), 'vV') ?: '0.0.0';
+        $parts = array_map('intval', explode('.', ltrim(trim($version), 'vV')));
+
+        return $parts === [0] || $parts === [] ? '0.0.0' : implode('.', $parts);
     }
 }
