@@ -71,7 +71,7 @@
     header.top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
     header.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 12px; }
     .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 700; letter-spacing: -0.02em; }
-    .brand img { height: 34px; width: auto; display: block; }
+    .brand img { height: 48px; width: auto; display: block; }
     .brand .dark { display: none; }
     @media (prefers-color-scheme: dark) { .brand .light { display: none; } .brand .dark { display: block; } }
     nav.links { display: flex; gap: 22px; font-size: 14px; align-items: center; }
@@ -93,9 +93,10 @@
     .hero { padding: 88px 28px 64px; }
     .tag { display: inline-flex; gap: 8px; align-items: center; font-size: 13px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px; text-decoration: none; }
     .tag b { color: var(--ok); font-weight: 600; }
-    h1 { font-size: clamp(30px, 5.4vw, 52px); line-height: 1.12; letter-spacing: -0.035em; margin: 22px 0 18px; font-weight: 700; }
+    h1 { font-size: clamp(26px, 4.3vw, 44px); line-height: 1.12; letter-spacing: -0.035em; margin: 22px 0 24px; font-weight: 700; }
+    @media (min-width: 900px) { h1 span { white-space: nowrap; } }
     h1 span { color: var(--faint); }
-    .lead { font-family: Inter, system-ui, sans-serif; font-size: 18px; color: var(--muted); max-width: 640px; margin: 0 0 34px; }
+    .lead { font-family: Inter, system-ui, sans-serif; font-size: 18px; color: var(--muted); max-width: 640px; margin: 28px 0 0; }
 
     .install { border: 1px solid var(--line); border-radius: 10px; background: var(--code); max-width: 680px; overflow: hidden; }
     .tabs { display: flex; border-bottom: 1px solid var(--line); overflow-x: auto; }
@@ -213,8 +214,6 @@
   <section class="hero">
     <a class="tag" href="{{ $repo }}" target="_blank" rel="noopener"><b>●</b> {{ __('landing.tag') }}</a>
     <h1>{{ __('landing.h1a') }}<br><span>{{ __('landing.h1b') }}</span></h1>
-    <p class="lead">{{ __('landing.lead') }}</p>
-
     <div class="install">
       <div class="tabs" role="tablist">
         <button role="tab" aria-selected="true" data-cmd="curl -fsSL https://openmeru.com/install | bash">curl</button>
@@ -223,6 +222,8 @@
       </div>
       <div class="cmd"><code id="cmd">curl -fsSL https://openmeru.com/install | bash</code><button class="copy" data-copy="#cmd">{{ __('landing.copy') }}</button></div>
     </div>
+
+    <p class="lead">{{ __('landing.lead') }}</p>
 
     <div class="actions">
       <a class="btn dark" href="{{ $repo }}" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> {{ __('landing.viewGithub') }}</a>
