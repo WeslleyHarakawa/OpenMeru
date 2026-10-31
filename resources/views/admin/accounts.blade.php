@@ -27,13 +27,16 @@
         <input class="form-control" id="recovery_email" name="recovery_email" type="email" value="{{ old('recovery_email') }}" placeholder="{{ __('admin.recoveryPh') }}">
         <div class="hint mt-1">{{ __('recoveryHint') }}</div>
       </div>
-      <div class="col-md-3 d-flex align-items-end">
-        <div class="form-check mb-2">
-          <input class="form-check-input" type="checkbox" id="is_admin" name="is_admin" value="1">
+      {{-- Same row as the recovery field: an empty label keeps the control level with the input, above the hint. --}}
+      <div class="col-md-3">
+        <label class="form-label d-none d-md-block">&nbsp;</label>
+        <div class="form-check d-flex align-items-center" style="min-height:calc(1.5em + .75rem + 2px)">
+          <input class="form-check-input mt-0 me-2" type="checkbox" id="is_admin" name="is_admin" value="1">
           <label class="form-check-label" for="is_admin">{{ __('admin.adminAccess') }}</label>
         </div>
       </div>
-      <div class="col-md-3 d-flex align-items-end">
+      <div class="col-md-3">
+        <label class="form-label d-none d-md-block">&nbsp;</label>
         <button class="btn btn-primary w-100" type="submit"><i class="bi bi-plus-lg"></i> {{ __('admin.create') }}</button>
       </div>
     </form>
