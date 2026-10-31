@@ -78,7 +78,8 @@
     nav.links a { text-decoration: none; color: var(--muted); }
     nav.links a:hover { color: var(--ink); }
     nav.links a .bi { margin-right: 4px; }
-    nav.links a.nbtn { border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; padding: 7px 14px; font-weight: 600; }
+    nav.links a.nbtn { border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; padding: 7px 14px; font-weight: 600; white-space: nowrap; }
+    @media (max-width: 900px) { nav.links { gap: 12px; } nav.links a.nbtn { padding: 6px 10px; } }
     nav.links a.nbtn.fill { background: var(--accent); color: #fff; }
     nav.links a.nbtn:hover { filter: brightness(1.1); color: var(--accent); }
     nav.links a.nbtn.fill:hover { color: #fff; }
