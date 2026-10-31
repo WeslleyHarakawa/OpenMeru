@@ -181,8 +181,6 @@
       <a class="hide-sm" href="#install">{{ __('landing.navInstall') }}</a>
       <a class="hide-sm" href="{{ $repo }}" target="_blank" rel="noopener">GitHub</a>
       <label class="lang">
-        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M1.03 7.5h2.52c.06-1.6.38-3.06.88-4.2A7 7 0 0 0 1.03 7.5m3.52 0h2.95V1.08c-.7.17-1.4.9-1.96 2.03-.45.9-.8 2.1-.86 3.4L4.55 7.5zm3.95 0h2.95c-.06-1.3-.4-2.5-.86-3.4-.56-1.13-1.27-1.86-1.96-2.03L8.5 7.5zm3.95 0h2.52a7 7 0 0 0-3.4-4.2c.5 1.14.82 2.6.88 4.2m2.52 1h-2.52c-.06 1.6-.38 3.06-.88 4.2a7 7 0 0 0 3.4-4.2m-3.52 0H8.5v6.42c.7-.17 1.4-.9 1.96-2.03.45-.9.8-2.1.86-3.4zm-3.95 0H4.55c.06 1.3.4 2.5.86 3.4.56 1.13 1.27 1.86 1.96 2.03zm-3.95 0H1.03a7 7 0 0 0 3.4 4.2c-.5-1.14-.82-2.6-.88-4.2"/></svg>
-        <span class="visually-hidden" hidden>{{ __('landing.language') }}</span>
         <select id="langPick" aria-label="{{ __('landing.language') }}">
           @foreach (\App\Support\Locales::ALL as $code => [$native, $tag])
           <option value="{{ $code }}" lang="{{ $tag }}" @selected($code === $locale)>{{ $native }}</option>
