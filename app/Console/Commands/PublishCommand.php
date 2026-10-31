@@ -21,6 +21,12 @@ class PublishCommand extends Command
 
     protected $description = 'Commit the changes on this server, bump VERSION and push them';
 
+    /** Pathspecs excluded from `git add`: server data never travels with the code. */
+    private const NEVER_PUBLISH = [':!storage', ':!.env', ':!.env.*', ':!public_root/.well-known', ':!database/*.sqlite', ':!.claude', ':!vendor', ':!node_modules'];
+
+    /** Anything matching this is refused even if it slipped past the pathspecs. */
+    private const FORBIDDEN = '#^(storage/|\.env|database/.*\.sqlite$|.*\.(sql|sql\.gz|dump|bak|log|key|pem)$|.*/sessions/|.*backups?/)#i';
+
     public function handle(): int
     {
         if (! Version::isGitCheckout()) {
@@ -29,19 +35,28 @@ class PublishCommand extends Command
             return self::FAILURE;
         }
 
-        $changes = trim($this->git('status --porcelain'));
-        if ($changes === '') {
+        // Only source files are ever published. Nothing that lives on this server (data, uploads,
+        // backups, secrets, local tooling) may leave it, whatever .gitignore says.
+        $this->git('add -A -- . '.implode(' ', array_map('escapeshellarg', self::NEVER_PUBLISH)));
+        $staged = array_filter(explode("\n", trim($this->git('diff --cached --name-only'))));
+        $forbidden = array_filter($staged, [self::class, 'isForbidden']);
+        if ($forbidden) {
+            $this->git('reset -q');
+            $this->components->error("Refusing to publish files that belong to this server, not to the project:\n  ".implode("\n  ", $forbidden));
+
+            return self::FAILURE;
+        }
+        if (! $staged) {
             $this->components->warn('Nothing changed since the last publish.');
 
             return self::SUCCESS;
         }
-        $this->line($changes);
+        $this->line(implode("\n", $staged));
 
         $from = Version::current();
         $to = Version::bump($from, $this->option('major') ? 'major' : ($this->option('minor') ? 'minor' : 'patch'));
         file_put_contents(base_path('VERSION'), $to."\n");
-
-        $this->git('add -A');
+        $this->git('add VERSION');
         $this->git('commit --quiet -m '.escapeshellarg($to.': '.$this->argument('message')));
         $this->components->task("Committed {$to}", fn () => true);
 
@@ -53,6 +68,11 @@ class PublishCommand extends Command
         $this->components->info("Published {$from} → {$to}. Other installs will see the update within a day, or at once with \"Check now\".");
 
         return self::SUCCESS;
+    }
+
+    public static function isForbidden(string $path): bool
+    {
+        return (bool) preg_match(self::FORBIDDEN, $path);
     }
 
     private function git(string $args): string
