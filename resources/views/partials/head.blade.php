@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="webmail" content="{{ parse_url(route('login'), PHP_URL_PATH) ?: '/' }}">
-@if ($fav = \App\Support\Brand::faviconUrl())<link rel="icon" href="{{ $fav }}" type="{{ \App\Support\Brand::faviconType() }}">@else<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">@endif
+@if ($fav = \App\Support\Brand::faviconUrl())<link rel="icon" href="{{ $fav }}" type="{{ \App\Support\Brand::faviconType() }}">@else<link rel="icon" href="/assets/brand/favicon.png" type="image/png">@endif
 <link rel="apple-touch-icon" href="{{ \App\Support\Brand::iconUrl() ?: '/assets/icon-192.png' }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

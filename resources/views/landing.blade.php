@@ -23,12 +23,15 @@
   <meta property="og:url" content="{{ \App\Http\Controllers\SeoController::pageUrl($locale) }}">
   <meta property="og:title" content="{{ __('landing.title') }}">
   <meta property="og:description" content="{{ __('landing.ogDescription') }}">
-  <meta property="og:image" content="{{ url('/assets/icon-192.png') }}">
+  <meta property="og:image" content="{{ url('/assets/brand/og.png') }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="{{ url('/assets/brand/og.png') }}">
   <meta property="og:locale" content="{{ str_replace('-', '_', \App\Support\Locales::tag($locale)) }}">
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{ __('landing.title') }}">
   <meta name="twitter:description" content="{{ __('landing.ogDescription') }}">
-  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/brand/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="/assets/icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,10 +56,10 @@
   <style>
     :root {
       --bg: #fdfcfc; --bg2: #f5f3f2; --ink: #201d1d; --muted: #6b6566; --faint: #9a9394;
-      --line: #e6e2e1; --code: #f1eeed; --accent: #2f6bff; --ok: #12a150;
+      --line: #e6e2e1; --code: #f1eeed; --accent: #d2151a; --ok: #12a150;
     }
     @media (prefers-color-scheme: dark) {
-      :root { --bg: #0d0c0c; --bg2: #151313; --ink: #eeeaea; --muted: #a29b9c; --faint: #6f6869; --line: #272323; --code: #181616; --accent: #6ea8ff; --ok: #3ddc84; }
+      :root { --bg: #0d0c0c; --bg2: #151313; --ink: #eeeaea; --muted: #a29b9c; --faint: #6f6869; --line: #272323; --code: #181616; --accent: #ff5a5f; --ok: #3ddc84; }
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -68,7 +71,9 @@
     header.top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
     header.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 12px; }
     .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 700; letter-spacing: -0.02em; }
-    .brand svg { width: 26px; height: 26px; }
+    .brand img { height: 34px; width: auto; display: block; }
+    .brand .dark { display: none; }
+    @media (prefers-color-scheme: dark) { .brand .light { display: none; } .brand .dark { display: block; } }
     nav.links { display: flex; gap: 22px; font-size: 14px; align-items: center; }
     nav.links a { text-decoration: none; color: var(--muted); }
     nav.links a:hover { color: var(--ink); }
@@ -182,8 +187,8 @@
 <header class="top">
   <div class="wrap">
     <a class="brand" href="/">
-      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6ea8ff"/><stop offset="100%" stop-color="#1d57f5"/></linearGradient></defs><rect width="64" height="64" rx="18" fill="url(#lg)"/><path fill="#fff" d="M15 24h34a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H15a2 2 0 0 1-2-2V26a2 2 0 0 1 2-2z"/><path d="M14 25.2 32 37.2 50 25.2" fill="none" stroke="#2f6bff" stroke-width="2.2" stroke-linejoin="round"/></svg>
-      openmeru
+      <img class="light" src="/assets/brand/logo-light.png" alt="OpenMeru" width="1086" height="290">
+      <img class="dark" src="/assets/brand/logo-dark.png" alt="OpenMeru" width="650" height="174">
     </a>
     <nav class="links">
       <a href="#demo">{{ __('landing.navDemo') }}</a>

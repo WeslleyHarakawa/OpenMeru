@@ -31,7 +31,7 @@ class BrandTest extends TestCase
 
     public function test_default_brand_is_openmeru_mail(): void
     {
-        $this->get('/')->assertOk()->assertSee('OpenMeru')->assertSee('MAIL')->assertSee('<svg class="logo-mark', false)->assertDontSee('Brand::product');
+        $this->get('/')->assertOk()->assertSee('OpenMeru')->assertSee('MAIL')->assertSee('/assets/brand/mark.png', false)->assertDontSee('Brand::product');
         $this->assertSame('OpenMeru Mail', Brand::name());
         $this->get('/brand/logo')->assertNotFound();
     }
@@ -50,7 +50,7 @@ class BrandTest extends TestCase
         Storage::disk('local')->assertExists(Setting::get('brand_logo'));
 
         $page = $this->get('/')->assertOk();
-        $page->assertSee('W8 Atlantic Mail')->assertDontSee('<svg class="logo-mark', false)->assertSee('/brand/logo', false);
+        $page->assertSee('W8 Atlantic Mail')->assertDontSee('/assets/brand/mark.png', false)->assertSee('/brand/logo', false);
         $this->get('/brand/logo')->assertOk();
     }
 
@@ -66,7 +66,7 @@ class BrandTest extends TestCase
         Storage::disk('local')->assertMissing($path);
         Brand::forget();
         $this->assertNull(Brand::logoUrl());
-        $this->get('/')->assertSee('<svg class="logo-mark', false);
+        $this->get('/')->assertSee('/assets/brand/mark.png', false);
     }
 
     public function test_only_images_are_accepted(): void
@@ -183,7 +183,7 @@ class BrandTest extends TestCase
         Brand::forget();
 
         // The admin header is always OpenMeru's own mark; the client's icon shows in Settings → General.
-        $this->actingAs($admin)->withSession($session)->get('/admin')->assertOk()->assertSee('<svg class="logo-mark', false)->assertDontSee('<img class="logo-mark', false);
+        $this->actingAs($admin)->withSession($session)->get('/admin')->assertOk()->assertSee('/assets/brand/mark.png', false)->assertDontSee('<img class="logo-mark sm" src="/brand/icon', false);
         $this->actingAs($admin)->withSession($session)->get('/admin/settings')->assertOk()->assertSee('/brand/icon', false);
         // The sign-in card uses the big mark: the logo.
         auth()->logout();

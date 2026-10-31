@@ -15,9 +15,9 @@ class Brand
 {
     public const DEFAULT_NAME = 'OpenMeru Mail';
 
-    public const DEFAULT_PRIMARY = '#2f6bff';
+    public const DEFAULT_PRIMARY = '#d2151a';
 
-    public const DEFAULT_SECONDARY = '#1e56ea';
+    public const DEFAULT_SECONDARY = '#a60f14';
 
     /** Uploadable files, with the types each accepts and its size limit in KB. */
     public const ASSETS = [
