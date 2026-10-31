@@ -563,5 +563,6 @@
   "landing.hireNotes": "Iets wat we moeten weten (optioneel)",
   "landing.hireButton": "Installatie bestellen",
   "landing.hireDone": "Bestelling ontvangen. We mailen je binnen één werkdag.",
-  "landing.hireError": "Controleer naam en e-mail."
+  "landing.hireError": "Controleer naam en e-mail.",
+  "photoBy": "Foto: :name"
 }

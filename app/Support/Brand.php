@@ -104,9 +104,20 @@ class Brand
         return self::assetPath('background');
     }
 
+    /** Mount Fuji at dusk, the product's own sign-in backdrop until the client uploads one. */
+    public const DEFAULT_BACKGROUND = '/assets/brand/login-bg.jpg';
+
+    public const DEFAULT_BACKGROUND_CREDIT = ['name' => 'Casia Charlie', 'url' => 'https://www.pexels.com/photo/photo-of-mountain-scenery-2451038/', 'site' => 'Pexels'];
+
     public static function backgroundUrl(): ?string
     {
-        return self::assetUrl('background');
+        return self::assetUrl('background') ?: self::DEFAULT_BACKGROUND;
+    }
+
+    /** True while the sign-in page shows the shipped photo (which carries the photographer's credit). */
+    public static function backgroundIsDefault(): bool
+    {
+        return self::assetUrl('background') === null;
     }
 
     /** The main colour (buttons, links, highlights), as #rrggbb. */

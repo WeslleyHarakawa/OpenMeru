@@ -563,5 +563,6 @@
   "landing.hireNotes": "Quelque chose à savoir (facultatif)",
   "landing.hireButton": "Commander l'installation",
   "landing.hireDone": "Commande reçue. Nous vous écrivons sous un jour ouvré.",
-  "landing.hireError": "Vérifiez le nom et l'e-mail."
+  "landing.hireError": "Vérifiez le nom et l'e-mail.",
+  "photoBy": "Photo : :name"
 }

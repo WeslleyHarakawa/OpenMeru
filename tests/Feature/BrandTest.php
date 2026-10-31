@@ -145,7 +145,7 @@ class BrandTest extends TestCase
 
         $this->get('/brand/background')->assertOk();
         auth()->logout();
-        $this->get('/')->assertOk()->assertSee('/brand/background', false)->assertSee('brand has-bg', false);
+        $this->get('/')->assertOk()->assertSee('/brand/background', false)->assertSee('brand has-bg', false)->assertDontSee('default-bg')->assertDontSee('brand-credit');
 
         $this->actingAs($admin)->withSession($session)->put('/admin/settings/brand', ['remove_background' => '1'])->assertRedirect();
         Brand::forget();
@@ -170,6 +170,15 @@ class BrandTest extends TestCase
         $page = $this->get('/')->assertOk();
         $page->assertSee('<link rel="icon" href="'.url('/brand/favicon'), false)
             ->assertSee('<link rel="apple-touch-icon" href="'.url('/brand/icon'), false);
+    }
+
+    public function test_the_sign_in_page_ships_with_the_fuji_photo_and_its_credit(): void
+    {
+        $this->get('/')->assertOk()
+            ->assertSee('assets/brand/login-bg.jpg', false)
+            ->assertSee('default-bg', false)
+            ->assertSee('Casia Charlie')
+            ->assertSee('pexels.com/photo/photo-of-mountain-scenery-2451038', false);
     }
 
     public function test_the_small_mark_prefers_the_icon_over_the_logo(): void

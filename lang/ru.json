@@ -563,5 +563,6 @@
   "landing.hireNotes": "Что нам стоит знать (необязательно)",
   "landing.hireButton": "Заказать установку",
   "landing.hireDone": "Заказ получен. Напишем вам в течение рабочего дня.",
-  "landing.hireError": "Проверьте имя и e-mail."
+  "landing.hireError": "Проверьте имя и e-mail.",
+  "photoBy": "Фото: :name"
 }

@@ -563,5 +563,6 @@
   "landing.hireNotes": "需要我们了解的信息（可选）",
   "landing.hireButton": "下单安装",
   "landing.hireDone": "已收到订单，我们将在一个工作日内给你发邮件。",
-  "landing.hireError": "请检查姓名和邮箱。"
+  "landing.hireError": "请检查姓名和邮箱。",
+  "photoBy": "摄影：:name"
 }

@@ -563,5 +563,6 @@
   "landing.hireNotes": "Qualcosa che dovremmo sapere (facoltativo)",
   "landing.hireButton": "Ordina l'installazione",
   "landing.hireDone": "Ordine ricevuto. Ti scriviamo entro un giorno lavorativo.",
-  "landing.hireError": "Controlla nome ed email."
+  "landing.hireError": "Controlla nome ed email.",
+  "photoBy": "Foto di :name"
 }

@@ -563,5 +563,6 @@
   "landing.hireNotes": "Was wir wissen sollten (optional)",
   "landing.hireButton": "Installation bestellen",
   "landing.hireDone": "Bestellung erhalten. Wir schreiben Ihnen innerhalb eines Werktags.",
-  "landing.hireError": "Bitte Name und E-Mail prüfen."
+  "landing.hireError": "Bitte Name und E-Mail prüfen.",
+  "photoBy": "Foto: :name"
 }

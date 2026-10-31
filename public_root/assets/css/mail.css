@@ -162,6 +162,16 @@ a { color: var(--brand); }
     var(--brand-bg) center / cover no-repeat;
 }
 .brand.has-bg .brand-waves { opacity: .35; }
+.brand.has-bg.default-bg {
+  background:
+    linear-gradient(180deg, rgba(10, 8, 20, 0.15), rgba(10, 8, 20, 0.45) 70%, rgba(10, 8, 20, 0.7)),
+    var(--brand-bg) center / cover no-repeat;
+}
+.brand.has-bg.default-bg .brand-waves { opacity: .12; }
+.brand.has-bg.default-bg .logo-mark { filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45)); }
+.brand.has-bg.default-bg .wordmark, .brand.has-bg.default-bg .product { text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55); }
+.brand-credit { position: absolute; left: 14px; bottom: 12px; z-index: 2; font-size: 11px; color: rgba(255, 255, 255, 0.72); text-decoration: none; letter-spacing: .02em; }
+.brand-credit:hover { color: #fff; text-decoration: underline; }
 
 .brand-waves {
   position: absolute;

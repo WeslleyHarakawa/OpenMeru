@@ -7,7 +7,7 @@
 </head>
 <body data-page="@yield('page')">
   <div class="auth">
-    <section class="brand{{ \App\Support\Brand::backgroundUrl() ? ' has-bg' : '' }}" aria-hidden="true"@if ($bg = \App\Support\Brand::backgroundUrl()) style="--brand-bg:url('{{ $bg }}')"@endif>
+    <section class="brand has-bg{{ \App\Support\Brand::backgroundIsDefault() ? ' default-bg' : '' }}" aria-hidden="true" style="--brand-bg:url('{{ \App\Support\Brand::backgroundUrl() }}')">
       <svg class="brand-waves" viewBox="0 0 800 1200" preserveAspectRatio="xMidYMid slice">
         <path fill="rgba(255,255,255,.12)" d="M0 220C160 80 280 340 520 180C680 80 740 240 800 150V0H0Z"/>
         <path fill="rgba(255,255,255,.08)" d="M-80 700C80 540 220 860 460 700C680 560 760 820 900 680L900 980C640 820 420 1040 180 860C0 740-40 860-80 800Z"/>
@@ -18,6 +18,10 @@
         <div class="wordmark">{{ \App\Support\Brand::wordmark() }}</div>
         @if (\App\Support\Brand::product())<div class="product">{{ \App\Support\Brand::product() }}</div>@endif
       </div>
+      @if (\App\Support\Brand::backgroundIsDefault())
+        @php($credit = \App\Support\Brand::DEFAULT_BACKGROUND_CREDIT)
+        <a class="brand-credit" href="{{ $credit['url'] }}" target="_blank" rel="noopener" aria-hidden="false" tabindex="-1">{{ __('photoBy', ['name' => $credit['name']]) }} · {{ $credit['site'] }}</a>
+      @endif
     </section>
     <main class="auth-panel">
       <div class="auth-tools">
