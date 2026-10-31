@@ -111,13 +111,19 @@ class Brand
 
     public static function backgroundUrl(): ?string
     {
-        return self::assetUrl('background') ?: self::DEFAULT_BACKGROUND;
+        return self::assetUrl('background') ?: (self::customized() ? null : self::DEFAULT_BACKGROUND);
     }
 
     /** True while the sign-in page shows the shipped photo (which carries the photographer's credit). */
     public static function backgroundIsDefault(): bool
     {
-        return self::assetUrl('background') === null;
+        return self::assetUrl('background') === null && ! self::customized();
+    }
+
+    /** Whether the install carries its own identity (name, logo, icon or colours): then the panel stays in its colours. */
+    public static function customized(): bool
+    {
+        return trim((string) self::settings()['name']) !== '' || self::logoUrl() !== null || self::iconUrl() !== null || self::hasCustomColors();
     }
 
     /** The main colour (buttons, links, highlights), as #rrggbb. */

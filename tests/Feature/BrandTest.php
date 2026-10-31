@@ -179,6 +179,11 @@ class BrandTest extends TestCase
             ->assertSee('default-bg', false)
             ->assertSee('Casia Charlie')
             ->assertSee('pexels.com/photo/photo-of-mountain-scenery-2451038', false);
+
+        // An install with its own name keeps its colour panel; the shipped photo is OpenMeru's look only.
+        \App\Models\Setting::put('brand_name', 'Acme Mail');
+        Brand::forget();
+        $this->get('/')->assertOk()->assertDontSee('login-bg.jpg')->assertDontSee('brand-credit')->assertDontSee('has-bg');
     }
 
     public function test_the_small_mark_prefers_the_icon_over_the_logo(): void
