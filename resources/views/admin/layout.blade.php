@@ -14,7 +14,10 @@
     .admin-top nav a.active, .admin-top nav a:hover { background:var(--brand-soft); color:var(--brand); }
     .admin-top .spacer { flex:1; }
     .admin-main { max-width:1100px; margin:0 auto; padding:28px 16px 60px; }
-    .app-footer { display:flex; flex-wrap:wrap; justify-content:center; gap:8px 18px; padding:18px 16px 28px; color:var(--muted); font-size:13px; }
+    .app-footer { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:8px 18px; padding:18px 16px 28px; color:var(--muted); font-size:13px; }
+    .app-footer .foot-center { text-align:center; }
+    .app-footer .foot-right { display:flex; gap:18px; justify-content:flex-end; }
+    @media (max-width:760px) { .app-footer { grid-template-columns:1fr; text-align:center; } .app-footer .foot-right { justify-content:center; } }
     .app-footer a { color:var(--muted); text-decoration:underline; text-underline-offset:3px; }
     .app-footer a:hover { color:var(--ink); }
     .panel { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px; margin-bottom:22px; }
