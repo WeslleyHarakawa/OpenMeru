@@ -45,10 +45,10 @@ class Brand
         return self::isCustom() ? self::name() : 'OpenMeru';
     }
 
-    /** Small word under it: "MAIL" (or "ADMIN") for the default brand, nothing for a custom one. */
+    /** Small word under the name, "MAIL" or "ADMIN": with a custom brand too, so it reads as an e-mail service. */
     public static function product(string $default = 'MAIL'): string
     {
-        return self::isCustom() ? '' : $default;
+        return $default;
     }
 
     public static function assetPath(string $asset): ?string
