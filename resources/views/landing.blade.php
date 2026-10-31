@@ -78,7 +78,8 @@
     nav.links a { text-decoration: none; color: var(--muted); }
     nav.links a:hover { color: var(--ink); }
     nav.links a .bi { margin-right: 4px; }
-    nav.links a.nbtn { border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; padding: 7px 14px; font-weight: 600; white-space: nowrap; }
+    nav.links a.nbtn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; padding: 7px 14px; font-weight: 600; white-space: nowrap; }
+    nav.links a.nbtn .bi { font-size: 15px; line-height: 1; margin: 0; }
     @media (max-width: 900px) { nav.links { gap: 12px; } nav.links a.nbtn { padding: 6px 10px; } }
     nav.links a.nbtn.fill { background: var(--accent); color: #fff; }
     nav.links a.nbtn:hover { filter: brightness(1.1); color: var(--accent); }
@@ -239,8 +240,8 @@
       <a class="hide-sm" href="{{ $repo }}" target="_blank" rel="noopener">GitHub</a>
       <a class="hide-sm" href="#screenshots">{{ __('landing.navShots') }}</a>
       <a class="hide-sm" href="#faq">{{ __('landing.footerFaq') }}</a>
-      <a class="nbtn fill" href="#install">{{ __('landing.navInstall') }}</a>
-      <a class="nbtn hide-sm" href="https://buymeacoffee.com/weslleyharakawa" target="_blank" rel="noopener">{{ __('landing.footerCoffee') }}</a>
+      <a class="nbtn fill" href="#install"><i class="bi bi-terminal"></i>{{ __('landing.navInstall') }}</a>
+      <a class="nbtn hide-sm" href="https://buymeacoffee.com/weslleyharakawa" target="_blank" rel="noopener"><i class="bi bi-heart"></i>{{ __('landing.footerCoffee') }}</a>
       <div class="lang" id="langPick">
         <button class="lang-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="{{ __('landing.language') }}">
           <i class="bi bi-globe2"></i><span class="lang-code">{{ strtoupper(str_replace('_', '-', $locale)) }}</span>

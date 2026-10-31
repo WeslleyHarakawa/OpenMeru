@@ -547,5 +547,6 @@
   "landing.shotLogin": "Page de connexion",
   "landing.shotAdmin": "Admin : boîtes aux lettres",
   "landing.shotAdminSettings": "Admin : marque et réglages",
-  "landing.close": "Fermer"
+  "landing.close": "Fermer",
+  "buyCoffee": "Offrez-moi un café"
 }

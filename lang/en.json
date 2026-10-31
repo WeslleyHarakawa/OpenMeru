@@ -547,5 +547,6 @@
   "landing.shotLogin": "Sign-in page",
   "landing.shotAdmin": "Admin: mailboxes",
   "landing.shotAdminSettings": "Admin: branding and settings",
-  "landing.close": "Close"
+  "landing.close": "Close",
+  "buyCoffee": "Buy me a coffee"
 }
