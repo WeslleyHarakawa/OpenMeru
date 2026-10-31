@@ -225,8 +225,7 @@ MIT © Weslley Harakawa
 
 ## About the author
 
-**Weslley Harakawa** is the founder of [ORYKSA AI](https://www.oryksa.com) (W8 Atlantic Unipessoal Lda, Portugal), where he builds AI employees for small businesses that handle WhatsApp, website chat and phone calls from one account. He also created OpenMeru, an open-source webmail that sends and receives e-mail without running a mail server. He works hands-on across product and engineering and ships fast.
+**Weslley Harakawa** is a software entrepreneur based in Portugal (W8 Atlantic). He created OpenMeru, an open-source webmail that sends and receives e-mail without running a mail server, and works hands-on across product and engineering.
 
 - LinkedIn: <https://www.linkedin.com/in/weslleyharakawa>
-- ORYKSA: <https://www.oryksa.com>
 - GitHub: <https://github.com/WeslleyHarakawa>
