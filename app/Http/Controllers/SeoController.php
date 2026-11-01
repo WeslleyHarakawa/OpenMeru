@@ -82,6 +82,7 @@ Requirements: Linux VPS with PHP 8.5, MySQL 8 or MariaDB, Composer, nginx or Apa
 - [Live demo]({$base}/demo): read-only demo mailbox; [demo admin]({$base}/demo/admin).
 - [Version feed]({$base}/version): JSON with the current version, repository and package URLs.
 - [Installer script]({$base}/install): the one-line installer's source.
+- [MCP server]({$base}/mcp): Streamable HTTP MCP endpoint for AI coding agents (Claude Code: `claude mcp add --transport http openmeru {$base}/mcp`). Tools: overview, version, install plan, Cloudflare worker, DNS records, commands, troubleshooting.
 - [Privacy]({$base}/privacy), [Terms]({$base}/terms).
 - [README]({$repo}#readme), [Cloudflare Email Worker]({$repo}/blob/main/cloudflare-email-worker.js).
 TXT;

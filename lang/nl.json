@@ -564,5 +564,11 @@
   "landing.hireButton": "Installatie bestellen",
   "landing.hireDone": "Bestelling ontvangen. We mailen je binnen één werkdag.",
   "landing.hireError": "Controleer naam en e-mail.",
-  "photoBy": "Foto: :name"
+  "photoBy": "Foto: :name",
+  "landing.mcpNav": "Installeren met AI",
+  "landing.mcpTitle": "Laat je AI het installeren",
+  "landing.mcpLead": "OpenMeru is ook een MCP-server. Verbind Claude Code, Codex, Cursor of een andere MCP-agent en vraag die om OpenMeru op je server te installeren: hij krijgt de exacte installer-opties, de Cloudflare- en Brevo-stappen, de DNS-records en de oplossingen voor de gebruikelijke fouten.",
+  "landing.mcpThen": "Open daarna de agent op je server en zeg:",
+  "landing.mcpPrompt": "Installeer OpenMeru op deze server voor het domein jouwdomein.nl. De admin is admin@jouwdomein.nl en de Gmail voor de catch-all-kopie is jouwproject@gmail.com.",
+  "landing.mcpOther": "Elke andere MCP-client: HTTP-transport, endpoint"
 }

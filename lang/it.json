@@ -564,5 +564,11 @@
   "landing.hireButton": "Ordina l'installazione",
   "landing.hireDone": "Ordine ricevuto. Ti scriviamo entro un giorno lavorativo.",
   "landing.hireError": "Controlla nome ed email.",
-  "photoBy": "Foto di :name"
+  "photoBy": "Foto di :name",
+  "landing.mcpNav": "Installa con IA",
+  "landing.mcpTitle": "Lascia che la tua IA lo installi",
+  "landing.mcpLead": "OpenMeru è anche un server MCP. Collega Claude Code, Codex, Cursor o qualsiasi agente compatibile MCP e chiedigli di installare OpenMeru sul tuo server: riceve le opzioni esatte dell'installer, i passaggi Cloudflare e Brevo, i record DNS e le soluzioni ai problemi più comuni.",
+  "landing.mcpThen": "Poi apri l'agente sul tuo server e digli:",
+  "landing.mcpPrompt": "Installa OpenMeru su questo server per il dominio tuodominio.com. L'admin è admin@tuodominio.com e la Gmail della copia catch-all è tuoprogetto@gmail.com.",
+  "landing.mcpOther": "Qualsiasi altro client MCP: trasporto HTTP, endpoint"
 }

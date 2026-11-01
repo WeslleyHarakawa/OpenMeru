@@ -34,6 +34,18 @@ Website: <https://openmeru.com>. Live demo (read-only): [mailbox](https://openme
 
 ---
 
+## Install with an AI agent (MCP)
+
+openmeru.com is also an MCP server. Connect your coding agent and ask it to install OpenMeru on your server:
+
+```bash
+claude mcp add --transport http openmeru https://openmeru.com/mcp
+```
+
+Codex: `codex mcp add openmeru --url https://openmeru.com/mcp`. Cursor (`~/.cursor/mcp.json`): `{"mcpServers":{"openmeru":{"url":"https://openmeru.com/mcp"}}}`.
+
+Then, on the server: *"Install OpenMeru on this server for the domain yourdomain.com…"*. The tools give the agent the exact installer flags, the Cloudflare and Brevo steps, the DNS records and the fixes for the usual failures.
+
 ## How it works
 
 ```

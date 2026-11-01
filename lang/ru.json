@@ -564,5 +564,11 @@
   "landing.hireButton": "Заказать установку",
   "landing.hireDone": "Заказ получен. Напишем вам в течение рабочего дня.",
   "landing.hireError": "Проверьте имя и e-mail.",
-  "photoBy": "Фото: :name"
+  "photoBy": "Фото: :name",
+  "landing.mcpNav": "Установка через ИИ",
+  "landing.mcpTitle": "Пусть установит ваш ИИ",
+  "landing.mcpLead": "OpenMeru — это ещё и MCP-сервер. Подключите Claude Code, Codex, Cursor или любой агент с поддержкой MCP и попросите установить OpenMeru на ваш сервер: он получит точные опции установщика, шаги Cloudflare и Brevo, DNS-записи и решения типичных проблем.",
+  "landing.mcpThen": "Затем откройте агента на сервере и скажите:",
+  "landing.mcpPrompt": "Установи OpenMeru на этом сервере для домена vashdomen.ru. Админ — admin@vashdomen.ru, Gmail для копии catch-all — vashproekt@gmail.com.",
+  "landing.mcpOther": "Любой другой MCP-клиент: транспорт HTTP, адрес"
 }

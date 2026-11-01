@@ -137,6 +137,12 @@
     .features b { display: block; margin-bottom: 6px; }
     .features p { font-family: Inter, system-ui, sans-serif; color: var(--muted); margin: 0; font-size: 14px; }
 
+    .mcp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 6px 0 18px; }
+    .mcp-card { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px 4px; background: var(--bg2); min-width: 0; }
+    .mcp-card b { display: block; margin-bottom: 4px; }
+    .mcp-card .hint-inline { font-size: 12px; color: var(--faint); }
+    .mcp-card .block { margin: 8px 0 10px; }
+    .mcp-card pre { font-size: 12.5px; white-space: pre; }
     .shots { position: relative; }
     .shots-track { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 4px 2px 8px; }
     .shots-track::-webkit-scrollbar { display: none; }
@@ -251,6 +257,7 @@
       <a href="#demo">{{ __('landing.navDemo') }}</a>
       <a class="hide-sm" href="{{ $repo }}" target="_blank" rel="noopener">GitHub</a>
       <a class="hide-sm" href="#screenshots">{{ __('landing.navShots') }}</a>
+      <a class="hide-sm" href="#mcp">{{ __('landing.mcpNav') }}</a>
       <a class="hide-sm" href="#faq">{{ __('landing.footerFaq') }}</a>
       <a class="nbtn fill" href="#install"><i class="bi bi-terminal"></i>{{ __('landing.navInstall') }}</a>
       <a class="nbtn hide-sm" href="https://buymeacoffee.com/weslleyharakawa" target="_blank" rel="noopener"><i class="bi bi-heart"></i>{{ __('landing.footerCoffee') }}</a>
@@ -460,6 +467,32 @@ php artisan openmeru:install</pre></div>
         <div class="note">{!! __('landing.s5note') !!}</div>
       </div>
     </div>
+  </section>
+
+  <section class="pad" id="mcp">
+    <h2>{{ __('landing.mcpTitle') }}</h2>
+    <p class="txt">{{ __('landing.mcpLead') }}</p>
+    <div class="mcp-grid">
+      <div class="mcp-card">
+        <b>Claude Code</b>
+        <div class="block"><button class="copy">{{ __('landing.copy') }}</button><pre>claude mcp add --transport http openmeru {{ url('/mcp') }}</pre></div>
+      </div>
+      <div class="mcp-card">
+        <b>Codex</b>
+        <div class="block"><button class="copy">{{ __('landing.copy') }}</button><pre>codex mcp add openmeru --url {{ url('/mcp') }}</pre></div>
+      </div>
+      <div class="mcp-card">
+        <b>Cursor</b> <span class="hint-inline">~/.cursor/mcp.json</span>
+        <div class="block"><button class="copy">{{ __('landing.copy') }}</button><pre>{
+  "mcpServers": {
+    "openmeru": { "url": "{{ url('/mcp') }}" }
+  }
+}</pre></div>
+      </div>
+    </div>
+    <p class="txt">{{ __('landing.mcpOther') }} <code class="i">{{ url('/mcp') }}</code>.</p>
+    <p class="txt">{{ __('landing.mcpThen') }}</p>
+    <div class="block"><button class="copy">{{ __('landing.copy') }}</button><pre>{{ __('landing.mcpPrompt') }}</pre></div>
   </section>
 
   <section class="pad">
