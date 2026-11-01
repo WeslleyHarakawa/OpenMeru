@@ -36,15 +36,56 @@ Website: <https://openmeru.com>. Live demo (read-only): [mailbox](https://openme
 
 ## Install with an AI agent (MCP)
 
-openmeru.com is also an MCP server. Connect your coding agent and ask it to install OpenMeru on your server:
+openmeru.com is also a **Model Context Protocol** server. Connect an AI coding agent to it and ask the agent to install, configure or fix OpenMeru on your server. The agent runs the commands; the MCP server knows the product: the exact installer flags, the Cloudflare and Brevo steps, the DNS records and the fixes for the usual failures.
+
+- Endpoint: `https://openmeru.com/mcp`
+- Transport: Streamable HTTP (stateless, JSON-RPC 2.0 over POST). No API key, no account, nothing to install on your side.
+- Protocol version: `2025-03-26`. Capabilities: tools only (no resources or prompts).
+
+### Connect your agent
+
+| Client | How |
+|---|---|
+| Claude Code | `claude mcp add --transport http openmeru https://openmeru.com/mcp` |
+| Codex | `codex mcp add openmeru --url https://openmeru.com/mcp` |
+| Cursor | add to `~/.cursor/mcp.json`: `{"mcpServers":{"openmeru":{"url":"https://openmeru.com/mcp"}}}` |
+| Claude Desktop, Windsurf, Zed, others | any client that supports HTTP MCP servers: URL `https://openmeru.com/mcp`, no auth |
+
+Run the agent **on the server where OpenMeru will live** (SSH in as the site user and start it there), so it can execute the install commands itself. Running it on your laptop also works if the agent can reach the server over SSH.
+
+### What to say
+
+> Install OpenMeru on this server for the domain **yourdomain.com**. The admin is **admin@yourdomain.com** and the Gmail for the catch-all copy is **yourproject@gmail.com**. The server runs CloudPanel.
+
+Other things that work: *"Update OpenMeru"*, *"Mail is not arriving, check why"*, *"Switch sending to SMTP2GO"*, *"Give me the DNS records for yourdomain.com"*, *"Set up the Cloudflare Worker"*.
+
+### Tools
+
+| Tool | What it returns | Arguments |
+|---|---|---|
+| `openmeru_overview` | What OpenMeru is, what it needs, how the pieces fit, the install flow. The agent reads this first. | – |
+| `openmeru_version` | Latest version, repository, package (tar.gz), installer and version-feed URLs. | – |
+| `openmeru_install_plan` | The ordered steps and exact shell commands for a given domain: database, one-line installer with every flag filled in, document root, HTTPS, sending, receiving, test, updates. | `domain`*, `otp_email`*, `admin_email`*, `url`, `admin_name`, `db_name`, `db_user`, `panel` (`cloudpanel` or `plain`), `install_dir` |
+| `openmeru_cloudflare_worker` | The Email Worker source code plus the Cloudflare steps: Email Routing, destination address, Worker variables (`GMAIL`, `INBOUND_URL`, `INBOUND_SECRET`), routing rule. | `domain`*, `url`, `gmail` |
+| `openmeru_dns_records` | MX, the single merged SPF (Cloudflare + relay), DKIM, DMARC, the site record, and the Brevo sender/SMTP-key setup. | `domain`*, `provider` (`brevo`, `smtp2go`, `mailgun`, `postmark`, `sendgrid`, `ses`, `resend`, `custom`) |
+| `openmeru_commands` | The artisan commands of an install (`openmeru:install`, `openmeru:admin`, `openmeru:smtp`, `openmeru:domain`, `openmeru:update`, cache commands) and their flags. | – |
+| `openmeru_troubleshoot` | Known failures and fixes: mail not arriving, 403 from the Worker, admin code not received, update failed (git / composer HOME / local changes), uploads refused, 2FA lock-out, permissions, PHP too old, SPF, project pages showing on an install. | `symptom` (free text; empty returns all) |
+
+\* required
+
+### Secrets
+
+The MCP server never sees your server, database or passwords: it only answers with text. Secrets (database password, admin password, SMTP key, `INBOUND_SECRET`) are typed into the installer's prompts without echo, on your server, and the server's instructions tell the agent not to print or store them anywhere but the `.env` the installer writes. Review what your agent runs, as with any agent.
+
+### Try it by hand
 
 ```bash
-claude mcp add --transport http openmeru https://openmeru.com/mcp
+curl -s -X POST https://openmeru.com/mcp -H 'Content-Type: application/json'   -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+
+curl -s -X POST https://openmeru.com/mcp -H 'Content-Type: application/json'   -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"openmeru_dns_records","arguments":{"domain":"yourdomain.com"}}}'
 ```
 
-Codex: `codex mcp add openmeru --url https://openmeru.com/mcp`. Cursor (`~/.cursor/mcp.json`): `{"mcpServers":{"openmeru":{"url":"https://openmeru.com/mcp"}}}`.
-
-Then, on the server: *"Install OpenMeru on this server for the domain yourdomain.com…"*. The tools give the agent the exact installer flags, the Cloudflare and Brevo steps, the DNS records and the fixes for the usual failures.
+A `GET https://openmeru.com/mcp` answers 405 with a JSON description of the server and the connection commands. Only openmeru.com serves the MCP endpoint; your own install does not expose it.
 
 ## How it works
 
