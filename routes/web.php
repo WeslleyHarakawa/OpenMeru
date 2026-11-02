@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\VerifyController;
 use App\Http\Controllers\AccountSettingsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DemoController;
+use App\Http\Controllers\ImageProxyController;
 use App\Http\Controllers\InboundController;
 use App\Http\Controllers\MailboxController;
 use App\Http\Controllers\SignupController;
@@ -98,6 +99,7 @@ Route::middleware(['auth', 'mailbox.active'])->group(function () {
     Route::post('/api/send', [MailboxController::class, 'send'])->middleware('throttle:30,1');
     Route::post('/api/drafts', [MailboxController::class, 'saveDraft']);
     Route::get('/attachments/{attachment}', [MailboxController::class, 'attachment'])->name('attachments.show');
+    Route::get('/img', [ImageProxyController::class, 'show'])->middleware('throttle:600,1')->name('img.proxy');
 
     Route::get('/settings', [AccountSettingsController::class, 'page'])->name('settings');
     Route::get('/account/avatar', [AccountSettingsController::class, 'avatar'])->name('account.avatar');

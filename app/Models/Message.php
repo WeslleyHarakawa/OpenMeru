@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Support\DemoContent;
+use App\Support\ImageProxy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -86,7 +87,7 @@ class Message extends Model
             'reply_to' => $this->reply_to,
             'message_id' => $this->message_id,
             'text_body' => $this->demoText()[1] ?? $this->text_body,
-            'html_body' => $this->html_body,
+            'html_body' => ImageProxy::rewrite($this->html_body),
             'attachments' => $this->attachments->map(fn (Attachment $a) => [
                 'id' => $a->id,
                 'filename' => $a->filename,
