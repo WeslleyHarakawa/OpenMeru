@@ -66,6 +66,7 @@
   "close": "Fermer",
   "sentOk": "Message envoyé.",
   "sendFailed": "Envoi impossible : ",
+  "sendBlocked": "L'envoi est suspendu : le fournisseur d'envoi a bloqué le compte d'envoi de ce site. L'administrateur doit lui demander de le réactiver. Votre message n'a pas été envoyé.",
   "needTo": "Ajoutez un destinataire.",
   "invalidAddress": "Adresse invalide : ",
   "draftBanner": "Brouillon — pas encore envoyé.",

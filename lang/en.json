@@ -66,6 +66,7 @@
   "close": "Close",
   "sentOk": "Message sent.",
   "sendFailed": "Could not send: ",
+  "sendBlocked": "Sending is paused: the sending provider has blocked this site's sending account. The administrator needs to ask the provider to reactivate it. Your message was not sent.",
   "needTo": "Add a recipient.",
   "invalidAddress": "Invalid address: ",
   "draftBanner": "Draft — not sent yet.",

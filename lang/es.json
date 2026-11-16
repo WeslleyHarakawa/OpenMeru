@@ -66,6 +66,7 @@
   "close": "Cerrar",
   "sentOk": "Mensaje enviado.",
   "sendFailed": "No se pudo enviar: ",
+  "sendBlocked": "El envío está en pausa: el proveedor de envío bloqueó la cuenta de envío de este sitio. El administrador debe pedir al proveedor que la reactive. Tu mensaje no se envió.",
   "needTo": "Añade un destinatario.",
   "invalidAddress": "Dirección inválida: ",
   "draftBanner": "Borrador — aún no enviado.",

@@ -150,7 +150,10 @@ class MailboxController extends Controller
         } catch (Throwable $e) {
             report($e);
 
-            return response()->json(['message' => 'send_failed', 'detail' => $e->getMessage()], 502);
+            // Not 502: Cloudflare would swap the answer for its own "origin server" page.
+            $blocked = (bool) preg_match('/not yet activated|permission_denied|account (is )?(suspended|blocked|deactivated)/i', $e->getMessage());
+
+            return response()->json(['message' => 'send_failed', 'reason' => $blocked ? 'provider_blocked' : null, 'detail' => $e->getMessage()], 422);
         }
 
         return response()->json(['id' => $message->id, 'counts' => $this->counts($request)]);

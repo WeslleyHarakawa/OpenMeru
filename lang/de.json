@@ -66,6 +66,7 @@
   "close": "Schließen",
   "sentOk": "Nachricht gesendet.",
   "sendFailed": "Senden fehlgeschlagen: ",
+  "sendBlocked": "Der Versand ist pausiert: Der Versanddienst hat das Versandkonto dieser Seite gesperrt. Der Administrator muss den Dienst um Reaktivierung bitten. Deine Nachricht wurde nicht gesendet.",
   "needTo": "Füge einen Empfänger hinzu.",
   "invalidAddress": "Ungültige Adresse: ",
   "draftBanner": "Entwurf — noch nicht gesendet.",

@@ -66,6 +66,7 @@
   "close": "Sluiten",
   "sentOk": "Bericht verstuurd.",
   "sendFailed": "Versturen mislukt: ",
+  "sendBlocked": "Versturen is gepauzeerd: de verzenddienst heeft het verzendaccount van deze site geblokkeerd. De beheerder moet de dienst vragen het te heractiveren. Je bericht is niet verstuurd.",
   "needTo": "Voeg een ontvanger toe.",
   "invalidAddress": "Ongeldig adres: ",
   "draftBanner": "Concept — nog niet verstuurd.",

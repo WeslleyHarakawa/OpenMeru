@@ -66,6 +66,7 @@
   "close": "关闭",
   "sentOk": "邮件已发送。",
   "sendFailed": "发送失败：",
+  "sendBlocked": "发送已暂停：发送服务商封锁了本站的发送账户。管理员需要联系服务商重新启用。您的邮件未发送。",
   "needTo": "请添加收件人。",
   "invalidAddress": "地址无效：",
   "draftBanner": "草稿——尚未发送。",

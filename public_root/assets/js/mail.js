@@ -836,6 +836,7 @@
       if (first.startsWith("invalid:")) return t("invalidAddress") + first.slice(8);
       return first;
     }
+    if (e.data && e.data.reason === "provider_blocked") return t("sendBlocked");
     return t("sendFailed") + e.message;
   }
 

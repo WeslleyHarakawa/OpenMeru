@@ -66,6 +66,7 @@
   "close": "Chiudi",
   "sentOk": "Messaggio inviato.",
   "sendFailed": "Impossibile inviare: ",
+  "sendBlocked": "L'invio è sospeso: il servizio di invio ha bloccato l'account di invio di questo sito. L'amministratore deve chiedere di riattivarlo. Il messaggio non è stato inviato.",
   "needTo": "Aggiungi un destinatario.",
   "invalidAddress": "Indirizzo non valido: ",
   "draftBanner": "Bozza — non ancora inviata.",

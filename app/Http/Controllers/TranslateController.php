@@ -31,7 +31,7 @@ class TranslateController extends Controller
         } catch (Throwable $e) {
             report($e);
 
-            return response()->json(['message' => 'translate_failed'], 502);
+            return response()->json(['message' => 'translate_failed'], 503);
         }
     }
 }
